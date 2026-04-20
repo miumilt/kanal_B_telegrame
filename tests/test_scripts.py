@@ -124,6 +124,51 @@ def test_daily_slot_script_builds_digest_when_multiple_items_selected(tmp_path: 
     assert "Daily AI digest for the channel:" in draft.generated_text
 
 
+def test_daily_slot_run_refreshes_backlog_before_building_first_draft(tmp_path: Path):
+    store = JsonStateStore(tmp_path)
+    module = _load_script_module("run_daily_slot")
+    telegram_api = FakeTelegramApi()
+
+    draft = module.run_daily_slot(
+        store,
+        telegram_api=telegram_api,
+        owner_chat_id="owner-chat",
+        now_iso="2026-04-20T10:00:00+00:00",
+        fetcher=lambda now_iso: [_item("item-1", "Gemini CLI Released", "CLI tool for developers.")],
+    )
+
+    assert draft is not None
+    assert draft.draft_type == "short_post"
+    assert draft.selected_story_ids == ["item-1"]
+    assert store.load_backlog()[0].status == "drafted"
+    assert telegram_api.sent_messages[0]["chat_id"] == "owner-chat"
+
+
+def test_daily_slot_run_skips_cleanly_when_no_eligible_items_exist(tmp_path: Path):
+    store = JsonStateStore(tmp_path)
+    module = _load_script_module("run_daily_slot")
+    telegram_api = FakeTelegramApi()
+
+    draft = module.run_daily_slot(
+        store,
+        telegram_api=telegram_api,
+        owner_chat_id="owner-chat",
+        now_iso="2026-04-20T10:00:00+00:00",
+        fetcher=lambda now_iso: [],
+    )
+
+    assert draft is None
+    assert store.load_current_draft() is None
+    assert store.load_backlog() == []
+    assert telegram_api.sent_messages == [
+        {
+            "chat_id": "owner-chat",
+            "text": "No eligible backlog items for draft today.",
+            "reply_markup": None,
+        }
+    ]
+
+
 def test_process_updates_handles_edit_backlog_short_publish_and_cursor_persistence(tmp_path: Path):
     store = JsonStateStore(tmp_path)
     store.save_backlog(

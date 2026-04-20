@@ -4,12 +4,15 @@ from datetime import UTC, datetime
 from uuid import uuid4
 
 from ai_news_bot.approval import build_draft_keyboard
-from ai_news_bot.backlog import select_main_slot_items
+from ai_news_bot.backlog import merge_candidates, select_main_slot_items
 from ai_news_bot.config import load_config
+from ai_news_bot.discovery import fetch_candidates
 from ai_news_bot.drafts import build_digest_text, build_short_post_text
-from ai_news_bot.models import DraftRecord
+from ai_news_bot.models import BacklogItem, DraftRecord
 from ai_news_bot.storage import JsonStateStore
 from ai_news_bot.telegram_api import TelegramApi
+
+BACKLOG_EXPIRY_DAYS = 4
 
 
 def _require_replaceable_draft(draft: DraftRecord | None) -> DraftRecord | None:
@@ -50,6 +53,23 @@ def release_unpublished_draft_items(
 
     if changed:
         store.save_backlog(backlog)
+
+
+def refresh_backlog(
+    store: JsonStateStore,
+    *,
+    now_iso: str,
+    fetcher=fetch_candidates,
+    expiry_days: int = BACKLOG_EXPIRY_DAYS,
+) -> list[BacklogItem]:
+    refreshed = merge_candidates(
+        store.load_backlog(),
+        fetcher(now_iso),
+        now_iso=now_iso,
+        expiry_days=expiry_days,
+    )
+    store.save_backlog(refreshed)
+    return refreshed
 
 
 def build_main_slot_draft(
@@ -102,11 +122,36 @@ def build_main_slot_draft(
     return draft
 
 
-def main() -> DraftRecord:
+def run_daily_slot(
+    store: JsonStateStore,
+    *,
+    telegram_api: TelegramApi | None = None,
+    owner_chat_id: str | None = None,
+    now_iso: str | None = None,
+    fetcher=fetch_candidates,
+) -> DraftRecord | None:
+    current_now_iso = now_iso or datetime.now(UTC).isoformat()
+    backlog = refresh_backlog(store, now_iso=current_now_iso, fetcher=fetcher)
+    if not select_main_slot_items(backlog):
+        if telegram_api is not None and owner_chat_id:
+            telegram_api.send_message(
+                owner_chat_id,
+                "No eligible backlog items for draft today.",
+            )
+        return None
+
+    return build_main_slot_draft(
+        store,
+        telegram_api=telegram_api,
+        owner_chat_id=owner_chat_id,
+    )
+
+
+def main() -> DraftRecord | None:
     config = load_config()
     store = JsonStateStore(config.state_dir)
     telegram_api = TelegramApi(config.telegram_bot_token)
-    return build_main_slot_draft(
+    return run_daily_slot(
         store,
         telegram_api=telegram_api,
         owner_chat_id=config.telegram_owner_chat_id,
