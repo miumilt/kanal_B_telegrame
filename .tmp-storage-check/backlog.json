@@ -1,0 +1,15 @@
+[
+  {
+    "item_id": "item-1",
+    "source_url": "https://example.com/story",
+    "source_title": "Open Model Release",
+    "normalized_title": "open model release",
+    "topic_fingerprint": "open-model-release",
+    "source_name": "Example",
+    "published_at": "2026-04-19T10:00:00+00:00",
+    "summary_candidate": "Model released.",
+    "status": "queued",
+    "first_seen_at": "2026-04-19T11:00:00+00:00",
+    "last_considered_at": "2026-04-19T11:00:00+00:00"
+  }
+]

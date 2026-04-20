@@ -1,0 +1,28 @@
+[
+  {
+    "item_id": "item-1",
+    "source_url": "https://example.com/item-1",
+    "source_title": "Gemini CLI Released",
+    "normalized_title": "gemini cli released",
+    "topic_fingerprint": "gemini-cli-released",
+    "source_name": "Example",
+    "published_at": "2026-04-19T10:00:00+00:00",
+    "summary_candidate": "CLI tool for developers.",
+    "status": "published",
+    "first_seen_at": "2026-04-19T10:00:00+00:00",
+    "last_considered_at": "2026-04-19T10:00:00+00:00"
+  },
+  {
+    "item_id": "item-2",
+    "source_url": "https://example.com/item-2",
+    "source_title": "Open Model Released",
+    "normalized_title": "open model released",
+    "topic_fingerprint": "open-model-released",
+    "source_name": "Example",
+    "published_at": "2026-04-19T10:00:00+00:00",
+    "summary_candidate": "Open weights and benchmarks.",
+    "status": "drafted",
+    "first_seen_at": "2026-04-19T10:00:00+00:00",
+    "last_considered_at": "2026-04-19T10:00:00+00:00"
+  }
+]

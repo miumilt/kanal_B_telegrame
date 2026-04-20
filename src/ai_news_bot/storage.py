@@ -1,0 +1,183 @@
+from __future__ import annotations
+
+import json
+import os
+import tempfile
+from pathlib import Path
+
+from ai_news_bot.models import BacklogItem, DraftRecord
+
+
+class JsonStateStore:
+    def __init__(self, root: Path) -> None:
+        self.root = root
+        self.root.mkdir(parents=True, exist_ok=True)
+
+    def _path(self, name: str) -> Path:
+        return self.root / name
+
+    def _read_json(self, name: str, default):
+        path = self._path(name)
+        if not path.exists():
+            return default
+        try:
+            return json.loads(path.read_text(encoding="utf-8"))
+        except json.JSONDecodeError as exc:
+            raise ValueError(f"{name} contains invalid JSON") from exc
+
+    def _write_json(self, name: str, value) -> None:
+        target = self._path(name)
+        temp_path = None
+        with tempfile.NamedTemporaryFile(
+            mode="w",
+            encoding="utf-8",
+            dir=self.root,
+            prefix=f".{name}.",
+            suffix=".tmp",
+            delete=False,
+        ) as handle:
+            temp_path = Path(handle.name)
+            try:
+                json.dump(value, handle, ensure_ascii=False, indent=2)
+                handle.write("\n")
+                handle.flush()
+                os.fsync(handle.fileno())
+            except Exception:
+                handle.close()
+                temp_path.unlink(missing_ok=True)
+                raise
+        try:
+            temp_path.replace(target)
+        except Exception:
+            temp_path.unlink(missing_ok=True)
+            raise
+
+    def _require_dict(self, name: str, value) -> dict:
+        if not isinstance(value, dict):
+            raise ValueError(f"{name} must contain a JSON object")
+        return value
+
+    def _require_list(self, name: str, value) -> list:
+        if not isinstance(value, list):
+            raise ValueError(f"{name} must contain a JSON array")
+        return value
+
+    def _require_fields(self, name: str, value: dict, fields: set[str]) -> None:
+        missing = sorted(field for field in fields if field not in value)
+        if missing:
+            missing_fields = ", ".join(missing)
+            raise ValueError(f"{name} is missing required fields: {missing_fields}")
+
+    def _require_only_fields(self, name: str, value: dict, fields: set[str]) -> None:
+        unexpected = sorted(field for field in value if field not in fields)
+        if unexpected:
+            unexpected_fields = ", ".join(unexpected)
+            raise ValueError(f"{name} contains unexpected fields: {unexpected_fields}")
+
+    def _require_string(self, name: str, field: str, value) -> str:
+        if not isinstance(value, str):
+            raise ValueError(f"{name}.{field} must be a string")
+        return value
+
+    def _require_bool(self, name: str, field: str, value) -> bool:
+        if not isinstance(value, bool):
+            raise ValueError(f"{name}.{field} must be a boolean")
+        return value
+
+    def _require_int(self, name: str, field: str, value) -> int:
+        if not isinstance(value, int) or isinstance(value, bool):
+            raise ValueError(f"{name}.{field} must be an integer")
+        return value
+
+    def _load_backlog_item(self, item: object) -> BacklogItem:
+        value = self._require_dict("backlog.json item", item)
+        required_fields = {
+            "item_id",
+            "source_url",
+            "source_title",
+            "normalized_title",
+            "topic_fingerprint",
+            "source_name",
+            "published_at",
+            "summary_candidate",
+            "status",
+            "first_seen_at",
+            "last_considered_at",
+        }
+        self._require_fields("backlog.json item", value, required_fields)
+        self._require_only_fields("backlog.json item", value, required_fields)
+        for field in required_fields:
+            self._require_string("backlog.json item", field, value[field])
+        return BacklogItem(**value)
+
+    def _load_draft_record(self, item: object) -> DraftRecord:
+        value = self._require_dict("current_draft.json", item)
+        required_fields = {
+            "draft_id",
+            "generated_text",
+            "current_text",
+            "selected_story_ids",
+            "draft_type",
+            "status",
+            "created_at",
+            "approved_for_slot",
+            "approved_at",
+        }
+        self._require_fields("current_draft.json", value, required_fields)
+        self._require_only_fields("current_draft.json", value, required_fields)
+        string_fields = {
+            "draft_id",
+            "generated_text",
+            "current_text",
+            "draft_type",
+            "status",
+            "created_at",
+        }
+        for field in string_fields:
+            self._require_string("current_draft.json", field, value[field])
+        selected_story_ids = self._require_list("current_draft.json.selected_story_ids", value["selected_story_ids"])
+        for index, selected_story_id in enumerate(selected_story_ids):
+            self._require_string("current_draft.json.selected_story_ids", str(index), selected_story_id)
+        self._require_bool("current_draft.json", "approved_for_slot", value["approved_for_slot"])
+        approved_at = value["approved_at"]
+        if approved_at is not None:
+            self._require_string("current_draft.json", "approved_at", approved_at)
+        return DraftRecord(**value)
+
+    def load_backlog(self) -> list[BacklogItem]:
+        raw = self._read_json("backlog.json", [])
+        items = self._require_list("backlog.json", raw)
+        return [self._load_backlog_item(item) for item in items]
+
+    def save_backlog(self, items: list[BacklogItem]) -> None:
+        self._write_json("backlog.json", [item.to_dict() for item in items])
+
+    def load_current_draft(self) -> DraftRecord | None:
+        raw = self._read_json("current_draft.json", None)
+        if raw is None:
+            return None
+        return self._load_draft_record(raw)
+
+    def save_current_draft(self, draft: DraftRecord | None) -> None:
+        payload = None if draft is None else draft.to_dict()
+        self._write_json("current_draft.json", payload)
+
+    def load_cursor(self) -> int:
+        raw = self._read_json("telegram_cursor.json", {"last_update_id": 0})
+        value = self._require_dict("telegram_cursor.json", raw)
+        self._require_fields("telegram_cursor.json", value, {"last_update_id"})
+        return self._require_int("telegram_cursor.json", "last_update_id", value["last_update_id"])
+
+    def save_cursor(self, update_id: int) -> None:
+        self._require_int("telegram_cursor.json", "last_update_id", update_id)
+        self._write_json("telegram_cursor.json", {"last_update_id": update_id})
+
+    def load_published(self) -> list[str]:
+        raw = self._read_json("published.json", [])
+        items = self._require_list("published.json", raw)
+        for index, item in enumerate(items):
+            self._require_string("published.json", str(index), item)
+        return items
+
+    def save_published(self, source_urls: list[str]) -> None:
+        self._write_json("published.json", source_urls)
