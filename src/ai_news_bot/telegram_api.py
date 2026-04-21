@@ -46,4 +46,20 @@ class TelegramApi:
             json={"callback_query_id": callback_query_id, "text": text},
             timeout=30,
         )
-        self._parse_response(response)
+        try:
+            self._parse_response(response)
+        except requests.HTTPError as exc:
+            if not self._is_expired_callback_query(response):
+                raise
+
+    def _is_expired_callback_query(self, response: requests.Response) -> bool:
+        if response.status_code != 400:
+            return False
+
+        try:
+            payload = response.json()
+        except ValueError:
+            return False
+
+        description = str(payload.get("description", "")).lower()
+        return "query is too old" in description or "query id is invalid" in description
