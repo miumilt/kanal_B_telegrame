@@ -96,6 +96,8 @@ class JsonStateStore:
             "source_priority": 0,
             "confirmed": True,
             "evidence_urls": [],
+            "category": "major_news",
+            "image_url": None,
         }
 
     def _load_backlog_item(self, item: object) -> BacklogItem:
@@ -119,6 +121,8 @@ class JsonStateStore:
             "source_priority",
             "confirmed",
             "evidence_urls",
+            "category",
+            "image_url",
         }
         allowed_fields = core_fields | metadata_fields
         self._require_fields("backlog.json item", value, core_fields)
@@ -147,6 +151,10 @@ class JsonStateStore:
         for index, evidence_url in enumerate(evidence_urls):
             self._require_string("backlog.json item.evidence_urls", str(index), evidence_url)
         normalized["evidence_urls"] = list(evidence_urls)
+        self._require_string("backlog.json item", "category", normalized["category"])
+        image_url = normalized["image_url"]
+        if image_url is not None:
+            self._require_string("backlog.json item", "image_url", image_url)
         return BacklogItem(**normalized)
 
     def _load_draft_record(self, item: object) -> DraftRecord:

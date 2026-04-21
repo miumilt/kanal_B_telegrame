@@ -21,6 +21,8 @@ class BacklogItem:
     source_priority: int = 0
     confirmed: bool = True
     evidence_urls: list[str] = field(default_factory=list)
+    category: str = "major_news"
+    image_url: str | None = None
 
     def to_dict(self) -> dict:
         payload = asdict(self)
