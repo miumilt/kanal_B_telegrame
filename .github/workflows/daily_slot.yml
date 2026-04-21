@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: bot-state-${{ github.ref }}
+  group: daily-slot-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:

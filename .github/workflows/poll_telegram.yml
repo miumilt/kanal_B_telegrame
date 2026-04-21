@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: bot-state-${{ github.ref }}
+  group: poll-telegram-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
