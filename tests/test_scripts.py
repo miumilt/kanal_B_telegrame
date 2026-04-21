@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import importlib.util
+import runpy
 import sys
 from pathlib import Path
 from types import SimpleNamespace
@@ -83,6 +84,51 @@ def _load_script_module(module_name: str):
     sys.modules[spec.name] = module
     spec.loader.exec_module(module)
     return module
+
+
+def test_run_local_polling_script_imports_without_src_on_sys_path(monkeypatch):
+    script_path = WORKTREE_ROOT / "scripts" / "run_local_polling.py"
+    original_sys_path = list(sys.path)
+    original_modules = dict(sys.modules)
+    filtered_path = [entry for entry in sys.path if Path(entry or ".").resolve() != (WORKTREE_ROOT / "src").resolve()]
+
+    monkeypatch.setattr(sys, "path", filtered_path)
+    for module_name in list(sys.modules):
+        if module_name == "poll_telegram_updates" or module_name.startswith("ai_news_bot"):
+            sys.modules.pop(module_name, None)
+
+    try:
+        runpy.run_path(str(script_path), run_name="not_main")
+    finally:
+        sys.path[:] = original_sys_path
+        sys.modules.clear()
+        sys.modules.update(original_modules)
+
+
+def test_local_polling_loop_calls_process_updates_repeatedly_and_stops_on_keyboard_interrupt(tmp_path: Path, monkeypatch):
+    module = _load_script_module("run_local_polling")
+    calls: list[int] = []
+    sleeps: list[int] = []
+
+    def fake_process_updates(store, telegram_api, config):
+        calls.append(len(calls) + 1)
+
+    def fake_sleep(seconds: int) -> None:
+        sleeps.append(seconds)
+        if len(sleeps) == 2:
+            raise KeyboardInterrupt
+
+    monkeypatch.setattr(module, "process_updates", fake_process_updates)
+
+    module.run_local_polling(
+        store=JsonStateStore(tmp_path),
+        telegram_api=FakeTelegramApi(),
+        config=SimpleNamespace(telegram_poll_interval_seconds=7),
+        sleeper=fake_sleep,
+    )
+
+    assert calls == [1, 2]
+    assert sleeps == [7, 7]
 
 
 class CrashAfterChannelSendTelegramApi(FakeTelegramApi):
