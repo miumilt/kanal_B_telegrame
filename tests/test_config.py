@@ -35,3 +35,19 @@ def test_load_config_uses_project_root_state_dir_by_default(monkeypatch):
 
     assert config.state_dir == Path(__file__).resolve().parents[1] / "state"
     assert config.sources_path == Path(__file__).resolve().parents[1] / "sources.yaml"
+
+
+def test_load_config_prefers_current_working_directory_for_project_root(monkeypatch, tmp_path: Path):
+    monkeypatch.setenv("TELEGRAM_BOT_TOKEN", "token")
+    monkeypatch.setenv("TELEGRAM_OWNER_CHAT_ID", "123")
+    monkeypatch.setenv("TELEGRAM_CHANNEL_ID", "@channel")
+    monkeypatch.delenv("STATE_DIR", raising=False)
+    monkeypatch.delenv("SOURCES_PATH", raising=False)
+    monkeypatch.delenv("PROJECT_ROOT", raising=False)
+    (tmp_path / "pyproject.toml").write_text("[project]\nname='test'\nversion='0.0.0'\n", encoding="utf-8")
+    monkeypatch.chdir(tmp_path)
+
+    config = load_config()
+
+    assert config.state_dir == tmp_path / "state"
+    assert config.sources_path == tmp_path / "sources.yaml"

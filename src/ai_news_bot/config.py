@@ -3,7 +3,19 @@ import os
 from pathlib import Path
 
 
-PROJECT_ROOT = Path(__file__).resolve().parents[2]
+def resolve_project_root() -> Path:
+    env_root = os.environ.get("PROJECT_ROOT")
+    if env_root:
+        return Path(env_root)
+
+    cwd = Path.cwd()
+    if (cwd / "pyproject.toml").exists() or (cwd / "sources.yaml").exists():
+        return cwd
+
+    return Path(__file__).resolve().parents[2]
+
+
+PROJECT_ROOT = resolve_project_root()
 
 
 @dataclass(frozen=True)
@@ -21,10 +33,11 @@ class AppConfig:
 
 
 def load_config() -> AppConfig:
+    project_root = resolve_project_root()
     return AppConfig(
         telegram_bot_token=os.environ["TELEGRAM_BOT_TOKEN"],
         telegram_owner_chat_id=os.environ["TELEGRAM_OWNER_CHAT_ID"],
         telegram_channel_id=os.environ["TELEGRAM_CHANNEL_ID"],
-        state_dir=Path(os.environ.get("STATE_DIR", PROJECT_ROOT / "state")),
-        sources_path=Path(os.environ.get("SOURCES_PATH", PROJECT_ROOT / "sources.yaml")),
+        state_dir=Path(os.environ.get("STATE_DIR", project_root / "state")),
+        sources_path=Path(os.environ.get("SOURCES_PATH", project_root / "sources.yaml")),
     )

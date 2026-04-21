@@ -4,6 +4,7 @@ import re
 from pathlib import Path
 from uuid import uuid4
 
+from ai_news_bot.config import resolve_project_root
 from ai_news_bot.models import BacklogItem
 from ai_news_bot.source_registry import SourceConfig, load_sources
 
@@ -70,5 +71,5 @@ def fetch_candidates_from_sources(sources: list[SourceConfig], now_iso: str) -> 
 
 
 def fetch_candidates(now_iso: str, *, sources_path: Path | None = None) -> list[BacklogItem]:
-    path = sources_path or (Path(__file__).resolve().parents[2] / "sources.yaml")
+    path = sources_path or (resolve_project_root() / "sources.yaml")
     return fetch_candidates_from_sources(load_sources(path), now_iso)
