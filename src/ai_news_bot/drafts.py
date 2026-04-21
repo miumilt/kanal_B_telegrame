@@ -42,10 +42,40 @@ def build_short_post_text(
     translated_title: Translator = _translate,
     translated_body: Translator = _translate,
 ) -> str:
+    return _build_post_text(
+        item,
+        body_limit=280,
+        translated_title=translated_title,
+        translated_body=translated_body,
+    )
+
+
+def build_single_post_text(
+    item: BacklogItem,
+    *,
+    translated_title: Translator = _translate,
+    translated_body: Translator = _translate,
+) -> str:
+    return _build_post_text(
+        item,
+        body_limit=240,
+        translated_title=translated_title,
+        translated_body=translated_body,
+    )
+
+
+def _build_post_text(
+    item: BacklogItem,
+    *,
+    body_limit: int,
+    translated_title: Translator,
+    translated_body: Translator,
+) -> str:
+    body = translated_body(item.summary_candidate)
     return "\n".join(
         [
             translated_title(item.source_title),
-            translated_body(item.summary_candidate[:280]),
+            body[:body_limit],
             f"Source: {item.source_url}",
         ]
     )

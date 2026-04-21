@@ -1,7 +1,7 @@
 import sys
 import types
 
-from ai_news_bot.drafts import build_digest_text, build_short_post_text
+from ai_news_bot.drafts import build_digest_text, build_short_post_text, build_single_post_text
 from ai_news_bot.models import BacklogItem
 
 
@@ -122,3 +122,106 @@ def test_build_short_post_text_truncates_long_summaries_to_280_characters():
 
     assert text.splitlines()[1] == "x" * 280
     assert len(text.splitlines()[1]) == 280
+
+
+def test_build_short_post_text_truncates_after_translation_expands_text():
+    item = BacklogItem(
+        item_id="expand-short",
+        source_url="https://example.com/expand-short",
+        source_title="Short expansion",
+        normalized_title="short expansion",
+        topic_fingerprint="short-expansion",
+        source_name="Example",
+        published_at="2026-04-19T10:00:00+00:00",
+        summary_candidate="x" * 200,
+        status="queued",
+        first_seen_at="2026-04-19T10:00:00+00:00",
+        last_considered_at="2026-04-19T10:00:00+00:00",
+    )
+
+    text = build_short_post_text(
+        item,
+        translated_title=lambda s: s,
+        translated_body=lambda s: s.upper() * 2,
+    )
+
+    assert len(text.splitlines()[1]) == 280
+    assert text.splitlines()[1] == "X" * 280
+
+
+def test_build_single_post_text_renders_short_telegram_style_output():
+    item = BacklogItem(
+        item_id="1",
+        source_url="https://example.com/1",
+        source_title="Claude now builds map routes",
+        normalized_title="claude now builds map routes",
+        topic_fingerprint="claude-map-routes",
+        source_name="Example",
+        published_at="2026-04-19T10:00:00+00:00",
+        summary_candidate="Plans the route, suggests places, and accounts for schedules.",
+        status="queued",
+        first_seen_at="2026-04-19T10:00:00+00:00",
+        last_considered_at="2026-04-19T10:00:00+00:00",
+    )
+
+    text = build_single_post_text(
+        item,
+        translated_title=lambda s: f"RU:{s}",
+        translated_body=lambda s: f"RU:{s}",
+    )
+
+    assert text == (
+        "RU:Claude now builds map routes\n"
+        "RU:Plans the route, suggests places, and accounts for schedules.\n"
+        "Source: https://example.com/1"
+    )
+
+
+def test_build_single_post_text_truncates_long_summaries_to_240_characters():
+    item = BacklogItem(
+        item_id="long",
+        source_url="https://example.com/long",
+        source_title="Long Summary Story",
+        normalized_title="long summary story",
+        topic_fingerprint="long-summary-story",
+        source_name="Example",
+        published_at="2026-04-19T10:00:00+00:00",
+        summary_candidate="x" * 241,
+        status="queued",
+        first_seen_at="2026-04-19T10:00:00+00:00",
+        last_considered_at="2026-04-19T10:00:00+00:00",
+    )
+
+    text = build_single_post_text(
+        item,
+        translated_title=lambda s: s,
+        translated_body=lambda s: s,
+    )
+
+    assert text.splitlines()[1] == "x" * 240
+    assert len(text.splitlines()[1]) == 240
+
+
+def test_build_single_post_text_truncates_after_translation_expands_text():
+    item = BacklogItem(
+        item_id="expand-single",
+        source_url="https://example.com/expand-single",
+        source_title="Single expansion",
+        normalized_title="single expansion",
+        topic_fingerprint="single-expansion",
+        source_name="Example",
+        published_at="2026-04-19T10:00:00+00:00",
+        summary_candidate="x" * 200,
+        status="queued",
+        first_seen_at="2026-04-19T10:00:00+00:00",
+        last_considered_at="2026-04-19T10:00:00+00:00",
+    )
+
+    text = build_single_post_text(
+        item,
+        translated_title=lambda s: s,
+        translated_body=lambda s: s.upper() * 2,
+    )
+
+    assert len(text.splitlines()[1]) == 240
+    assert text.splitlines()[1] == "X" * 240
