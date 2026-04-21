@@ -1,6 +1,6 @@
 import pytest
 
-from ai_news_bot.approval import build_draft_keyboard, parse_owner_command, should_publish_now
+from ai_news_bot.approval import build_draft_keyboard, parse_owner_command
 from ai_news_bot.telegram_api import TelegramApi
 
 
@@ -11,48 +11,11 @@ def test_build_draft_keyboard_uses_current_button_model():
         "inline_keyboard": [
             [
                 {"text": "Edit", "callback_data": "edit:draft-123"},
-                {"text": "Approve for 18:00", "callback_data": "approve:draft-123"},
                 {"text": "Publish now", "callback_data": "publish_now:draft-123"},
                 {"text": "Skip", "callback_data": "skip:draft-123"},
             ]
         ]
     }
-
-
-def test_should_publish_now_waits_for_next_eligible_slot_when_before_1800():
-    assert should_publish_now(
-        approved_at_iso="2026-04-19T14:40:00+00:00",
-        now_iso="2026-04-19T14:50:00+00:00",
-        slot_hour=18,
-        slot_minute=0,
-    ) is False
-
-
-def test_should_publish_now_releases_at_or_after_same_day_slot():
-    assert should_publish_now(
-        approved_at_iso="2026-04-19T14:40:00+00:00",
-        now_iso="2026-04-19T15:00:00+00:00",
-        slot_hour=15,
-        slot_minute=0,
-    ) is True
-
-
-def test_should_publish_now_waits_until_next_day_when_approved_after_slot():
-    assert should_publish_now(
-        approved_at_iso="2026-04-19T18:30:00+03:00",
-        now_iso="2026-04-19T21:00:00+03:00",
-        slot_hour=18,
-        slot_minute=0,
-    ) is False
-
-
-def test_should_publish_now_releases_on_next_days_slot_after_late_approval():
-    assert should_publish_now(
-        approved_at_iso="2026-04-19T18:30:00+03:00",
-        now_iso="2026-04-20T18:00:00+03:00",
-        slot_hour=18,
-        slot_minute=0,
-    ) is True
 
 
 def test_parse_owner_command_extracts_supported_commands():

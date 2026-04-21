@@ -38,8 +38,10 @@ class DraftRecord:
     draft_type: str
     status: str
     created_at: str
-    approved_for_slot: bool
-    approved_at: str | None
+    category: str = ""
+    header_label: str = ""
+    image_url: str | None = None
+    publication_state: str = "finalize_only"
 
     def to_dict(self) -> dict:
         return asdict(self)

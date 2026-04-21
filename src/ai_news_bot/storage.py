@@ -159,11 +159,18 @@ class JsonStateStore:
             "draft_type",
             "status",
             "created_at",
+        }
+        optional_fields = {
+            "category",
+            "header_label",
+            "image_url",
             "approved_for_slot",
             "approved_at",
+            "publication_state",
         }
+        allowed_fields = required_fields | optional_fields
         self._require_fields("current_draft.json", value, required_fields)
-        self._require_only_fields("current_draft.json", value, required_fields)
+        self._require_only_fields("current_draft.json", value, allowed_fields)
         string_fields = {
             "draft_id",
             "generated_text",
@@ -177,11 +184,48 @@ class JsonStateStore:
         selected_story_ids = self._require_list("current_draft.json.selected_story_ids", value["selected_story_ids"])
         for index, selected_story_id in enumerate(selected_story_ids):
             self._require_string("current_draft.json.selected_story_ids", str(index), selected_story_id)
-        self._require_bool("current_draft.json", "approved_for_slot", value["approved_for_slot"])
-        approved_at = value["approved_at"]
+        category = value.get("category")
+        if category is None:
+            category = value["draft_type"]
+        else:
+            self._require_string("current_draft.json", "category", category)
+        header_label = value.get("header_label")
+        if header_label is None:
+            header_label = value["draft_type"].replace("_", " ").title()
+        else:
+            self._require_string("current_draft.json", "header_label", header_label)
+        image_url = value.get("image_url")
+        if image_url is not None:
+            self._require_string("current_draft.json", "image_url", image_url)
+        status = value["status"]
+        approved_at = value.get("approved_at")
         if approved_at is not None:
             self._require_string("current_draft.json", "approved_at", approved_at)
-        return DraftRecord(**value)
+        approved_for_slot = value.get("approved_for_slot")
+        if approved_for_slot is not None:
+            approved_for_slot = self._require_bool("current_draft.json", "approved_for_slot", approved_for_slot)
+        legacy_approval_present = approved_at is not None or approved_for_slot is True
+        publication_state = value.get("publication_state")
+        if publication_state is None:
+            publication_state = "needs_send" if status == "pending" and legacy_approval_present else "finalize_only"
+        else:
+            self._require_string("current_draft.json", "publication_state", publication_state)
+        if status == "pending" and legacy_approval_present:
+            status = "publishing"
+        normalized = {
+            "draft_id": value["draft_id"],
+            "generated_text": value["generated_text"],
+            "current_text": value["current_text"],
+            "selected_story_ids": list(selected_story_ids),
+            "draft_type": value["draft_type"],
+            "status": status,
+            "created_at": value["created_at"],
+            "category": category,
+            "header_label": header_label,
+            "image_url": image_url,
+            "publication_state": publication_state,
+        }
+        return DraftRecord(**normalized)
 
     def load_backlog(self) -> list[BacklogItem]:
         raw = self._read_json("backlog.json", [])

@@ -6,7 +6,6 @@ from uuid import uuid4
 from ai_news_bot.approval import build_draft_keyboard
 from ai_news_bot.backlog import merge_candidates, select_main_slot_items
 from ai_news_bot.config import load_config
-from ai_news_bot.discovery import fetch_candidates
 from ai_news_bot.drafts import build_digest_text, build_short_post_text
 from ai_news_bot.models import BacklogItem, DraftRecord
 from ai_news_bot.storage import JsonStateStore
@@ -20,8 +19,6 @@ def _require_replaceable_draft(draft: DraftRecord | None) -> DraftRecord | None:
         return None
     if draft.status == "publishing":
         raise RuntimeError("Cannot replace draft while publication recovery is pending")
-    if draft.approved_for_slot and draft.approved_at is not None and draft.status != "published":
-        raise RuntimeError("Cannot replace draft while scheduled publication is pending")
     return draft
 
 
@@ -59,9 +56,13 @@ def refresh_backlog(
     store: JsonStateStore,
     *,
     now_iso: str,
-    fetcher=fetch_candidates,
+    fetcher=None,
     expiry_days: int = BACKLOG_EXPIRY_DAYS,
 ) -> list[BacklogItem]:
+    if fetcher is None:
+        from ai_news_bot.discovery import fetch_candidates
+
+        fetcher = fetch_candidates
     refreshed = merge_candidates(
         store.load_backlog(),
         fetcher(now_iso),
@@ -99,8 +100,9 @@ def build_main_slot_draft(
         draft_type=draft_type,
         status="pending",
         created_at=datetime.now(UTC).isoformat(),
-        approved_for_slot=False,
-        approved_at=None,
+        category=draft_type,
+        header_label=draft_type.replace("_", " ").title(),
+        image_url=None,
     )
     store.save_current_draft(draft)
 
@@ -128,9 +130,13 @@ def run_daily_slot(
     telegram_api: TelegramApi | None = None,
     owner_chat_id: str | None = None,
     now_iso: str | None = None,
-    fetcher=fetch_candidates,
+    fetcher=None,
 ) -> DraftRecord | None:
     current_now_iso = now_iso or datetime.now(UTC).isoformat()
+    if fetcher is None:
+        from ai_news_bot.discovery import fetch_candidates
+
+        fetcher = fetch_candidates
     backlog = refresh_backlog(store, now_iso=current_now_iso, fetcher=fetcher)
     if not select_main_slot_items(backlog):
         if telegram_api is not None and owner_chat_id:
@@ -151,6 +157,8 @@ def main() -> DraftRecord | None:
     config = load_config()
     store = JsonStateStore(config.state_dir)
     telegram_api = TelegramApi(config.telegram_bot_token)
+    from ai_news_bot.discovery import fetch_candidates
+
     return run_daily_slot(
         store,
         telegram_api=telegram_api,

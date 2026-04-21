@@ -4,11 +4,8 @@ from datetime import UTC, datetime
 
 from ai_news_bot.approval import (
     build_draft_keyboard,
-    mark_draft_approved,
     mark_draft_editing,
-    mark_draft_publish_now,
     parse_owner_command,
-    should_publish_now,
 )
 from ai_news_bot.config import load_config
 from ai_news_bot.drafts import build_short_post_text
@@ -90,20 +87,36 @@ def _publish_draft(store: JsonStateStore, telegram_api: TelegramApi, channel_id:
         return
 
     if draft.status == "publishing":
+        if draft.publication_state == "needs_send":
+            draft.publication_state = "sending"
+            store.save_current_draft(draft)
+            try:
+                telegram_api.send_message(channel_id, draft.current_text)
+            except Exception:
+                draft.publication_state = "needs_send"
+                store.save_current_draft(draft)
+                raise
+            draft.publication_state = "finalize_only"
+            store.save_current_draft(draft)
         _finalize_publication(store, draft)
         return
 
     original_status = draft.status
+    original_publication_state = draft.publication_state
     if draft.status != "publishing":
         draft.status = "publishing"
+        draft.publication_state = "sending"
         store.save_current_draft(draft)
         try:
             telegram_api.send_message(channel_id, draft.current_text)
         except Exception:
             draft.status = original_status
+            draft.publication_state = original_publication_state
             store.save_current_draft(draft)
             raise
 
+    draft.publication_state = "finalize_only"
+    store.save_current_draft(draft)
     _finalize_publication(store, draft)
 
 
@@ -136,8 +149,9 @@ def _build_short_draft(store: JsonStateStore, item_id: str) -> DraftRecord | Non
         draft_type="short_post",
         status="pending",
         created_at=_now_iso(),
-        approved_for_slot=False,
-        approved_at=None,
+        category="short_post",
+        header_label="Short Post",
+        image_url=None,
     )
     store.save_current_draft(draft)
 
@@ -164,26 +178,31 @@ def process_updates(store: JsonStateStore, telegram_api: TelegramApi, config) ->
             draft = store.load_current_draft()
             if draft is None:
                 continue
+            data = callback.get("data", "")
+            if data == f"approve:{draft.draft_id}":
+                telegram_api.answer_callback(
+                    callback["id"],
+                    "Scheduled approval is no longer supported; use Publish now",
+                )
+                continue
+            if draft.status in {"published", "skipped"}:
+                telegram_api.answer_callback(
+                    callback["id"],
+                    "Draft already published" if draft.status == "published" else "Draft already skipped",
+                )
+                continue
             if draft.status == "publishing":
                 continue
 
-            data = callback.get("data", "")
             if data == f"edit:{draft.draft_id}":
                 mark_draft_editing(draft)
                 store.save_current_draft(draft)
                 telegram_api.answer_callback(callback["id"], "Send replacement text as the next message")
-            elif data == f"approve:{draft.draft_id}":
-                mark_draft_approved(draft, _now_iso())
-                store.save_current_draft(draft)
-                telegram_api.answer_callback(callback["id"], "Draft approved for 18:00")
             elif data == f"publish_now:{draft.draft_id}":
-                mark_draft_publish_now(draft, _now_iso())
-                store.save_current_draft(draft)
-                telegram_api.answer_callback(callback["id"], "Draft will publish immediately")
+                _publish_draft(store, telegram_api, config.telegram_channel_id, draft)
+                telegram_api.answer_callback(callback["id"], "Draft published immediately")
             elif data == f"skip:{draft.draft_id}":
                 _release_unpublished_draft_items(store, draft)
-                draft.approved_for_slot = False
-                draft.approved_at = None
                 draft.status = "skipped"
                 store.save_current_draft(draft)
                 telegram_api.answer_callback(callback["id"], "Draft skipped")
@@ -227,29 +246,16 @@ def process_updates(store: JsonStateStore, telegram_api: TelegramApi, config) ->
         elif command == "publish_now" and arg:
             short_draft = _build_short_draft(store, arg)
             if short_draft is not None:
-                mark_draft_publish_now(short_draft, _now_iso())
-                store.save_current_draft(short_draft)
+                _publish_draft(store, telegram_api, config.telegram_channel_id, short_draft)
 
     store.save_cursor(cursor)
 
     draft = store.load_current_draft()
-    if draft is None or draft.approved_at is None or draft.status == "skipped":
+    if draft is None or draft.status == "skipped":
         return
 
     if draft.status == "publishing":
         _publish_draft(store, telegram_api, config.telegram_channel_id, draft)
-        return
-
-    if draft.approved_for_slot:
-        if not should_publish_now(
-            approved_at_iso=draft.approved_at,
-            now_iso=_now_iso(),
-            slot_hour=config.daily_slot_hour,
-            slot_minute=config.daily_slot_minute,
-        ):
-            return
-
-    _publish_draft(store, telegram_api, config.telegram_channel_id, draft)
 
 
 def main() -> None:
