@@ -169,6 +169,42 @@ def test_daily_slot_run_skips_cleanly_when_no_eligible_items_exist(tmp_path: Pat
     ]
 
 
+def test_daily_slot_run_does_not_build_draft_from_unconfirmed_community_only_items(tmp_path: Path):
+    store = JsonStateStore(tmp_path)
+    module = _load_script_module("run_daily_slot")
+    telegram_api = FakeTelegramApi()
+
+    draft = module.run_daily_slot(
+        store,
+        telegram_api=telegram_api,
+        owner_chat_id="owner-chat",
+        now_iso="2026-04-20T10:00:00+00:00",
+        fetcher=lambda now_iso: [
+            BacklogItem(
+                item_id="community",
+                source_url="https://example.com/hn-thread",
+                source_title="Unconfirmed AI launch",
+                normalized_title="unconfirmed ai launch",
+                topic_fingerprint="unconfirmed-ai-launch",
+                source_name="HN",
+                published_at="2026-04-20T09:00:00+00:00",
+                summary_candidate="discussion",
+                status="observed_unconfirmed",
+                first_seen_at="2026-04-20T09:00:00+00:00",
+                last_considered_at="2026-04-20T09:00:00+00:00",
+                source_tier="tier4_community",
+                source_kind="rss",
+                source_priority=4,
+                confirmed=False,
+                evidence_urls=["https://example.com/hn-thread"],
+            )
+        ],
+    )
+
+    assert draft is None
+    assert "No eligible backlog items for draft today." in telegram_api.sent_messages[0]["text"]
+
+
 def test_process_updates_handles_edit_backlog_short_publish_and_cursor_persistence(tmp_path: Path):
     store = JsonStateStore(tmp_path)
     store.save_backlog(

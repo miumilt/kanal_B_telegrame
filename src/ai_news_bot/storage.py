@@ -89,9 +89,18 @@ class JsonStateStore:
             raise ValueError(f"{name}.{field} must be an integer")
         return value
 
+    def _backlog_metadata_defaults(self) -> dict:
+        return {
+            "source_tier": "tier2_media",
+            "source_kind": "rss",
+            "source_priority": 0,
+            "confirmed": True,
+            "evidence_urls": [],
+        }
+
     def _load_backlog_item(self, item: object) -> BacklogItem:
         value = self._require_dict("backlog.json item", item)
-        required_fields = {
+        core_fields = {
             "item_id",
             "source_url",
             "source_title",
@@ -104,11 +113,41 @@ class JsonStateStore:
             "first_seen_at",
             "last_considered_at",
         }
-        self._require_fields("backlog.json item", value, required_fields)
-        self._require_only_fields("backlog.json item", value, required_fields)
-        for field in required_fields:
+        metadata_fields = {
+            "source_tier",
+            "source_kind",
+            "source_priority",
+            "confirmed",
+            "evidence_urls",
+        }
+        allowed_fields = core_fields | metadata_fields
+        self._require_fields("backlog.json item", value, core_fields)
+        self._require_only_fields("backlog.json item", value, allowed_fields)
+        string_fields = {
+            "item_id",
+            "source_url",
+            "source_title",
+            "normalized_title",
+            "topic_fingerprint",
+            "source_name",
+            "published_at",
+            "summary_candidate",
+            "status",
+            "first_seen_at",
+            "last_considered_at",
+        }
+        for field in string_fields:
             self._require_string("backlog.json item", field, value[field])
-        return BacklogItem(**value)
+        normalized = {**self._backlog_metadata_defaults(), **value}
+        self._require_string("backlog.json item", "source_tier", normalized["source_tier"])
+        self._require_string("backlog.json item", "source_kind", normalized["source_kind"])
+        self._require_int("backlog.json item", "source_priority", normalized["source_priority"])
+        self._require_bool("backlog.json item", "confirmed", normalized["confirmed"])
+        evidence_urls = self._require_list("backlog.json item.evidence_urls", normalized["evidence_urls"])
+        for index, evidence_url in enumerate(evidence_urls):
+            self._require_string("backlog.json item.evidence_urls", str(index), evidence_url)
+        normalized["evidence_urls"] = list(evidence_urls)
+        return BacklogItem(**normalized)
 
     def _load_draft_record(self, item: object) -> DraftRecord:
         value = self._require_dict("current_draft.json", item)
@@ -180,4 +219,6 @@ class JsonStateStore:
         return items
 
     def save_published(self, source_urls: list[str]) -> None:
+        for index, source_url in enumerate(source_urls):
+            self._require_string("published.json", str(index), source_url)
         self._write_json("published.json", source_urls)

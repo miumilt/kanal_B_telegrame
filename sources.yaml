@@ -1,0 +1,331 @@
+sources:
+  - id: openai-blog
+    name: OpenAI Blog
+    tier: tier1_official
+    kind: rss
+    url: https://openai.com/news
+    feed_url: https://openai.com/news/rss.xml
+    language: en
+    priority: 10
+    enabled: true
+    tags: [official, models, api]
+  - id: anthropic-news
+    name: Anthropic News
+    tier: tier1_official
+    kind: rss
+    url: https://www.anthropic.com/news
+    feed_url: https://www.anthropic.com/news/rss.xml
+    language: en
+    priority: 10
+    enabled: true
+    tags: [official, models, api]
+  - id: google-ai-blog
+    name: Google AI Blog
+    tier: tier1_official
+    kind: rss
+    url: https://blog.google/technology/ai/
+    feed_url: https://blog.google/technology/ai/rss/
+    language: en
+    priority: 10
+    enabled: true
+    tags: [official, models, research]
+  - id: google-deepmind-blog
+    name: Google DeepMind Blog
+    tier: tier1_official
+    kind: rss
+    url: https://deepmind.google/discover/blog/
+    feed_url: https://deepmind.google/discover/blog/rss.xml
+    language: en
+    priority: 10
+    enabled: true
+    tags: [official, research, models]
+  - id: meta-ai-blog
+    name: Meta AI Blog
+    tier: tier1_official
+    kind: rss
+    url: https://ai.meta.com/blog/
+    feed_url: https://ai.meta.com/blog/rss/
+    language: en
+    priority: 9
+    enabled: true
+    tags: [official, research, models]
+  - id: microsoft-ai-blog
+    name: Microsoft AI Blog
+    tier: tier1_official
+    kind: rss
+    url: https://blogs.microsoft.com/blog/category/artificial-intelligence/
+    feed_url: https://blogs.microsoft.com/blog/category/artificial-intelligence/feed/
+    language: en
+    priority: 9
+    enabled: true
+    tags: [official, products, api]
+  - id: hugging-face-blog
+    name: Hugging Face Blog
+    tier: tier1_official
+    kind: atom
+    url: https://huggingface.co/blog
+    feed_url: https://huggingface.co/blog/feed.xml
+    language: en
+    priority: 9
+    enabled: true
+    tags: [official, open-source, models]
+  - id: nvidia-deep-learning-blog
+    name: NVIDIA Deep Learning Blog
+    tier: tier1_official
+    kind: rss
+    url: https://blogs.nvidia.com/blog/category/deep-learning/
+    feed_url: https://blogs.nvidia.com/blog/category/deep-learning/feed/
+    language: en
+    priority: 8
+    enabled: true
+    tags: [official, hardware, research]
+  - id: github-blog
+    name: GitHub Blog
+    tier: tier1_official
+    kind: rss
+    url: https://github.blog/
+    feed_url: https://github.blog/feed/
+    language: en
+    priority: 8
+    enabled: true
+    tags: [official, developer-tools, open-source]
+  - id: xai-blog
+    name: xAI Blog
+    tier: tier1_official
+    kind: rss
+    url: https://x.ai/blog
+    feed_url: https://x.ai/blog/rss.xml
+    language: en
+    priority: 8
+    enabled: true
+    tags: [official, models]
+  - id: mistral-news
+    name: Mistral News
+    tier: tier1_official
+    kind: rss
+    url: https://mistral.ai/news/
+    feed_url: https://mistral.ai/news/rss.xml
+    language: en
+    priority: 8
+    enabled: true
+    tags: [official, models, api]
+  - id: techcrunch-ai
+    name: TechCrunch AI
+    tier: tier2_media
+    kind: rss
+    url: https://techcrunch.com/category/artificial-intelligence/
+    feed_url: https://techcrunch.com/category/artificial-intelligence/feed/
+    language: en
+    priority: 8
+    enabled: true
+    tags: [media, ai]
+  - id: the-verge-ai
+    name: The Verge AI
+    tier: tier2_media
+    kind: rss
+    url: https://www.theverge.com/artificial-intelligence
+    feed_url: https://www.theverge.com/artificial-intelligence/rss/index.xml
+    language: en
+    priority: 8
+    enabled: true
+    tags: [media, ai]
+  - id: venturebeat-ai
+    name: VentureBeat AI
+    tier: tier2_media
+    kind: rss
+    url: https://venturebeat.com/category/ai/
+    feed_url: https://venturebeat.com/category/ai/feed/
+    language: en
+    priority: 7
+    enabled: true
+    tags: [media, ai]
+  - id: wired-ai
+    name: WIRED AI
+    tier: tier2_media
+    kind: rss
+    url: https://www.wired.com/tag/artificial-intelligence/
+    feed_url: https://www.wired.com/feed/tag/artificial-intelligence/latest/rss
+    language: en
+    priority: 7
+    enabled: true
+    tags: [media, ai]
+  - id: mit-technology-review-ai
+    name: MIT Technology Review AI
+    tier: tier2_media
+    kind: rss
+    url: https://www.technologyreview.com/topic/artificial-intelligence/
+    feed_url: https://www.technologyreview.com/topic/artificial-intelligence/feed/
+    language: en
+    priority: 7
+    enabled: true
+    tags: [media, ai, research]
+  - id: engadget-ai
+    name: Engadget AI
+    tier: tier2_media
+    kind: rss
+    url: https://www.engadget.com/tag/artificial-intelligence/
+    feed_url: https://www.engadget.com/tag/artificial-intelligence/rss.xml
+    language: en
+    priority: 6
+    enabled: true
+    tags: [media, ai, consumer-tech]
+  - id: ars-technica-ai
+    name: Ars Technica AI
+    tier: tier2_media
+    kind: rss
+    url: https://arstechnica.com/tag/artificial-intelligence/
+    feed_url: https://feeds.arstechnica.com/arstechnica/index
+    language: en
+    priority: 6
+    enabled: true
+    tags: [media, ai, analysis]
+  - id: reuters-tech
+    name: Reuters Technology
+    tier: tier2_media
+    kind: rss
+    url: https://www.reuters.com/technology/
+    feed_url: https://www.reutersagency.com/feed/?best-topics=technology
+    language: en
+    priority: 7
+    enabled: true
+    tags: [media, tech, business]
+  - id: the-batch
+    name: The Batch
+    tier: tier3_ai_publications
+    kind: rss
+    url: https://www.deeplearning.ai/the-batch/
+    feed_url: https://www.deeplearning.ai/the-batch/feed/
+    language: en
+    priority: 7
+    enabled: true
+    tags: [publication, newsletter, ai]
+  - id: bens-bites
+    name: Ben's Bites
+    tier: tier3_ai_publications
+    kind: rss
+    url: https://www.bensbites.co/
+    feed_url: https://www.bensbites.co/feed
+    language: en
+    priority: 7
+    enabled: true
+    tags: [publication, newsletter, ai]
+  - id: marktechpost
+    name: MarkTechPost
+    tier: tier3_ai_publications
+    kind: rss
+    url: https://www.marktechpost.com/
+    feed_url: https://www.marktechpost.com/feed/
+    language: en
+    priority: 6
+    enabled: true
+    tags: [publication, ai, research]
+  - id: papers-with-code-blog
+    name: Papers with Code Blog
+    tier: tier3_ai_publications
+    kind: rss
+    url: https://paperswithcode.com/blog
+    feed_url: https://paperswithcode.com/blog/feed/
+    language: en
+    priority: 6
+    enabled: true
+    tags: [publication, research, benchmarks]
+  - id: synced-review
+    name: Synced Review
+    tier: tier3_ai_publications
+    kind: rss
+    url: https://syncedreview.com/
+    feed_url: https://syncedreview.com/feed/
+    language: en
+    priority: 6
+    enabled: true
+    tags: [publication, ai, research]
+  - id: last-week-in-ai
+    name: Last Week in AI
+    tier: tier3_ai_publications
+    kind: rss
+    url: https://lastweekin.ai/
+    feed_url: https://lastweekin.ai/rss
+    language: en
+    priority: 6
+    enabled: true
+    tags: [publication, newsletter, ai]
+  - id: hackernews-ai
+    name: Hacker News AI
+    tier: tier4_community
+    kind: hackernews
+    url: https://news.ycombinator.com/
+    feed_url: https://hnrss.org/newest?q=AI
+    language: en
+    priority: 4
+    enabled: true
+    tags: [community, hn]
+  - id: hackernews-llm
+    name: Hacker News LLM
+    tier: tier4_community
+    kind: hackernews
+    url: https://news.ycombinator.com/
+    feed_url: https://hnrss.org/newest?q=LLM
+    language: en
+    priority: 4
+    enabled: true
+    tags: [community, hn]
+  - id: reddit-local-llama
+    name: Reddit r/LocalLLaMA
+    tier: tier4_community
+    kind: reddit
+    url: https://www.reddit.com/r/LocalLLaMA/
+    feed_url: https://www.reddit.com/r/LocalLLaMA/.rss
+    language: en
+    priority: 4
+    enabled: true
+    tags: [community, reddit, llm]
+  - id: reddit-artificial
+    name: Reddit r/artificial
+    tier: tier4_community
+    kind: reddit
+    url: https://www.reddit.com/r/artificial/
+    feed_url: https://www.reddit.com/r/artificial/.rss
+    language: en
+    priority: 4
+    enabled: true
+    tags: [community, reddit, ai]
+  - id: reddit-machinelearning
+    name: Reddit r/MachineLearning
+    tier: tier4_community
+    kind: reddit
+    url: https://www.reddit.com/r/MachineLearning/
+    feed_url: https://www.reddit.com/r/MachineLearning/.rss
+    language: en
+    priority: 4
+    enabled: true
+    tags: [community, reddit, research]
+  - id: reddit-openai
+    name: Reddit r/OpenAI
+    tier: tier4_community
+    kind: reddit
+    url: https://www.reddit.com/r/OpenAI/
+    feed_url: https://www.reddit.com/r/OpenAI/.rss
+    language: en
+    priority: 4
+    enabled: true
+    tags: [community, reddit, openai]
+  - id: reddit-chatgpt
+    name: Reddit r/ChatGPT
+    tier: tier4_community
+    kind: reddit
+    url: https://www.reddit.com/r/ChatGPT/
+    feed_url: https://www.reddit.com/r/ChatGPT/.rss
+    language: en
+    priority: 4
+    enabled: true
+    tags: [community, reddit, products]
+  - id: reddit-agi
+    name: Reddit r/AGI
+    tier: tier4_community
+    kind: reddit
+    url: https://www.reddit.com/r/AGI/
+    feed_url: https://www.reddit.com/r/AGI/.rss
+    language: en
+    priority: 3
+    enabled: true
+    tags: [community, reddit, research]

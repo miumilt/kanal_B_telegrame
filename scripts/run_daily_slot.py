@@ -155,6 +155,7 @@ def main() -> DraftRecord | None:
         store,
         telegram_api=telegram_api,
         owner_chat_id=config.telegram_owner_chat_id,
+        fetcher=lambda now_iso: fetch_candidates(now_iso, sources_path=config.sources_path),
     )
 
 

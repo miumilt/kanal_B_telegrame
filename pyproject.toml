@@ -11,6 +11,7 @@ dependencies = [
   "feedparser>=6.0.11",
   "trafilatura>=1.9.0",
   "deep-translator>=1.11.4",
+  "PyYAML>=6.0.2",
 ]
 
 [project.optional-dependencies]

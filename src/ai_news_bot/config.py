@@ -12,6 +12,7 @@ class AppConfig:
     telegram_owner_chat_id: str
     telegram_channel_id: str
     state_dir: Path
+    sources_path: Path
     timezone_name: str = "Europe/Moscow"
     daily_slot_hour: int = 18
     daily_slot_minute: int = 0
@@ -25,4 +26,5 @@ def load_config() -> AppConfig:
         telegram_owner_chat_id=os.environ["TELEGRAM_OWNER_CHAT_ID"],
         telegram_channel_id=os.environ["TELEGRAM_CHANNEL_ID"],
         state_dir=Path(os.environ.get("STATE_DIR", PROJECT_ROOT / "state")),
+        sources_path=Path(os.environ.get("SOURCES_PATH", PROJECT_ROOT / "sources.yaml")),
     )
