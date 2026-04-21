@@ -17,6 +17,14 @@ def _parse_timestamp(value: str) -> datetime:
     return parsed
 
 
+def _normalized_status(item: BacklogItem) -> str:
+    if item.confirmed:
+        if item.status in {"published", "drafted", "skipped"}:
+            return item.status
+        return "queued"
+    return "observed_unconfirmed"
+
+
 def _select_primary(existing: BacklogItem, incoming: BacklogItem) -> BacklogItem:
     if incoming.source_priority > existing.source_priority:
         winner, loser = incoming, existing
@@ -27,7 +35,7 @@ def _select_primary(existing: BacklogItem, incoming: BacklogItem) -> BacklogItem
         set((winner.evidence_urls or []) + (loser.evidence_urls or []) + [winner.source_url, loser.source_url])
     )
     winner.confirmed = existing.confirmed or incoming.confirmed
-    winner.status = "queued" if winner.confirmed else "observed_unconfirmed"
+    winner.status = _normalized_status(winner)
     winner.first_seen_at = min(existing.first_seen_at, incoming.first_seen_at)
     winner.last_considered_at = max(existing.last_considered_at, incoming.last_considered_at)
     return winner
@@ -47,6 +55,7 @@ def merge_candidates(
     for item in existing:
         if now - _parse_timestamp(item.published_at) > cutoff:
             continue
+        item.status = _normalized_status(item)
         current = merged_by_title.get(item.normalized_title)
         if current is None:
             merged_by_title[item.normalized_title] = item
@@ -56,6 +65,7 @@ def merge_candidates(
     for item in incoming:
         if now - _parse_timestamp(item.published_at) > cutoff:
             continue
+        item.status = _normalized_status(item)
         current = merged_by_title.get(item.normalized_title)
         if current is None:
             merged_by_title[item.normalized_title] = item

@@ -132,6 +132,7 @@ def test_merge_candidates_accepts_rss_style_published_at():
     )
 
     assert [item.item_id for item in merged] == ["feed-item"]
+    assert merged[0].status == "queued"
 
 
 def test_merge_candidates_confirms_matching_community_topic_with_stronger_source():
@@ -188,6 +189,39 @@ def test_merge_candidates_confirms_matching_community_topic_with_stronger_source
     assert merged[0].status == "queued"
     assert "https://example.com/hn-thread" in merged[0].evidence_urls
     assert "https://example.com/official-post" in merged[0].evidence_urls
+
+
+def test_merge_candidates_promotes_confirmed_new_items_to_queued():
+    incoming = [
+        BacklogItem(
+            item_id="official",
+            source_url="https://example.com/official-post",
+            source_title="Gemini CLI Released",
+            normalized_title="gemini cli released",
+            topic_fingerprint="gemini-cli-released",
+            source_name="Google AI",
+            published_at="2026-04-20T11:00:00+00:00",
+            summary_candidate="official release",
+            status="new",
+            first_seen_at="2026-04-20T11:00:00+00:00",
+            last_considered_at="2026-04-20T11:00:00+00:00",
+            source_tier="tier1_official",
+            source_kind="rss",
+            source_priority=10,
+            confirmed=True,
+            evidence_urls=["https://example.com/official-post"],
+        )
+    ]
+
+    merged = merge_candidates(
+        [],
+        incoming,
+        now_iso="2026-04-20T12:00:00+00:00",
+        expiry_days=4,
+    )
+
+    assert len(merged) == 1
+    assert merged[0].status == "queued"
 
 
 def test_select_main_slot_items_ignores_unconfirmed_community_topics():
