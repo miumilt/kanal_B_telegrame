@@ -78,3 +78,38 @@ def merge_candidates(
 def select_main_slot_items(backlog: list[BacklogItem], limit: int = 5) -> list[BacklogItem]:
     queued = [item for item in backlog if item.status == "queued" and item.confirmed]
     return sorted(queued, key=score_item, reverse=True)[:limit]
+
+
+def select_daily_slot_items(backlog: list[BacklogItem], limit: int = 3) -> list[BacklogItem]:
+    queued = [item for item in backlog if item.status == "queued" and item.confirmed]
+    if limit <= 0 or not queued:
+        return []
+
+    ranked = sorted(queued, key=score_item, reverse=True)
+    selected: list[BacklogItem] = []
+    selected_ids: set[str] = set()
+
+    def _take_first(category_names: tuple[str, ...]) -> None:
+        if len(selected) >= limit:
+            return
+        for item in ranked:
+            if item.item_id in selected_ids:
+                continue
+            if item.category in category_names:
+                selected.append(item)
+                selected_ids.add(item.item_id)
+                return
+
+    for category_names in (("major_news",), ("freebie/useful_find",)):
+        _take_first(category_names)
+
+    if len(selected) < limit:
+        for item in ranked:
+            if item.item_id in selected_ids:
+                continue
+            selected.append(item)
+            selected_ids.add(item.item_id)
+            if len(selected) >= limit:
+                break
+
+    return selected

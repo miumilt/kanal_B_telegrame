@@ -15,6 +15,14 @@ class TelegramApi:
             raise RuntimeError(f"Telegram API request failed: {description}")
         return payload
 
+    def _post(self, method: str, payload: dict[str, object]) -> dict:
+        response = requests.post(
+            f"{self.base_url}/{method}",
+            json=payload,
+            timeout=30,
+        )
+        return self._parse_response(response)["result"]
+
     def send_message(
         self,
         chat_id: str,
@@ -24,13 +32,21 @@ class TelegramApi:
         payload: dict[str, object] = {"chat_id": chat_id, "text": text}
         if reply_markup is not None:
             payload["reply_markup"] = reply_markup
+        return self._post("sendMessage", payload)
 
-        response = requests.post(
-            f"{self.base_url}/sendMessage",
-            json=payload,
-            timeout=30,
-        )
-        return self._parse_response(response)["result"]
+    def send_photo(
+        self,
+        chat_id: str,
+        photo_url: str,
+        caption: str | None = None,
+        reply_markup: dict | None = None,
+    ) -> dict:
+        payload: dict[str, object] = {"chat_id": chat_id, "photo": photo_url}
+        if caption is not None:
+            payload["caption"] = caption
+        if reply_markup is not None:
+            payload["reply_markup"] = reply_markup
+        return self._post("sendPhoto", payload)
 
     def get_updates(self, offset: int) -> list[dict]:
         response = requests.get(

@@ -4,9 +4,9 @@ from datetime import UTC, datetime
 from uuid import uuid4
 
 from ai_news_bot.approval import build_draft_keyboard
-from ai_news_bot.backlog import merge_candidates, select_main_slot_items
+from ai_news_bot.backlog import merge_candidates, select_daily_slot_items
 from ai_news_bot.config import load_config
-from ai_news_bot.drafts import build_digest_text, build_short_post_text
+from ai_news_bot.drafts import build_single_post_text
 from ai_news_bot.models import BacklogItem, DraftRecord
 from ai_news_bot.storage import JsonStateStore
 from ai_news_bot.telegram_api import TelegramApi
@@ -20,6 +20,28 @@ def _require_replaceable_draft(draft: DraftRecord | None) -> DraftRecord | None:
     if draft.status == "publishing":
         raise RuntimeError("Cannot replace draft while publication recovery is pending")
     return draft
+
+
+def _send_owner_draft_preview(
+    telegram_api: TelegramApi,
+    owner_chat_id: str,
+    draft: DraftRecord,
+    reply_markup: dict | None = None,
+) -> None:
+    if draft.image_url:
+        telegram_api.send_photo(
+            owner_chat_id,
+            draft.image_url,
+            caption=draft.current_text,
+            reply_markup=reply_markup,
+        )
+        return
+
+    telegram_api.send_message(
+        owner_chat_id,
+        draft.current_text,
+        reply_markup,
+    )
 
 
 def release_unpublished_draft_items(
@@ -81,32 +103,28 @@ def build_main_slot_draft(
     release_unpublished_draft_items(store, _require_replaceable_draft(store.load_current_draft()))
 
     backlog = store.load_backlog()
-    selected = select_main_slot_items(backlog)
+    selected = select_daily_slot_items(backlog)
     if not selected:
         raise RuntimeError("No eligible backlog items for draft")
 
-    if len(selected) == 1:
-        generated_text = build_short_post_text(selected[0])
-        draft_type = "short_post"
-    else:
-        generated_text = build_digest_text(selected)
-        draft_type = "digest"
+    primary = selected[0]
+    generated_text = build_single_post_text(primary)
 
     draft = DraftRecord(
         draft_id=str(uuid4()),
         generated_text=generated_text,
         current_text=generated_text,
-        selected_story_ids=[item.item_id for item in selected],
-        draft_type=draft_type,
+        selected_story_ids=[primary.item_id],
+        draft_type="single_post",
         status="pending",
         created_at=datetime.now(UTC).isoformat(),
-        category=draft_type,
-        header_label=draft_type.replace("_", " ").title(),
-        image_url=None,
+        category=primary.category,
+        header_label="Single Post",
+        image_url=primary.image_url,
     )
     store.save_current_draft(draft)
 
-    selected_ids = set(draft.selected_story_ids)
+    selected_ids = {primary.item_id}
     updated_backlog = []
     for item in backlog:
         if item.item_id in selected_ids:
@@ -115,11 +133,22 @@ def build_main_slot_draft(
     store.save_backlog(updated_backlog)
 
     if telegram_api is not None and owner_chat_id:
-        telegram_api.send_message(
-            owner_chat_id,
-            draft.generated_text,
-            build_draft_keyboard(draft.draft_id),
-        )
+        _send_owner_draft_preview(telegram_api, owner_chat_id, draft, build_draft_keyboard(draft.draft_id))
+        for extra_item in selected[1:]:
+            extra_text = build_single_post_text(extra_item)
+            preview_draft = DraftRecord(
+                draft_id=str(uuid4()),
+                generated_text=extra_text,
+                current_text=extra_text,
+                selected_story_ids=[extra_item.item_id],
+                draft_type="single_post",
+                status="pending",
+                created_at=datetime.now(UTC).isoformat(),
+                category=extra_item.category,
+                header_label="Single Post",
+                image_url=extra_item.image_url,
+            )
+            _send_owner_draft_preview(telegram_api, owner_chat_id, preview_draft)
 
     return draft
 
@@ -138,7 +167,7 @@ def run_daily_slot(
 
         fetcher = fetch_candidates
     backlog = refresh_backlog(store, now_iso=current_now_iso, fetcher=fetcher)
-    if not select_main_slot_items(backlog):
+    if not select_daily_slot_items(backlog):
         if telegram_api is not None and owner_chat_id:
             telegram_api.send_message(
                 owner_chat_id,

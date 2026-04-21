@@ -83,6 +83,12 @@ def _release_unpublished_draft_items(
 
 
 def _publish_draft(store: JsonStateStore, telegram_api: TelegramApi, channel_id: str, draft: DraftRecord) -> None:
+    def _send_current_draft() -> None:
+        if draft.image_url:
+            telegram_api.send_photo(channel_id, draft.image_url, caption=draft.current_text)
+        else:
+            telegram_api.send_message(channel_id, draft.current_text)
+
     if draft.status == "published":
         return
 
@@ -91,7 +97,7 @@ def _publish_draft(store: JsonStateStore, telegram_api: TelegramApi, channel_id:
             draft.publication_state = "sending"
             store.save_current_draft(draft)
             try:
-                telegram_api.send_message(channel_id, draft.current_text)
+                _send_current_draft()
             except Exception:
                 draft.publication_state = "needs_send"
                 store.save_current_draft(draft)
@@ -108,7 +114,7 @@ def _publish_draft(store: JsonStateStore, telegram_api: TelegramApi, channel_id:
         draft.publication_state = "sending"
         store.save_current_draft(draft)
         try:
-            telegram_api.send_message(channel_id, draft.current_text)
+            _send_current_draft()
         except Exception:
             draft.status = original_status
             draft.publication_state = original_publication_state
@@ -118,6 +124,14 @@ def _publish_draft(store: JsonStateStore, telegram_api: TelegramApi, channel_id:
     draft.publication_state = "finalize_only"
     store.save_current_draft(draft)
     _finalize_publication(store, draft)
+
+
+def _send_owner_draft_preview(telegram_api: TelegramApi, chat_id: str, draft: DraftRecord) -> None:
+    reply_markup = build_draft_keyboard(draft.draft_id)
+    if draft.image_url:
+        telegram_api.send_photo(chat_id, draft.image_url, caption=draft.generated_text, reply_markup=reply_markup)
+        return
+    telegram_api.send_message(chat_id, draft.generated_text, reply_markup)
 
 
 def _build_short_draft(store: JsonStateStore, item_id: str) -> DraftRecord | None:
@@ -149,9 +163,9 @@ def _build_short_draft(store: JsonStateStore, item_id: str) -> DraftRecord | Non
         draft_type="short_post",
         status="pending",
         created_at=_now_iso(),
-        category="short_post",
+        category=item.category,
         header_label="Short Post",
-        image_url=None,
+        image_url=item.image_url,
     )
     store.save_current_draft(draft)
 
@@ -238,11 +252,7 @@ def process_updates(store: JsonStateStore, telegram_api: TelegramApi, config) ->
         elif command == "short" and arg:
             short_draft = _build_short_draft(store, arg)
             if short_draft is not None:
-                telegram_api.send_message(
-                    config.telegram_owner_chat_id,
-                    short_draft.generated_text,
-                    build_draft_keyboard(short_draft.draft_id),
-                )
+                _send_owner_draft_preview(telegram_api, config.telegram_owner_chat_id, short_draft)
         elif command == "publish_now" and arg:
             short_draft = _build_short_draft(store, arg)
             if short_draft is not None:

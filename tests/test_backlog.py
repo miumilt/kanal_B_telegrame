@@ -1,4 +1,4 @@
-from ai_news_bot.backlog import merge_candidates, select_main_slot_items
+from ai_news_bot.backlog import merge_candidates, select_daily_slot_items, select_main_slot_items
 from ai_news_bot.models import BacklogItem
 from ai_news_bot.ranking import score_item
 
@@ -369,3 +369,89 @@ def test_select_main_slot_items_returns_highest_scoring_queued_items():
     selected = select_main_slot_items(backlog, limit=2)
 
     assert [item.item_id for item in selected] == ["high", "medium"]
+
+
+def test_select_daily_slot_items_prefers_category_variety_when_available():
+    backlog = [
+        BacklogItem(
+            item_id="major-1",
+            source_url="https://example.com/major-1",
+            source_title="Major News One",
+            normalized_title="major news one",
+            topic_fingerprint="major-news-one",
+            source_name="Example",
+            published_at="2026-04-19T10:00:00+00:00",
+            summary_candidate="major news item one",
+            status="queued",
+            first_seen_at="2026-04-19T10:00:00+00:00",
+            last_considered_at="2026-04-19T10:00:00+00:00",
+            source_tier="tier1_official",
+            source_kind="rss",
+            source_priority=10,
+            confirmed=True,
+            evidence_urls=["https://example.com/major-1"],
+            category="major_news",
+        ),
+        BacklogItem(
+            item_id="major-2",
+            source_url="https://example.com/major-2",
+            source_title="Major News Two",
+            normalized_title="major news two",
+            topic_fingerprint="major-news-two",
+            source_name="Example",
+            published_at="2026-04-19T11:00:00+00:00",
+            summary_candidate="major news item two",
+            status="queued",
+            first_seen_at="2026-04-19T11:00:00+00:00",
+            last_considered_at="2026-04-19T11:00:00+00:00",
+            source_tier="tier1_official",
+            source_kind="rss",
+            source_priority=9,
+            confirmed=True,
+            evidence_urls=["https://example.com/major-2"],
+            category="major_news",
+        ),
+        BacklogItem(
+            item_id="freebie-1",
+            source_url="https://example.com/freebie-1",
+            source_title="Free Tool",
+            normalized_title="free tool",
+            topic_fingerprint="free-tool",
+            source_name="Example",
+            published_at="2026-04-19T12:00:00+00:00",
+            summary_candidate="freebie item",
+            status="queued",
+            first_seen_at="2026-04-19T12:00:00+00:00",
+            last_considered_at="2026-04-19T12:00:00+00:00",
+            source_tier="tier2_media",
+            source_kind="rss",
+            source_priority=7,
+            confirmed=True,
+            evidence_urls=["https://example.com/freebie-1"],
+            category="freebie/useful_find",
+        ),
+        BacklogItem(
+            item_id="useful-1",
+            source_url="https://example.com/useful-1",
+            source_title="Useful Find",
+            normalized_title="useful find",
+            topic_fingerprint="useful-find",
+            source_name="Example",
+            published_at="2026-04-19T13:00:00+00:00",
+            summary_candidate="useful find item",
+            status="queued",
+            first_seen_at="2026-04-19T13:00:00+00:00",
+            last_considered_at="2026-04-19T13:00:00+00:00",
+            source_tier="tier2_media",
+            source_kind="rss",
+            source_priority=6,
+            confirmed=True,
+            evidence_urls=["https://example.com/useful-1"],
+            category="major_news",
+        ),
+    ]
+
+    selected = select_daily_slot_items(backlog)
+
+    assert [item.item_id for item in selected] == ["major-1", "freebie-1", "major-2"]
+    assert [item.category for item in selected] == ["major_news", "freebie/useful_find", "major_news"]

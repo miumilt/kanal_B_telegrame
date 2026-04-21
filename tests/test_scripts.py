@@ -13,7 +13,15 @@ from ai_news_bot.storage import JsonStateStore
 WORKTREE_ROOT = Path(__file__).resolve().parents[1]
 
 
-def _item(item_id: str, title: str, summary: str, *, status: str = "queued") -> BacklogItem:
+def _item(
+    item_id: str,
+    title: str,
+    summary: str,
+    *,
+    status: str = "queued",
+    category: str = "major_news",
+    image_url: str | None = None,
+) -> BacklogItem:
     return BacklogItem(
         item_id=item_id,
         source_url=f"https://example.com/{item_id}",
@@ -26,6 +34,8 @@ def _item(item_id: str, title: str, summary: str, *, status: str = "queued") -> 
         status=status,
         first_seen_at="2026-04-19T10:00:00+00:00",
         last_considered_at="2026-04-19T10:00:00+00:00",
+        category=category,
+        image_url=image_url,
     )
 
 
@@ -33,11 +43,28 @@ class FakeTelegramApi:
     def __init__(self, updates: list[dict] | None = None) -> None:
         self._updates = updates or []
         self.sent_messages: list[dict] = []
+        self.sent_photos: list[dict] = []
         self.answered_callbacks: list[dict] = []
 
     def send_message(self, chat_id: str, text: str, reply_markup: dict | None = None) -> dict:
         payload = {"chat_id": chat_id, "text": text, "reply_markup": reply_markup}
         self.sent_messages.append(payload)
+        return payload
+
+    def send_photo(
+        self,
+        chat_id: str,
+        photo_url: str,
+        caption: str | None = None,
+        reply_markup: dict | None = None,
+    ) -> dict:
+        payload = {
+            "chat_id": chat_id,
+            "photo_url": photo_url,
+            "caption": caption,
+            "reply_markup": reply_markup,
+        }
+        self.sent_photos.append(payload)
         return payload
 
     def get_updates(self, offset: int) -> list[dict]:
@@ -65,6 +92,18 @@ class CrashAfterChannelSendTelegramApi(FakeTelegramApi):
             raise SystemExit("crashed after channel send")
         return payload
 
+    def send_photo(
+        self,
+        chat_id: str,
+        photo_url: str,
+        caption: str | None = None,
+        reply_markup: dict | None = None,
+    ) -> dict:
+        payload = super().send_photo(chat_id, photo_url, caption, reply_markup)
+        if str(chat_id).startswith("@"):
+            raise SystemExit("crashed after channel send")
+        return payload
+
 
 class FailBeforeChannelSendTelegramApi(FakeTelegramApi):
     def send_message(self, chat_id: str, text: str, reply_markup: dict | None = None) -> dict:
@@ -72,8 +111,19 @@ class FailBeforeChannelSendTelegramApi(FakeTelegramApi):
             raise RuntimeError("send failed before acceptance")
         return super().send_message(chat_id, text, reply_markup)
 
+    def send_photo(
+        self,
+        chat_id: str,
+        photo_url: str,
+        caption: str | None = None,
+        reply_markup: dict | None = None,
+    ) -> dict:
+        if str(chat_id).startswith("@"):
+            raise RuntimeError("send failed before acceptance")
+        return super().send_photo(chat_id, photo_url, caption, reply_markup)
 
-def test_daily_slot_script_builds_pending_short_post_and_notifies_owner(tmp_path: Path):
+
+def test_daily_slot_script_builds_pending_single_post_and_notifies_owner(tmp_path: Path):
     store = JsonStateStore(tmp_path)
     store.save_backlog([_item("item-1", "Gemini CLI Released", "CLI tool for developers.")])
 
@@ -85,7 +135,7 @@ def test_daily_slot_script_builds_pending_short_post_and_notifies_owner(tmp_path
 
     assert draft.status == "pending"
     assert draft.selected_story_ids == ["item-1"]
-    assert draft.draft_type == "short_post"
+    assert draft.draft_type == "single_post"
     assert draft.current_text == draft.generated_text
     assert store.load_current_draft() == draft
     assert store.load_backlog()[0].status == "drafted"
@@ -104,24 +154,68 @@ def test_daily_slot_script_builds_pending_short_post_and_notifies_owner(tmp_path
             },
         }
     ]
+    assert telegram_api.sent_photos == []
 
 
-def test_daily_slot_script_builds_digest_when_multiple_items_selected(tmp_path: Path):
+def test_daily_slot_script_sends_separate_owner_messages_for_multiple_candidates(tmp_path: Path):
     store = JsonStateStore(tmp_path)
     store.save_backlog(
         [
-            _item("item-1", "Gemini CLI Released", "CLI tool for developers."),
-            _item("item-2", "Open Model Released", "Open weights and benchmarks."),
+            _item(
+                "item-1",
+                "Gemini CLI Released",
+                "CLI tool for developers.",
+                category="major_news",
+                image_url="https://example.com/image-1.png",
+            ),
+            _item(
+                "item-2",
+                "Open Model Released",
+                "Open weights and benchmarks.",
+                category="freebie/useful_find",
+            ),
+            _item("item-3", "Useful Find", "A useful tool for agents."),
         ]
     )
 
     build_main_slot_draft = _load_script_module("run_daily_slot").build_main_slot_draft
 
-    draft = build_main_slot_draft(store)
+    telegram_api = FakeTelegramApi()
 
-    assert draft.draft_type == "digest"
-    assert set(draft.selected_story_ids) == {"item-1", "item-2"}
-    assert "Daily AI digest for the channel:" in draft.generated_text
+    draft = build_main_slot_draft(store, telegram_api=telegram_api, owner_chat_id="owner-chat")
+
+    assert draft.draft_type == "single_post"
+    assert draft.selected_story_ids == ["item-1"]
+    assert store.load_current_draft() == draft
+    assert [item.status for item in store.load_backlog()] == ["drafted", "queued", "queued"]
+    assert telegram_api.sent_photos == [
+        {
+            "chat_id": "owner-chat",
+            "photo_url": "https://example.com/image-1.png",
+            "caption": draft.generated_text,
+            "reply_markup": {
+                "inline_keyboard": [
+                    [
+                        {"text": "Edit", "callback_data": f"edit:{draft.draft_id}"},
+                        {"text": "Publish now", "callback_data": f"publish_now:{draft.draft_id}"},
+                        {"text": "Skip", "callback_data": f"skip:{draft.draft_id}"},
+                    ]
+                ]
+            },
+        }
+    ]
+    assert telegram_api.sent_messages == [
+        {
+            "chat_id": "owner-chat",
+            "text": "Open Model Released\nOpen weights and benchmarks.\nSource: https://example.com/item-2",
+            "reply_markup": None,
+        },
+        {
+            "chat_id": "owner-chat",
+            "text": "Useful Find\nA useful tool for agents.\nSource: https://example.com/item-3",
+            "reply_markup": None,
+        },
+    ]
 
 
 def test_daily_slot_run_refreshes_backlog_before_building_first_draft(tmp_path: Path):
@@ -138,7 +232,7 @@ def test_daily_slot_run_refreshes_backlog_before_building_first_draft(tmp_path: 
     )
 
     assert draft is not None
-    assert draft.draft_type == "short_post"
+    assert draft.draft_type == "single_post"
     assert draft.selected_story_ids == ["item-1"]
     assert store.load_backlog()[0].status == "drafted"
     assert telegram_api.sent_messages[0]["chat_id"] == "owner-chat"
@@ -352,6 +446,61 @@ def test_process_updates_publish_now_publishes_draft_immediately(tmp_path: Path)
     ]
 
 
+def test_process_updates_publish_now_uses_photo_when_draft_has_image(tmp_path: Path):
+    store = JsonStateStore(tmp_path)
+    store.save_backlog(
+        [
+            _item(
+                "item-1",
+                "Gemini CLI Released",
+                "CLI tool for developers.",
+                category="freebie/useful_find",
+                image_url="https://example.com/preview.png",
+            )
+        ]
+    )
+
+    build_main_slot_draft = _load_script_module("run_daily_slot").build_main_slot_draft
+    process_updates = _load_script_module("poll_telegram_updates").process_updates
+
+    draft = build_main_slot_draft(store)
+    current = store.load_current_draft()
+    assert current is not None
+    assert current.category == "freebie/useful_find"
+    assert current.image_url == "https://example.com/preview.png"
+
+    telegram_api = FakeTelegramApi(
+        updates=[
+            {
+                "update_id": 24,
+                "callback_query": {
+                    "id": "cb-publish-photo",
+                    "data": f"publish_now:{draft.draft_id}",
+                    "message": {"chat": {"id": "owner-chat"}},
+                },
+            }
+        ]
+    )
+    config = SimpleNamespace(
+        telegram_owner_chat_id="owner-chat",
+        telegram_channel_id="@channel",
+        daily_slot_hour=18,
+        daily_slot_minute=0,
+    )
+
+    process_updates(store, telegram_api, config)
+
+    assert telegram_api.sent_photos == [
+        {
+            "chat_id": "@channel",
+            "photo_url": "https://example.com/preview.png",
+            "caption": draft.current_text,
+            "reply_markup": None,
+        }
+    ]
+    assert telegram_api.sent_messages == []
+
+
 def test_process_updates_completes_legacy_approved_draft_on_next_poll(tmp_path: Path):
     store = JsonStateStore(tmp_path)
     store.save_backlog([_item("item-1", "Gemini CLI Released", "CLI tool for developers.", status="drafted")])
@@ -399,7 +548,17 @@ def test_process_updates_completes_legacy_approved_draft_on_next_poll(tmp_path: 
 
 def test_process_updates_short_command_leaves_draft_pending_until_publish_now(tmp_path: Path):
     store = JsonStateStore(tmp_path)
-    store.save_backlog([_item("item-1", "Gemini CLI Released", "CLI tool for developers.")])
+    store.save_backlog(
+        [
+            _item(
+                "item-1",
+                "Gemini CLI Released",
+                "CLI tool for developers.",
+                category="freebie/useful_find",
+                image_url="https://example.com/preview.png",
+            )
+        ]
+    )
 
     process_updates = _load_script_module("poll_telegram_updates").process_updates
 
@@ -426,11 +585,15 @@ def test_process_updates_short_command_leaves_draft_pending_until_publish_now(tm
     current = store.load_current_draft()
     assert current is not None
     assert current.status == "pending"
+    assert current.category == "freebie/useful_find"
+    assert current.image_url == "https://example.com/preview.png"
     assert store.load_published() == []
-    assert telegram_api.sent_messages == [
+    assert telegram_api.sent_messages == []
+    assert telegram_api.sent_photos == [
         {
             "chat_id": "owner-chat",
-            "text": current.generated_text,
+            "photo_url": "https://example.com/preview.png",
+            "caption": current.generated_text,
             "reply_markup": {
                 "inline_keyboard": [
                     [
@@ -788,7 +951,17 @@ def test_skip_restores_unpublished_draft_items_to_queued(tmp_path: Path):
 
 def test_publish_recovery_finalizes_without_duplicate_send_after_post_send_crash(tmp_path: Path):
     store = JsonStateStore(tmp_path)
-    store.save_backlog([_item("item-1", "Gemini CLI Released", "CLI tool for developers.", status="drafted")])
+    store.save_backlog(
+        [
+            _item(
+                "item-1",
+                "Gemini CLI Released",
+                "CLI tool for developers.",
+                status="drafted",
+                image_url="https://example.com/crash-preview.png",
+            )
+        ]
+    )
     store.save_current_draft(
         DraftRecord(
             draft_id="draft-existing",
@@ -800,7 +973,7 @@ def test_publish_recovery_finalizes_without_duplicate_send_after_post_send_crash
             created_at="2026-04-19T12:00:00+00:00",
             category="short_post",
             header_label="Short Post",
-            image_url=None,
+            image_url="https://example.com/crash-preview.png",
         )
     )
 
@@ -835,10 +1008,12 @@ def test_publish_recovery_finalizes_without_duplicate_send_after_post_send_crash
     draft = store.load_current_draft()
     assert draft is not None
     assert draft.status == "publishing"
-    assert crashing_api.sent_messages == [
+    assert crashing_api.sent_messages == []
+    assert crashing_api.sent_photos == [
         {
             "chat_id": "@channel",
-            "text": "Approved text",
+            "photo_url": "https://example.com/crash-preview.png",
+            "caption": "Approved text",
             "reply_markup": None,
         }
     ]
@@ -852,11 +1027,22 @@ def test_publish_recovery_finalizes_without_duplicate_send_after_post_send_crash
     assert store.load_published() == ["https://example.com/item-1"]
     assert store.load_backlog()[0].status == "published"
     assert recovery_api.sent_messages == []
+    assert recovery_api.sent_photos == []
 
 
 def test_publish_failure_before_acceptance_reverts_out_of_publishing_for_safe_retry(tmp_path: Path):
     store = JsonStateStore(tmp_path)
-    store.save_backlog([_item("item-1", "Gemini CLI Released", "CLI tool for developers.", status="drafted")])
+    store.save_backlog(
+        [
+            _item(
+                "item-1",
+                "Gemini CLI Released",
+                "CLI tool for developers.",
+                status="drafted",
+                image_url="https://example.com/fail-preview.png",
+            )
+        ]
+    )
     store.save_current_draft(
         DraftRecord(
             draft_id="draft-existing",
@@ -868,7 +1054,7 @@ def test_publish_failure_before_acceptance_reverts_out_of_publishing_for_safe_re
             created_at="2026-04-19T12:00:00+00:00",
             category="short_post",
             header_label="Short Post",
-            image_url=None,
+            image_url="https://example.com/fail-preview.png",
         )
     )
 
@@ -906,6 +1092,7 @@ def test_publish_failure_before_acceptance_reverts_out_of_publishing_for_safe_re
     assert store.load_published() == []
     assert store.load_backlog()[0].status == "drafted"
     assert failing_api.sent_messages == []
+    assert failing_api.sent_photos == []
 
     recovery_api = FakeTelegramApi(
         updates=[
@@ -925,10 +1112,12 @@ def test_publish_failure_before_acceptance_reverts_out_of_publishing_for_safe_re
     assert draft is not None
     assert draft.status == "published"
     assert store.load_published() == ["https://example.com/item-1"]
-    assert recovery_api.sent_messages == [
+    assert recovery_api.sent_messages == []
+    assert recovery_api.sent_photos == [
         {
             "chat_id": "@channel",
-            "text": "Approved text",
+            "photo_url": "https://example.com/fail-preview.png",
+            "caption": "Approved text",
             "reply_markup": None,
         }
     ]
