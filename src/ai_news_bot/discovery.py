@@ -35,7 +35,9 @@ def fetch_page_text(url: str) -> str:
 def build_candidate_from_entry(source: SourceConfig, entry, now_iso: str) -> BacklogItem:
     title = _get_value(entry, "title", "")
     url = _get_value(entry, "link", "")
-    summary = fetch_page_text(url) or _get_value(entry, "summary", "")
+    summary = _get_value(entry, "summary", "")
+    if source.kind == "website" and not summary:
+        summary = fetch_page_text(url)
     is_confirmed = source.tier != "tier4_community"
     status = "new" if is_confirmed else "observed_unconfirmed"
     return BacklogItem(
