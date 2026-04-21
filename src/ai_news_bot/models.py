@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, field
 
 
 @dataclass
@@ -16,9 +16,17 @@ class BacklogItem:
     status: str
     first_seen_at: str
     last_considered_at: str
+    source_tier: str = "tier2_media"
+    source_kind: str = "rss"
+    source_priority: int = 0
+    confirmed: bool = True
+    evidence_urls: list[str] = field(default_factory=list)
 
     def to_dict(self) -> dict:
-        return asdict(self)
+        payload = asdict(self)
+        if payload["evidence_urls"] is None:
+            payload["evidence_urls"] = []
+        return payload
 
 
 @dataclass

@@ -19,6 +19,11 @@ def test_store_round_trip_backlog_and_draft(tmp_path: Path):
         status="queued",
         first_seen_at="2026-04-19T11:00:00+00:00",
         last_considered_at="2026-04-19T11:00:00+00:00",
+        source_tier="tier1_official",
+        source_kind="rss",
+        source_priority=10,
+        confirmed=True,
+        evidence_urls=["https://example.com/story"],
     )
     draft = DraftRecord(
         draft_id="draft-1",
@@ -37,6 +42,70 @@ def test_store_round_trip_backlog_and_draft(tmp_path: Path):
 
     assert store.load_backlog()[0].item_id == "item-1"
     assert store.load_current_draft().draft_id == "draft-1"
+
+
+def test_store_round_trip_backlog_includes_metadata(tmp_path: Path):
+    store = JsonStateStore(tmp_path)
+    item = BacklogItem(
+        item_id="item-2",
+        source_url="https://example.com/meta",
+        source_title="Open Model Meta",
+        normalized_title="open model meta",
+        topic_fingerprint="open-model-meta",
+        source_name="Example",
+        published_at="2026-04-19T10:00:00+00:00",
+        summary_candidate="Meta story.",
+        status="queued",
+        first_seen_at="2026-04-19T10:00:00+00:00",
+        last_considered_at="2026-04-19T10:00:00+00:00",
+        source_tier="tier3_ai_publications",
+        source_kind="atom",
+        source_priority=3,
+        confirmed=False,
+        evidence_urls=[],
+    )
+
+    store.save_backlog([item])
+    loaded = store.load_backlog()[0]
+
+    assert loaded.source_tier == "tier3_ai_publications"
+    assert loaded.source_kind == "atom"
+    assert loaded.source_priority == 3
+    assert loaded.confirmed is False
+    assert loaded.evidence_urls == []
+
+
+def test_store_loads_old_backlog_records_with_safe_defaults(tmp_path: Path):
+    store = JsonStateStore(tmp_path)
+    (tmp_path / "backlog.json").write_text(
+        json.dumps(
+            [
+                {
+                    "item_id": "legacy-item",
+                    "source_url": "https://example.com/legacy",
+                    "source_title": "Legacy Story",
+                    "normalized_title": "legacy story",
+                    "topic_fingerprint": "legacy-story",
+                    "source_name": "Example",
+                    "published_at": "2026-04-19T10:00:00+00:00",
+                    "summary_candidate": "Legacy story.",
+                    "status": "queued",
+                    "first_seen_at": "2026-04-19T10:00:00+00:00",
+                    "last_considered_at": "2026-04-19T10:00:00+00:00",
+                }
+            ]
+        ),
+        encoding="utf-8",
+    )
+
+    loaded = store.load_backlog()[0]
+
+    assert loaded.item_id == "legacy-item"
+    assert loaded.source_tier == "tier2_media"
+    assert loaded.source_kind == "rss"
+    assert loaded.source_priority == 0
+    assert loaded.confirmed is True
+    assert loaded.evidence_urls == []
 
 
 def test_store_round_trip_current_draft_none(tmp_path: Path):
@@ -126,3 +195,14 @@ def test_save_cursor_rejects_boolean(tmp_path: Path):
         assert "telegram_cursor.json.last_update_id must be an integer" in str(exc)
     else:
         raise AssertionError("Expected save_cursor(True) to fail")
+
+
+def test_save_published_rejects_non_string_entries(tmp_path: Path):
+    store = JsonStateStore(tmp_path)
+
+    try:
+        store.save_published(["https://example.com/a", 1])
+    except ValueError as exc:
+        assert "published.json.1 must be a string" in str(exc)
+    else:
+        raise AssertionError("Expected save_published to reject non-string entries")

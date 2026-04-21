@@ -6,6 +6,26 @@
 - `TELEGRAM_OWNER_CHAT_ID`
 - `TELEGRAM_CHANNEL_ID`
 
+## Source Configuration
+
+Discovery sources are stored in `sources.yaml`.
+
+Supported source tiers:
+- `tier1_official`
+- `tier2_media`
+- `tier3_ai_publications`
+- `tier4_community`
+
+Supported source kinds:
+- `rss`
+- `atom`
+- `website`
+- `reddit`
+- `hackernews`
+
+Community-originated topics are tracked, but they are not eligible for drafting
+until at least one stronger source confirms the same topic.
+
 ## Local commands
 
 - `python -m pytest -q`
