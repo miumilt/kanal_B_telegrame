@@ -30,6 +30,17 @@ class AppConfig:
     daily_slot_minute: int = 0
     draft_generation_hour: int = 17
     draft_generation_minute: int = 30
+    telegram_poll_interval_seconds: int = 30
+
+
+def _load_positive_int(env_name: str, default: int) -> int:
+    raw_value = os.environ.get(env_name)
+    if raw_value is None:
+        return default
+    value = int(raw_value)
+    if value <= 0:
+        raise ValueError(f"{env_name} must be a positive integer")
+    return value
 
 
 def load_config() -> AppConfig:
@@ -40,4 +51,5 @@ def load_config() -> AppConfig:
         telegram_channel_id=os.environ["TELEGRAM_CHANNEL_ID"],
         state_dir=Path(os.environ.get("STATE_DIR", project_root / "state")),
         sources_path=Path(os.environ.get("SOURCES_PATH", project_root / "sources.yaml")),
+        telegram_poll_interval_seconds=_load_positive_int("TELEGRAM_POLL_INTERVAL_SECONDS", 30),
     )

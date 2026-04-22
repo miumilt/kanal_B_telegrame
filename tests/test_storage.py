@@ -24,6 +24,8 @@ def test_store_round_trip_backlog_and_draft(tmp_path: Path):
         source_priority=10,
         confirmed=True,
         evidence_urls=["https://example.com/story"],
+        category="major_news",
+        image_url="https://example.com/story.jpg",
     )
     draft = DraftRecord(
         draft_id="draft-1",
@@ -33,15 +35,22 @@ def test_store_round_trip_backlog_and_draft(tmp_path: Path):
         draft_type="digest",
         status="pending",
         created_at="2026-04-19T14:30:00+00:00",
-        approved_for_slot=False,
-        approved_at=None,
+        category="news",
+        header_label="Top story",
+        image_url=None,
     )
 
     store.save_backlog([item])
     store.save_current_draft(draft)
 
     assert store.load_backlog()[0].item_id == "item-1"
-    assert store.load_current_draft().draft_id == "draft-1"
+    assert store.load_backlog()[0].category == "major_news"
+    assert store.load_backlog()[0].image_url == "https://example.com/story.jpg"
+    loaded = store.load_current_draft()
+    assert loaded.draft_id == "draft-1"
+    assert loaded.category == "news"
+    assert loaded.header_label == "Top story"
+    assert loaded.image_url is None
 
 
 def test_store_round_trip_backlog_includes_metadata(tmp_path: Path):
@@ -63,6 +72,8 @@ def test_store_round_trip_backlog_includes_metadata(tmp_path: Path):
         source_priority=3,
         confirmed=False,
         evidence_urls=[],
+        category="freebie/useful_find",
+        image_url="https://example.com/meta.png",
     )
 
     store.save_backlog([item])
@@ -73,6 +84,8 @@ def test_store_round_trip_backlog_includes_metadata(tmp_path: Path):
     assert loaded.source_priority == 3
     assert loaded.confirmed is False
     assert loaded.evidence_urls == []
+    assert loaded.category == "freebie/useful_find"
+    assert loaded.image_url == "https://example.com/meta.png"
 
 
 def test_store_loads_old_backlog_records_with_safe_defaults(tmp_path: Path):
@@ -106,6 +119,8 @@ def test_store_loads_old_backlog_records_with_safe_defaults(tmp_path: Path):
     assert loaded.source_priority == 0
     assert loaded.confirmed is True
     assert loaded.evidence_urls == []
+    assert loaded.category == "major_news"
+    assert loaded.image_url is None
 
 
 def test_store_round_trip_current_draft_none(tmp_path: Path):
@@ -115,6 +130,58 @@ def test_store_round_trip_current_draft_none(tmp_path: Path):
 
     assert store.load_current_draft() is None
     assert json.loads((tmp_path / "current_draft.json").read_text(encoding="utf-8")) is None
+
+
+def test_store_loads_legacy_current_draft_with_null_image_url(tmp_path: Path):
+    store = JsonStateStore(tmp_path)
+    (tmp_path / "current_draft.json").write_text(
+        json.dumps(
+            {
+                "draft_id": "legacy-draft",
+                "generated_text": "text",
+                "current_text": "text",
+                "selected_story_ids": ["item-1"],
+                "draft_type": "digest",
+                "status": "pending",
+                "created_at": "2026-04-19T14:30:00+00:00",
+                "approved_for_slot": True,
+                "approved_at": "2026-04-19T14:45:00+00:00",
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    loaded = store.load_current_draft()
+
+    assert loaded.draft_id == "legacy-draft"
+    assert loaded.category == "digest"
+    assert loaded.header_label == "Digest"
+    assert loaded.image_url is None
+
+
+def test_store_migrates_legacy_approved_current_draft_to_publishing(tmp_path: Path):
+    store = JsonStateStore(tmp_path)
+    (tmp_path / "current_draft.json").write_text(
+        json.dumps(
+            {
+                "draft_id": "legacy-approved",
+                "generated_text": "text",
+                "current_text": "text",
+                "selected_story_ids": ["item-1"],
+                "draft_type": "short_post",
+                "status": "pending",
+                "created_at": "2026-04-19T14:30:00+00:00",
+                "approved_for_slot": True,
+                "approved_at": "2026-04-19T14:45:00+00:00",
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    loaded = store.load_current_draft()
+
+    assert loaded.draft_id == "legacy-approved"
+    assert loaded.status == "publishing"
 
 
 def test_store_defaults_missing_files(tmp_path: Path):
