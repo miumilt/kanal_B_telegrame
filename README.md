@@ -29,10 +29,12 @@ Community-originated topics stay out of the actionable draft flow until a strong
 
 - GitHub Actions `daily-slot` is the only scheduled GitHub job used in normal operation.
 - `daily-slot` runs at `18:00 Europe/Moscow` and sends up to `3` separate single-post owner previews.
+- `daily-slot` auto-selects only topics from the last `24` hours.
 - The first preview becomes the persisted actionable draft.
 - Additional previews are owner-facing suggestions; they are not persisted as separate actionable drafts.
 - Draft buttons are only `Edit`, `Publish now`, and `Skip`.
 - Telegram callback processing now runs locally on Windows through `scripts/run_local_polling.py`.
+- Unpublished backlog items stay valid for up to `14` days; older items are dropped as stale.
 
 ## Local commands
 

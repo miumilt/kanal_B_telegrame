@@ -81,7 +81,24 @@ def select_main_slot_items(backlog: list[BacklogItem], limit: int = 5) -> list[B
 
 
 def select_daily_slot_items(backlog: list[BacklogItem], limit: int = 3) -> list[BacklogItem]:
+    return select_daily_slot_items_with_age(backlog, limit=limit)
+
+
+def select_daily_slot_items_with_age(
+    backlog: list[BacklogItem],
+    *,
+    limit: int = 3,
+    now_iso: str | None = None,
+    max_age_days: int | None = None,
+) -> list[BacklogItem]:
     queued = [item for item in backlog if item.status == "queued" and item.confirmed]
+    if now_iso is not None and max_age_days is not None:
+        now = _parse_timestamp(now_iso)
+        cutoff = timedelta(days=max_age_days)
+        queued = [
+            item for item in queued
+            if now - _parse_timestamp(item.published_at) <= cutoff
+        ]
     if limit <= 0 or not queued:
         return []
 

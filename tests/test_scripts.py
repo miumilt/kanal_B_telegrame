@@ -22,6 +22,7 @@ def _item(
     status: str = "queued",
     category: str = "major_news",
     image_url: str | None = None,
+    published_at: str = "2026-04-19T10:00:00+00:00",
 ) -> BacklogItem:
     return BacklogItem(
         item_id=item_id,
@@ -30,11 +31,11 @@ def _item(
         normalized_title=title.lower(),
         topic_fingerprint=title.lower().replace(" ", "-"),
         source_name="Example",
-        published_at="2026-04-19T10:00:00+00:00",
+        published_at=published_at,
         summary_candidate=summary,
         status=status,
-        first_seen_at="2026-04-19T10:00:00+00:00",
-        last_considered_at="2026-04-19T10:00:00+00:00",
+        first_seen_at=published_at,
+        last_considered_at=published_at,
         category=category,
         image_url=image_url,
     )
@@ -300,6 +301,64 @@ def test_daily_slot_run_skips_cleanly_when_no_eligible_items_exist(tmp_path: Pat
     assert draft is None
     assert store.load_current_draft() is None
     assert store.load_backlog() == []
+    assert telegram_api.sent_messages == [
+        {
+            "chat_id": "owner-chat",
+            "text": "No eligible backlog items for draft today.",
+            "reply_markup": None,
+        }
+    ]
+
+
+def test_refresh_backlog_drops_items_older_than_two_weeks(tmp_path: Path):
+    store = JsonStateStore(tmp_path)
+    store.save_backlog(
+        [
+            _item(
+                "expired-item",
+                "Expired Story",
+                "Too old to keep.",
+                published_at="2026-04-01T10:00:00+00:00",
+            )
+        ]
+    )
+    module = _load_script_module("run_daily_slot")
+
+    refreshed = module.refresh_backlog(
+        store,
+        now_iso="2026-04-22T10:00:00+00:00",
+        fetcher=lambda now_iso: [],
+    )
+
+    assert refreshed == []
+    assert store.load_backlog() == []
+
+
+def test_daily_slot_run_only_selects_items_from_last_day(tmp_path: Path):
+    store = JsonStateStore(tmp_path)
+    module = _load_script_module("run_daily_slot")
+    telegram_api = FakeTelegramApi()
+
+    draft = module.run_daily_slot(
+        store,
+        telegram_api=telegram_api,
+        owner_chat_id="owner-chat",
+        now_iso="2026-04-22T10:00:00+00:00",
+        fetcher=lambda now_iso: [
+            _item(
+                "stale-item",
+                "Stale Story",
+                "Older than one day, but still within backlog retention.",
+                published_at="2026-04-20T09:00:00+00:00",
+            )
+        ],
+    )
+
+    assert draft is None
+    backlog = store.load_backlog()
+    assert len(backlog) == 1
+    assert backlog[0].item_id == "stale-item"
+    assert backlog[0].status == "queued"
     assert telegram_api.sent_messages == [
         {
             "chat_id": "owner-chat",

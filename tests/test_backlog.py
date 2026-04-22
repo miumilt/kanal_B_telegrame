@@ -1,4 +1,9 @@
-from ai_news_bot.backlog import merge_candidates, select_daily_slot_items, select_main_slot_items
+from ai_news_bot.backlog import (
+    merge_candidates,
+    select_daily_slot_items,
+    select_daily_slot_items_with_age,
+    select_main_slot_items,
+)
 from ai_news_bot.models import BacklogItem
 from ai_news_bot.ranking import score_item
 
@@ -455,3 +460,54 @@ def test_select_daily_slot_items_prefers_category_variety_when_available():
 
     assert [item.item_id for item in selected] == ["major-1", "freebie-1", "major-2"]
     assert [item.category for item in selected] == ["major_news", "freebie/useful_find", "major_news"]
+
+
+def test_select_daily_slot_items_with_age_ignores_items_older_than_one_day():
+    backlog = [
+        BacklogItem(
+            item_id="fresh",
+            source_url="https://example.com/fresh",
+            source_title="Fresh News",
+            normalized_title="fresh news",
+            topic_fingerprint="fresh-news",
+            source_name="Example",
+            published_at="2026-04-21T09:00:00+00:00",
+            summary_candidate="fresh item",
+            status="queued",
+            first_seen_at="2026-04-21T09:00:00+00:00",
+            last_considered_at="2026-04-21T09:00:00+00:00",
+            source_tier="tier1_official",
+            source_kind="rss",
+            source_priority=10,
+            confirmed=True,
+            evidence_urls=["https://example.com/fresh"],
+            category="major_news",
+        ),
+        BacklogItem(
+            item_id="stale",
+            source_url="https://example.com/stale",
+            source_title="Stale News",
+            normalized_title="stale news",
+            topic_fingerprint="stale-news",
+            source_name="Example",
+            published_at="2026-04-19T09:00:00+00:00",
+            summary_candidate="stale item",
+            status="queued",
+            first_seen_at="2026-04-19T09:00:00+00:00",
+            last_considered_at="2026-04-19T09:00:00+00:00",
+            source_tier="tier1_official",
+            source_kind="rss",
+            source_priority=9,
+            confirmed=True,
+            evidence_urls=["https://example.com/stale"],
+            category="major_news",
+        ),
+    ]
+
+    selected = select_daily_slot_items_with_age(
+        backlog,
+        now_iso="2026-04-22T09:00:00+00:00",
+        max_age_days=1,
+    )
+
+    assert [item.item_id for item in selected] == ["fresh"]

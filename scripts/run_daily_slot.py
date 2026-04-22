@@ -4,14 +4,15 @@ from datetime import UTC, datetime
 from uuid import uuid4
 
 from ai_news_bot.approval import build_draft_keyboard
-from ai_news_bot.backlog import merge_candidates, select_daily_slot_items
+from ai_news_bot.backlog import merge_candidates, select_daily_slot_items_with_age
 from ai_news_bot.config import load_config
 from ai_news_bot.drafts import build_single_post_text
 from ai_news_bot.models import BacklogItem, DraftRecord
 from ai_news_bot.storage import JsonStateStore
 from ai_news_bot.telegram_api import TelegramApi
 
-BACKLOG_EXPIRY_DAYS = 4
+BACKLOG_EXPIRY_DAYS = 14
+DAILY_CANDIDATE_MAX_AGE_DAYS = 1
 
 
 def _require_replaceable_draft(draft: DraftRecord | None) -> DraftRecord | None:
@@ -99,11 +100,17 @@ def build_main_slot_draft(
     store: JsonStateStore,
     telegram_api: TelegramApi | None = None,
     owner_chat_id: str | None = None,
+    now_iso: str | None = None,
+    max_age_days: int | None = None,
 ) -> DraftRecord:
     release_unpublished_draft_items(store, _require_replaceable_draft(store.load_current_draft()))
 
     backlog = store.load_backlog()
-    selected = select_daily_slot_items(backlog)
+    selected = select_daily_slot_items_with_age(
+        backlog,
+        now_iso=now_iso,
+        max_age_days=max_age_days,
+    )
     if not selected:
         raise RuntimeError("No eligible backlog items for draft")
 
@@ -167,7 +174,11 @@ def run_daily_slot(
 
         fetcher = fetch_candidates
     backlog = refresh_backlog(store, now_iso=current_now_iso, fetcher=fetcher)
-    if not select_daily_slot_items(backlog):
+    if not select_daily_slot_items_with_age(
+        backlog,
+        now_iso=current_now_iso,
+        max_age_days=DAILY_CANDIDATE_MAX_AGE_DAYS,
+    ):
         if telegram_api is not None and owner_chat_id:
             telegram_api.send_message(
                 owner_chat_id,
@@ -179,6 +190,8 @@ def run_daily_slot(
         store,
         telegram_api=telegram_api,
         owner_chat_id=owner_chat_id,
+        now_iso=current_now_iso,
+        max_age_days=DAILY_CANDIDATE_MAX_AGE_DAYS,
     )
 
 
