@@ -45,6 +45,22 @@ def _send_owner_draft_preview(
     )
 
 
+def _build_preview_draft(primary_item: BacklogItem) -> DraftRecord:
+    generated_text = build_single_post_text(primary_item)
+    return DraftRecord(
+        draft_id=str(uuid4()),
+        generated_text=generated_text,
+        current_text=generated_text,
+        selected_story_ids=[primary_item.item_id],
+        draft_type="single_post",
+        status="pending",
+        created_at=datetime.now(UTC).isoformat(),
+        category=primary_item.category,
+        header_label="Single Post",
+        image_url=primary_item.image_url,
+    )
+
+
 def release_unpublished_draft_items(
     store: JsonStateStore,
     draft: DraftRecord | None,
@@ -75,6 +91,19 @@ def release_unpublished_draft_items(
         store.save_backlog(backlog)
 
 
+def release_unpublished_owner_drafts(store: JsonStateStore) -> None:
+    owner_drafts = store.load_owner_drafts()
+    if not owner_drafts:
+        return
+
+    for draft in owner_drafts:
+        release_unpublished_draft_items(store, draft)
+    store.save_owner_drafts([])
+    current_draft = store.load_current_draft()
+    if current_draft is not None and current_draft.status not in {"published", "publishing"}:
+        store.save_current_draft(None)
+
+
 def refresh_backlog(
     store: JsonStateStore,
     *,
@@ -103,7 +132,9 @@ def build_main_slot_draft(
     now_iso: str | None = None,
     max_age_days: int | None = None,
 ) -> DraftRecord:
-    release_unpublished_draft_items(store, _require_replaceable_draft(store.load_current_draft()))
+    current_draft = _require_replaceable_draft(store.load_current_draft())
+    release_unpublished_owner_drafts(store)
+    release_unpublished_draft_items(store, current_draft)
 
     backlog = store.load_backlog()
     selected = select_daily_slot_items_with_age(
@@ -114,24 +145,12 @@ def build_main_slot_draft(
     if not selected:
         raise RuntimeError("No eligible backlog items for draft")
 
-    primary = selected[0]
-    generated_text = build_single_post_text(primary)
-
-    draft = DraftRecord(
-        draft_id=str(uuid4()),
-        generated_text=generated_text,
-        current_text=generated_text,
-        selected_story_ids=[primary.item_id],
-        draft_type="single_post",
-        status="pending",
-        created_at=datetime.now(UTC).isoformat(),
-        category=primary.category,
-        header_label="Single Post",
-        image_url=primary.image_url,
-    )
+    owner_drafts = [_build_preview_draft(item) for item in selected]
+    draft = owner_drafts[0]
     store.save_current_draft(draft)
+    store.save_owner_drafts(owner_drafts)
 
-    selected_ids = {primary.item_id}
+    selected_ids = {item.item_id for item in selected}
     updated_backlog = []
     for item in backlog:
         if item.item_id in selected_ids:
@@ -140,22 +159,13 @@ def build_main_slot_draft(
     store.save_backlog(updated_backlog)
 
     if telegram_api is not None and owner_chat_id:
-        _send_owner_draft_preview(telegram_api, owner_chat_id, draft, build_draft_keyboard(draft.draft_id))
-        for extra_item in selected[1:]:
-            extra_text = build_single_post_text(extra_item)
-            preview_draft = DraftRecord(
-                draft_id=str(uuid4()),
-                generated_text=extra_text,
-                current_text=extra_text,
-                selected_story_ids=[extra_item.item_id],
-                draft_type="single_post",
-                status="pending",
-                created_at=datetime.now(UTC).isoformat(),
-                category=extra_item.category,
-                header_label="Single Post",
-                image_url=extra_item.image_url,
+        for preview_draft in owner_drafts:
+            _send_owner_draft_preview(
+                telegram_api,
+                owner_chat_id,
+                preview_draft,
+                build_draft_keyboard(preview_draft.draft_id),
             )
-            _send_owner_draft_preview(telegram_api, owner_chat_id, preview_draft)
 
     return draft
 

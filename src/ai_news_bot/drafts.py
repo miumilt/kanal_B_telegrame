@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 from collections.abc import Callable
+import html
+import re
 
 from ai_news_bot.models import BacklogItem
 
@@ -16,6 +18,17 @@ def _translate(value: str) -> str:
         return value
 
 
+HTML_TAG_PATTERN = re.compile(r"<[^>]+>")
+WHITESPACE_PATTERN = re.compile(r"\s+")
+
+
+def _clean_text(value: str) -> str:
+    without_tags = HTML_TAG_PATTERN.sub(" ", value)
+    unescaped = html.unescape(without_tags)
+    normalized = WHITESPACE_PATTERN.sub(" ", unescaped).strip()
+    return normalized
+
+
 def build_digest_text(
     items: list[BacklogItem],
     *,
@@ -24,11 +37,13 @@ def build_digest_text(
 ) -> str:
     parts = ["Daily AI digest for the channel:"]
     for index, item in enumerate(items, start=1):
+        clean_title = _clean_text(translated_title(item.source_title))
+        clean_body = _clean_text(translated_body(_clean_text(item.summary_candidate)))
         parts.append(
             "\n".join(
                 [
-                    f"{index}. {translated_title(item.source_title)}",
-                    translated_body(item.summary_candidate[:280]),
+                    f"{index}. {clean_title}",
+                    clean_body[:280],
                     f"Source: {item.source_url}",
                 ]
             )
@@ -71,10 +86,11 @@ def _build_post_text(
     translated_title: Translator,
     translated_body: Translator,
 ) -> str:
-    body = translated_body(item.summary_candidate)
+    clean_summary = _clean_text(item.summary_candidate)
+    body = _clean_text(translated_body(clean_summary))
     return "\n".join(
         [
-            translated_title(item.source_title),
+            _clean_text(translated_title(item.source_title)),
             body[:body_limit],
             f"Source: {item.source_url}",
         ]

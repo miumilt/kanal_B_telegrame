@@ -157,8 +157,8 @@ class JsonStateStore:
             self._require_string("backlog.json item", "image_url", image_url)
         return BacklogItem(**normalized)
 
-    def _load_draft_record(self, item: object) -> DraftRecord:
-        value = self._require_dict("current_draft.json", item)
+    def _load_draft_record(self, item: object, *, name: str = "current_draft.json") -> DraftRecord:
+        value = self._require_dict(name, item)
         required_fields = {
             "draft_id",
             "generated_text",
@@ -177,8 +177,8 @@ class JsonStateStore:
             "publication_state",
         }
         allowed_fields = required_fields | optional_fields
-        self._require_fields("current_draft.json", value, required_fields)
-        self._require_only_fields("current_draft.json", value, allowed_fields)
+        self._require_fields(name, value, required_fields)
+        self._require_only_fields(name, value, allowed_fields)
         string_fields = {
             "draft_id",
             "generated_text",
@@ -188,36 +188,36 @@ class JsonStateStore:
             "created_at",
         }
         for field in string_fields:
-            self._require_string("current_draft.json", field, value[field])
-        selected_story_ids = self._require_list("current_draft.json.selected_story_ids", value["selected_story_ids"])
+            self._require_string(name, field, value[field])
+        selected_story_ids = self._require_list(f"{name}.selected_story_ids", value["selected_story_ids"])
         for index, selected_story_id in enumerate(selected_story_ids):
-            self._require_string("current_draft.json.selected_story_ids", str(index), selected_story_id)
+            self._require_string(f"{name}.selected_story_ids", str(index), selected_story_id)
         category = value.get("category")
         if category is None:
             category = value["draft_type"]
         else:
-            self._require_string("current_draft.json", "category", category)
+            self._require_string(name, "category", category)
         header_label = value.get("header_label")
         if header_label is None:
             header_label = value["draft_type"].replace("_", " ").title()
         else:
-            self._require_string("current_draft.json", "header_label", header_label)
+            self._require_string(name, "header_label", header_label)
         image_url = value.get("image_url")
         if image_url is not None:
-            self._require_string("current_draft.json", "image_url", image_url)
+            self._require_string(name, "image_url", image_url)
         status = value["status"]
         approved_at = value.get("approved_at")
         if approved_at is not None:
-            self._require_string("current_draft.json", "approved_at", approved_at)
+            self._require_string(name, "approved_at", approved_at)
         approved_for_slot = value.get("approved_for_slot")
         if approved_for_slot is not None:
-            approved_for_slot = self._require_bool("current_draft.json", "approved_for_slot", approved_for_slot)
+            approved_for_slot = self._require_bool(name, "approved_for_slot", approved_for_slot)
         legacy_approval_present = approved_at is not None or approved_for_slot is True
         publication_state = value.get("publication_state")
         if publication_state is None:
             publication_state = "needs_send" if status == "pending" and legacy_approval_present else "finalize_only"
         else:
-            self._require_string("current_draft.json", "publication_state", publication_state)
+            self._require_string(name, "publication_state", publication_state)
         if status == "pending" and legacy_approval_present:
             status = "publishing"
         normalized = {
@@ -247,11 +247,19 @@ class JsonStateStore:
         raw = self._read_json("current_draft.json", None)
         if raw is None:
             return None
-        return self._load_draft_record(raw)
+        return self._load_draft_record(raw, name="current_draft.json")
 
     def save_current_draft(self, draft: DraftRecord | None) -> None:
         payload = None if draft is None else draft.to_dict()
         self._write_json("current_draft.json", payload)
+
+    def load_owner_drafts(self) -> list[DraftRecord]:
+        raw = self._read_json("owner_drafts.json", [])
+        items = self._require_list("owner_drafts.json", raw)
+        return [self._load_draft_record(item, name="owner_drafts.json item") for item in items]
+
+    def save_owner_drafts(self, drafts: list[DraftRecord]) -> None:
+        self._write_json("owner_drafts.json", [draft.to_dict() for draft in drafts])
 
     def load_cursor(self) -> int:
         raw = self._read_json("telegram_cursor.json", {"last_update_id": 0})

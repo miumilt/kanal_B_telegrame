@@ -46,6 +46,33 @@ def _finalize_publication(store: JsonStateStore, draft: DraftRecord) -> None:
     store.save_current_draft(draft)
 
 
+def _replace_owner_draft(owner_drafts: list[DraftRecord], draft: DraftRecord) -> list[DraftRecord]:
+    updated: list[DraftRecord] = []
+    replaced = False
+    for existing in owner_drafts:
+        if existing.draft_id == draft.draft_id:
+            updated.append(draft)
+            replaced = True
+        else:
+            updated.append(existing)
+    if not replaced:
+        updated.append(draft)
+    return updated
+
+
+def _save_owner_draft(store: JsonStateStore, draft: DraftRecord) -> list[DraftRecord]:
+    owner_drafts = _replace_owner_draft(store.load_owner_drafts(), draft)
+    store.save_owner_drafts(owner_drafts)
+    return owner_drafts
+
+
+def _find_owner_draft(store: JsonStateStore, draft_id: str) -> DraftRecord | None:
+    for draft in store.load_owner_drafts():
+        if draft.draft_id == draft_id:
+            return draft
+    return None
+
+
 def _replaceable_draft_or_none(draft: DraftRecord | None) -> DraftRecord | None:
     if draft is not None and draft.status == "publishing":
         return None
@@ -168,6 +195,7 @@ def _build_short_draft(store: JsonStateStore, item_id: str) -> DraftRecord | Non
         image_url=item.image_url,
     )
     store.save_current_draft(draft)
+    _save_owner_draft(store, draft)
 
     for backlog_item in backlog:
         if backlog_item.item_id == item.item_id:
@@ -189,10 +217,18 @@ def process_updates(store: JsonStateStore, telegram_api: TelegramApi, config) ->
             if not _owner_matches(_callback_chat_id(callback), config.telegram_owner_chat_id):
                 continue
 
-            draft = store.load_current_draft()
+            data = callback.get("data", "")
+            action, _, draft_id = data.partition(":")
+            draft = _find_owner_draft(store, draft_id)
+            if draft is None:
+                draft = store.load_current_draft()
+                if draft is None or draft.draft_id != draft_id:
+                    telegram_api.answer_callback(callback["id"], "Draft is no longer available")
+                    continue
+
+            store.save_current_draft(draft)
             if draft is None:
                 continue
-            data = callback.get("data", "")
             if data == f"approve:{draft.draft_id}":
                 telegram_api.answer_callback(
                     callback["id"],
@@ -211,14 +247,17 @@ def process_updates(store: JsonStateStore, telegram_api: TelegramApi, config) ->
             if data == f"edit:{draft.draft_id}":
                 mark_draft_editing(draft)
                 store.save_current_draft(draft)
+                _save_owner_draft(store, draft)
                 telegram_api.answer_callback(callback["id"], "Send replacement text as the next message")
             elif data == f"publish_now:{draft.draft_id}":
                 _publish_draft(store, telegram_api, config.telegram_channel_id, draft)
+                _save_owner_draft(store, draft)
                 telegram_api.answer_callback(callback["id"], "Draft published immediately")
             elif data == f"skip:{draft.draft_id}":
                 _release_unpublished_draft_items(store, draft)
                 draft.status = "skipped"
                 store.save_current_draft(draft)
+                _save_owner_draft(store, draft)
                 telegram_api.answer_callback(callback["id"], "Draft skipped")
             continue
 
@@ -234,6 +273,7 @@ def process_updates(store: JsonStateStore, telegram_api: TelegramApi, config) ->
             draft.current_text = text
             draft.status = "pending"
             store.save_current_draft(draft)
+            _save_owner_draft(store, draft)
             telegram_api.send_message(
                 config.telegram_owner_chat_id,
                 "Draft updated. You can publish or edit again.",

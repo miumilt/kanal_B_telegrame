@@ -225,3 +225,31 @@ def test_build_single_post_text_truncates_after_translation_expands_text():
 
     assert len(text.splitlines()[1]) == 240
     assert text.splitlines()[1] == "X" * 240
+
+
+def test_build_single_post_text_strips_html_and_normalizes_whitespace():
+    item = BacklogItem(
+        item_id="html",
+        source_url="https://example.com/html",
+        source_title="OpenAI <b>Privacy</b> Filter",
+        normalized_title="openai privacy filter",
+        topic_fingerprint="openai-privacy-filter",
+        source_name="Example",
+        published_at="2026-04-19T10:00:00+00:00",
+        summary_candidate="<p>Detects <b>PII</b> in text</p>\n<p>and cleans it.</p>",
+        status="queued",
+        first_seen_at="2026-04-19T10:00:00+00:00",
+        last_considered_at="2026-04-19T10:00:00+00:00",
+    )
+
+    text = build_single_post_text(
+        item,
+        translated_title=lambda s: s,
+        translated_body=lambda s: s,
+    )
+
+    assert text == (
+        "OpenAI Privacy Filter\n"
+        "Detects PII in text and cleans it.\n"
+        "Source: https://example.com/html"
+    )

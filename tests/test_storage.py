@@ -42,6 +42,7 @@ def test_store_round_trip_backlog_and_draft(tmp_path: Path):
 
     store.save_backlog([item])
     store.save_current_draft(draft)
+    store.save_owner_drafts([draft])
 
     assert store.load_backlog()[0].item_id == "item-1"
     assert store.load_backlog()[0].category == "major_news"
@@ -51,6 +52,7 @@ def test_store_round_trip_backlog_and_draft(tmp_path: Path):
     assert loaded.category == "news"
     assert loaded.header_label == "Top story"
     assert loaded.image_url is None
+    assert store.load_owner_drafts()[0].draft_id == "draft-1"
 
 
 def test_store_round_trip_backlog_includes_metadata(tmp_path: Path):
@@ -189,6 +191,7 @@ def test_store_defaults_missing_files(tmp_path: Path):
 
     assert store.load_backlog() == []
     assert store.load_current_draft() is None
+    assert store.load_owner_drafts() == []
     assert store.load_published() == []
     assert store.load_cursor() == 0
 

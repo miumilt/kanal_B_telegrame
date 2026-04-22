@@ -110,6 +110,7 @@ def test_local_polling_loop_calls_process_updates_repeatedly_and_stops_on_keyboa
     module = _load_script_module("run_local_polling")
     calls: list[int] = []
     sleeps: list[int] = []
+    sync_events: list[str] = []
 
     def fake_process_updates(store, telegram_api, config):
         calls.append(len(calls) + 1)
@@ -126,10 +127,13 @@ def test_local_polling_loop_calls_process_updates_repeatedly_and_stops_on_keyboa
         telegram_api=FakeTelegramApi(),
         config=SimpleNamespace(telegram_poll_interval_seconds=7),
         sleeper=fake_sleep,
+        sync_before=lambda: sync_events.append("before"),
+        sync_after=lambda: sync_events.append("after"),
     )
 
     assert calls == [1, 2]
     assert sleeps == [7, 7]
+    assert sync_events == ["before", "after", "before", "after"]
 
 
 class CrashAfterChannelSendTelegramApi(FakeTelegramApi):
@@ -234,7 +238,9 @@ def test_daily_slot_script_sends_separate_owner_messages_for_multiple_candidates
     assert draft.draft_type == "single_post"
     assert draft.selected_story_ids == ["item-1"]
     assert store.load_current_draft() == draft
-    assert [item.status for item in store.load_backlog()] == ["drafted", "queued", "queued"]
+    owner_drafts = store.load_owner_drafts()
+    assert len(owner_drafts) == 3
+    assert [item.status for item in store.load_backlog()] == ["drafted", "drafted", "drafted"]
     assert telegram_api.sent_photos == [
         {
             "chat_id": "owner-chat",
@@ -251,18 +257,27 @@ def test_daily_slot_script_sends_separate_owner_messages_for_multiple_candidates
             },
         }
     ]
-    assert telegram_api.sent_messages == [
-        {
-            "chat_id": "owner-chat",
-            "text": "Open Model Released\nOpen weights and benchmarks.\nSource: https://example.com/item-2",
-            "reply_markup": None,
-        },
-        {
-            "chat_id": "owner-chat",
-            "text": "Useful Find\nA useful tool for agents.\nSource: https://example.com/item-3",
-            "reply_markup": None,
-        },
-    ]
+    assert [payload["chat_id"] for payload in telegram_api.sent_messages] == ["owner-chat", "owner-chat"]
+    assert telegram_api.sent_messages[0]["text"].endswith("Source: https://example.com/item-2")
+    assert telegram_api.sent_messages[1]["text"].endswith("Source: https://example.com/item-3")
+    assert telegram_api.sent_messages[0]["reply_markup"] == {
+        "inline_keyboard": [
+            [
+                {"text": "Edit", "callback_data": f"edit:{owner_drafts[1].draft_id}"},
+                {"text": "Publish now", "callback_data": f"publish_now:{owner_drafts[1].draft_id}"},
+                {"text": "Skip", "callback_data": f"skip:{owner_drafts[1].draft_id}"},
+            ]
+        ]
+    }
+    assert telegram_api.sent_messages[1]["reply_markup"] == {
+        "inline_keyboard": [
+            [
+                {"text": "Edit", "callback_data": f"edit:{owner_drafts[2].draft_id}"},
+                {"text": "Publish now", "callback_data": f"publish_now:{owner_drafts[2].draft_id}"},
+                {"text": "Skip", "callback_data": f"skip:{owner_drafts[2].draft_id}"},
+            ]
+        ]
+    }
 
 
 def test_daily_slot_run_refreshes_backlog_before_building_first_draft(tmp_path: Path):
@@ -546,6 +561,60 @@ def test_process_updates_publish_now_publishes_draft_immediately(tmp_path: Path)
         {
             "chat_id": "@channel",
             "text": draft.generated_text,
+            "reply_markup": None,
+        }
+    ]
+
+
+def test_process_updates_can_publish_non_primary_owner_preview(tmp_path: Path):
+    store = JsonStateStore(tmp_path)
+    store.save_backlog(
+        [
+            _item("item-1", "Gemini CLI Released", "CLI tool for developers."),
+            _item("item-2", "OpenAI Privacy Filter", "Detects and redacts PII."),
+        ]
+    )
+
+    build_main_slot_draft = _load_script_module("run_daily_slot").build_main_slot_draft
+    process_updates = _load_script_module("poll_telegram_updates").process_updates
+
+    build_main_slot_draft(store)
+    owner_drafts = store.load_owner_drafts()
+    second_draft = owner_drafts[1]
+
+    telegram_api = FakeTelegramApi(
+        updates=[
+            {
+                "update_id": 22,
+                "callback_query": {
+                    "id": "cb-publish-second",
+                    "data": f"publish_now:{second_draft.draft_id}",
+                    "message": {"chat": {"id": "owner-chat"}},
+                },
+            }
+        ]
+    )
+    config = SimpleNamespace(
+        telegram_owner_chat_id="owner-chat",
+        telegram_channel_id="@channel",
+        daily_slot_hour=18,
+        daily_slot_minute=0,
+    )
+
+    process_updates(store, telegram_api, config)
+
+    current = store.load_current_draft()
+    assert current is not None
+    assert current.draft_id == second_draft.draft_id
+    assert current.status == "published"
+    backlog = {item.item_id: item for item in store.load_backlog()}
+    assert backlog["item-1"].status == "drafted"
+    assert backlog["item-2"].status == "published"
+    assert store.load_published() == ["https://example.com/item-2"]
+    assert telegram_api.sent_messages == [
+        {
+            "chat_id": "@channel",
+            "text": second_draft.generated_text,
             "reply_markup": None,
         }
     ]
