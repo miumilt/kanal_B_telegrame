@@ -1,0 +1,47 @@
+[
+  {
+    "draft_id": "fe7c3dc0-596e-4fd6-b3cc-bf7430ec93f3",
+    "generated_text": "Команда Alibaba Qwen выпускает Qwen3.6-27B: плотную модель с открытым весом, превосходящую 397B MoE по тестам агентного кодирования\nКоманда Qwen из Alibaba выпустила Qwen3.6-27B, первую плотную модель с открытым весом в семействе Qwen3.6 — и, возможно, самую функциональную модель с 27 миллиардами параметров, доступную сегодня для агентов кодирования. Он вносит существен\nSource: https://www.marktechpost.com/2026/04/22/alibaba-qwen-team-releases-qwen3-6-27b-a-dense-open-weight-model-outperforming-397b-moe-on-agentic-coding-benchmarks/",
+    "current_text": "Команда Alibaba Qwen выпускает Qwen3.6-27B: плотную модель с открытым весом, превосходящую 397B MoE по тестам агентного кодирования\nКоманда Qwen из Alibaba выпустила Qwen3.6-27B, первую плотную модель с открытым весом в семействе Qwen3.6 — и, возможно, самую функциональную модель с 27 миллиардами параметров, доступную сегодня для агентов кодирования. Он вносит существен\nSource: https://www.marktechpost.com/2026/04/22/alibaba-qwen-team-releases-qwen3-6-27b-a-dense-open-weight-model-outperforming-397b-moe-on-agentic-coding-benchmarks/",
+    "selected_story_ids": [
+      "41e75827-1d41-426a-928e-59a41dfe5988"
+    ],
+    "draft_type": "single_post",
+    "status": "pending",
+    "created_at": "2026-04-23T16:26:33.421218+00:00",
+    "category": "major_news",
+    "header_label": "Single Post",
+    "image_url": "https://www.marktechpost.com/wp-content/uploads/2026/04/Screenshot-2026-04-22-at-12.39.13-PM-1-150x150.png",
+    "publication_state": "finalize_only"
+  },
+  {
+    "draft_id": "750db4c5-43b0-4d52-af55-ebd8cd715aad",
+    "generated_text": "Xiaomi выпускает MiMo-V2.5-Pro ​​и MiMo-V2.5: соответствующие эталонным моделям передовые модели при значительно более низкой стоимости токена\nКоманда MiMo из Xiaomi только что представила две новые модели, которые продвигают агентный ИИ с открытым исходным кодом ближе к передовой территории, чем когда-либо прежде. Публикация Xiaomi выпускает MiMo-V2.5-Pro ​​и MiMo-V2.5: соответст\nSource: https://www.marktechpost.com/2026/04/22/xiaomi-releases-mimo-v2-5-pro-and-mimo-v2-5-matching-frontier-model-benchmarks-at-significantly-lower-token-cost/",
+    "current_text": "Xiaomi выпускает MiMo-V2.5-Pro ​​и MiMo-V2.5: соответствующие эталонным моделям передовые модели при значительно более низкой стоимости токена\nКоманда MiMo из Xiaomi только что представила две новые модели, которые продвигают агентный ИИ с открытым исходным кодом ближе к передовой территории, чем когда-либо прежде. Публикация Xiaomi выпускает MiMo-V2.5-Pro ​​и MiMo-V2.5: соответст\nSource: https://www.marktechpost.com/2026/04/22/xiaomi-releases-mimo-v2-5-pro-and-mimo-v2-5-matching-frontier-model-benchmarks-at-significantly-lower-token-cost/",
+    "selected_story_ids": [
+      "02f9da4d-7e6e-4c9a-8ef6-f009eb4148fa"
+    ],
+    "draft_type": "single_post",
+    "status": "pending",
+    "created_at": "2026-04-23T16:26:34.051447+00:00",
+    "category": "freebie/useful_find",
+    "header_label": "Single Post",
+    "image_url": "https://www.marktechpost.com/wp-content/uploads/2026/04/Screenshot-2026-04-22-at-8.34.28-PM-150x150.png",
+    "publication_state": "finalize_only"
+  },
+  {
+    "draft_id": "eaaccdde-c4a9-423a-9702-7b11bc82c5c6",
+    "generated_text": "Возвышение Австрии: Google инвестирует в свой первый центр обработки данных в Альпах.\nАэрофотоснимок дата-центра\nSource: https://blog.google/innovation-and-ai/infrastructure-and-cloud/global-network/google-data-center-austria/",
+    "current_text": "Возвышение Австрии: Google инвестирует в свой первый центр обработки данных в Альпах.\nАэрофотоснимок дата-центра\nSource: https://blog.google/innovation-and-ai/infrastructure-and-cloud/global-network/google-data-center-austria/",
+    "selected_story_ids": [
+      "26aca8ca-37e5-4742-88f6-e7fbb77a5dda"
+    ],
+    "draft_type": "single_post",
+    "status": "pending",
+    "created_at": "2026-04-23T16:26:34.861865+00:00",
+    "category": "major_news",
+    "header_label": "Single Post",
+    "image_url": "https://storage.googleapis.com/gweb-uniblog-publish-prod/images/Google_Kronstorf_Data_Center_1.max-600x600.format-webp.webp",
+    "publication_state": "finalize_only"
+  }
+]
