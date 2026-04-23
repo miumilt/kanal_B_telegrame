@@ -295,6 +295,113 @@ def test_score_item_prefers_confirmed_high_priority_sources_with_evidence():
     assert score_item(official) > score_item(community)
 
 
+def test_score_item_prioritizes_frontier_openai_model_release_over_secondary_model_news():
+    openai_release = BacklogItem(
+        item_id="openai-gpt",
+        source_url="https://openai.com/index/introducing-gpt-5-5",
+        source_title="Introducing GPT-5.5",
+        normalized_title="introducing gpt-5.5",
+        topic_fingerprint="introducing-gpt-5-5",
+        source_name="OpenAI Blog",
+        published_at="2026-04-23T10:00:00+00:00",
+        summary_candidate="OpenAI released a new frontier GPT model.",
+        status="queued",
+        first_seen_at="2026-04-23T10:00:00+00:00",
+        last_considered_at="2026-04-23T10:00:00+00:00",
+        source_tier="tier1_official",
+        source_kind="rss",
+        source_priority=10,
+        confirmed=True,
+        evidence_urls=["https://openai.com/index/introducing-gpt-5-5"],
+    )
+    secondary_release = BacklogItem(
+        item_id="xiaomi-mimo",
+        source_url="https://example.com/xiaomi-mimo",
+        source_title="Xiaomi releases MiMo model",
+        normalized_title="xiaomi releases mimo model",
+        topic_fingerprint="xiaomi-releases-mimo-model",
+        source_name="AI News",
+        published_at="2026-04-23T09:00:00+00:00",
+        summary_candidate="Xiaomi launches a new open model benchmark.",
+        status="queued",
+        first_seen_at="2026-04-23T09:00:00+00:00",
+        last_considered_at="2026-04-23T09:00:00+00:00",
+        source_tier="tier2_media",
+        source_kind="rss",
+        source_priority=8,
+        confirmed=True,
+        evidence_urls=["https://example.com/xiaomi-mimo"],
+    )
+
+    assert score_item(openai_release) > score_item(secondary_release)
+
+
+def test_select_daily_slot_items_uses_score_order_before_category_variety():
+    backlog = [
+        BacklogItem(
+            item_id="openai-gpt",
+            source_url="https://openai.com/index/introducing-gpt-5-5",
+            source_title="Introducing GPT-5.5",
+            normalized_title="introducing gpt-5.5",
+            topic_fingerprint="introducing-gpt-5-5",
+            source_name="OpenAI Blog",
+            published_at="2026-04-23T10:00:00+00:00",
+            summary_candidate="OpenAI released a new frontier GPT model.",
+            status="queued",
+            first_seen_at="2026-04-23T10:00:00+00:00",
+            last_considered_at="2026-04-23T10:00:00+00:00",
+            source_tier="tier1_official",
+            source_kind="rss",
+            source_priority=10,
+            confirmed=True,
+            evidence_urls=["https://openai.com/index/introducing-gpt-5-5"],
+            category="major_news",
+        ),
+        BacklogItem(
+            item_id="anthropic-claude",
+            source_url="https://anthropic.com/news/claude-update",
+            source_title="Claude model update",
+            normalized_title="claude model update",
+            topic_fingerprint="claude-model-update",
+            source_name="Anthropic News",
+            published_at="2026-04-23T09:00:00+00:00",
+            summary_candidate="Anthropic released a new Claude model update.",
+            status="queued",
+            first_seen_at="2026-04-23T09:00:00+00:00",
+            last_considered_at="2026-04-23T09:00:00+00:00",
+            source_tier="tier1_official",
+            source_kind="rss",
+            source_priority=10,
+            confirmed=True,
+            evidence_urls=["https://anthropic.com/news/claude-update"],
+            category="major_news",
+        ),
+        BacklogItem(
+            item_id="free-tool",
+            source_url="https://example.com/free-tool",
+            source_title="Free AI Tool",
+            normalized_title="free ai tool",
+            topic_fingerprint="free-ai-tool",
+            source_name="Example",
+            published_at="2026-04-23T08:00:00+00:00",
+            summary_candidate="A useful free tool for prompts.",
+            status="queued",
+            first_seen_at="2026-04-23T08:00:00+00:00",
+            last_considered_at="2026-04-23T08:00:00+00:00",
+            source_tier="tier2_media",
+            source_kind="rss",
+            source_priority=7,
+            confirmed=True,
+            evidence_urls=["https://example.com/free-tool"],
+            category="freebie/useful_find",
+        ),
+    ]
+
+    selected = select_daily_slot_items(backlog, limit=2)
+
+    assert [item.item_id for item in selected] == ["openai-gpt", "anthropic-claude"]
+
+
 def test_select_main_slot_items_returns_highest_scoring_queued_items():
     backlog = [
         BacklogItem(
@@ -376,7 +483,7 @@ def test_select_main_slot_items_returns_highest_scoring_queued_items():
     assert [item.item_id for item in selected] == ["high", "medium"]
 
 
-def test_select_daily_slot_items_prefers_category_variety_when_available():
+def test_select_daily_slot_items_returns_highest_scoring_candidates():
     backlog = [
         BacklogItem(
             item_id="major-1",
@@ -458,8 +565,7 @@ def test_select_daily_slot_items_prefers_category_variety_when_available():
 
     selected = select_daily_slot_items(backlog)
 
-    assert [item.item_id for item in selected] == ["major-1", "freebie-1", "major-2"]
-    assert [item.category for item in selected] == ["major_news", "freebie/useful_find", "major_news"]
+    assert [item.item_id for item in selected] == ["major-1", "major-2", "freebie-1"]
 
 
 def test_select_daily_slot_items_with_age_ignores_items_older_than_one_day():
