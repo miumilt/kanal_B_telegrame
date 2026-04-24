@@ -38,17 +38,22 @@ def _state_paths(project_root: Path) -> list[str]:
 
 
 def _run_git(project_root: Path, *args: str) -> subprocess.CompletedProcess[str]:
-    return subprocess.run(
+    result = subprocess.run(
         ["git", *args],
         cwd=project_root,
-        check=True,
+        check=False,
         capture_output=True,
         text=True,
     )
+    if result.returncode != 0:
+        output = "\n".join(part.strip() for part in (result.stdout, result.stderr) if part.strip())
+        command = " ".join(("git", *args))
+        raise RuntimeError(f"{command} failed with exit code {result.returncode}:\n{output}")
+    return result
 
 
 def sync_repo_before_poll(project_root: Path) -> None:
-    _run_git(project_root, "pull", "--rebase", "origin", "master")
+    _run_git(project_root, "pull", "--rebase", "--autostash", "origin", "master")
 
 
 def sync_repo_after_poll(project_root: Path) -> None:
@@ -62,7 +67,7 @@ def sync_repo_after_poll(project_root: Path) -> None:
 
     _run_git(project_root, "add", "--", *state_paths)
     _run_git(project_root, "commit", "-m", "chore: update bot state after local telegram poll")
-    _run_git(project_root, "pull", "--rebase", "origin", "master")
+    _run_git(project_root, "pull", "--rebase", "--autostash", "origin", "master")
     _run_git(project_root, "push", "origin", "master")
 
 

@@ -3,10 +3,12 @@ from __future__ import annotations
 import json
 import importlib.util
 import runpy
+import subprocess
 import sys
 from pathlib import Path
 from types import SimpleNamespace
 
+import pytest
 import requests
 
 from ai_news_bot.models import BacklogItem, DraftRecord
@@ -155,6 +157,41 @@ def test_local_polling_loop_calls_process_updates_repeatedly_and_stops_on_keyboa
     assert calls == [1, 2]
     assert sleeps == [7, 7]
     assert sync_events == ["before", "after", "before", "after"]
+
+
+def test_sync_repo_before_poll_autostashes_runtime_state_changes(tmp_path: Path, monkeypatch):
+    module = _load_script_module("run_local_polling")
+    calls: list[tuple[str, ...]] = []
+
+    def fake_run_git(project_root: Path, *args: str):
+        calls.append(args)
+        return subprocess.CompletedProcess(["git", *args], 0, stdout="", stderr="")
+
+    monkeypatch.setattr(module, "_run_git", fake_run_git)
+
+    module.sync_repo_before_poll(tmp_path)
+
+    assert calls == [("pull", "--rebase", "--autostash", "origin", "master")]
+
+
+def test_run_git_includes_git_stderr_when_command_fails(tmp_path: Path, monkeypatch):
+    module = _load_script_module("run_local_polling")
+
+    def fake_subprocess_run(*args, **kwargs):
+        return subprocess.CompletedProcess(
+            args[0],
+            128,
+            stdout="",
+            stderr="error: cannot pull with rebase: You have unstaged changes.",
+        )
+
+    monkeypatch.setattr(module.subprocess, "run", fake_subprocess_run)
+
+    with pytest.raises(RuntimeError) as exc:
+        module._run_git(tmp_path, "pull", "--rebase", "origin", "master")
+
+    assert "git pull --rebase origin master failed with exit code 128" in str(exc.value)
+    assert "cannot pull with rebase" in str(exc.value)
 
 
 class CrashAfterChannelSendTelegramApi(FakeTelegramApi):
