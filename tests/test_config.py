@@ -18,7 +18,7 @@ def test_load_config_reads_env_state_dir_and_uses_defaults(monkeypatch, tmp_path
     assert config.telegram_channel_id == "@channel"
     assert config.state_dir == tmp_path
     assert config.sources_path == sources_path
-    assert config.daily_slot_hour == 18
+    assert config.daily_slot_hour == 6
     assert config.daily_slot_minute == 0
     assert config.draft_generation_hour == 17
     assert config.draft_generation_minute == 30

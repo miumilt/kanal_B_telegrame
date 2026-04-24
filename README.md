@@ -28,7 +28,7 @@ Community-originated topics stay out of the actionable draft flow until a strong
 ## Current operating model
 
 - GitHub Actions `daily-slot` is the only scheduled GitHub job used in normal operation.
-- `daily-slot` runs at `18:00 Europe/Moscow` and sends up to `10` separate single-post news drafts to the owner by default.
+- `daily-slot` runs at `06:00 Europe/Moscow` and sends up to `10` separate single-post news drafts to the owner by default.
 - `daily-slot` auto-selects only topics from the last `24` hours.
 - The preview limit can be changed with `DAILY_SLOT_PREVIEW_LIMIT`.
 - Messages are sent without inline buttons; the owner edits and posts manually.

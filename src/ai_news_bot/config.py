@@ -26,7 +26,7 @@ class AppConfig:
     state_dir: Path
     sources_path: Path
     timezone_name: str = "Europe/Moscow"
-    daily_slot_hour: int = 18
+    daily_slot_hour: int = 6
     daily_slot_minute: int = 0
     draft_generation_hour: int = 17
     draft_generation_minute: int = 30
