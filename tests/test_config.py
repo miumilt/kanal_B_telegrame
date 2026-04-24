@@ -23,6 +23,7 @@ def test_load_config_reads_env_state_dir_and_uses_defaults(monkeypatch, tmp_path
     assert config.draft_generation_hour == 17
     assert config.draft_generation_minute == 30
     assert config.telegram_poll_interval_seconds == 30
+    assert config.daily_slot_preview_limit == 10
 
 
 def test_load_config_uses_project_root_state_dir_by_default(monkeypatch):
@@ -67,6 +68,19 @@ def test_load_config_reads_poll_interval_override(monkeypatch):
     assert config.telegram_poll_interval_seconds == 45
 
 
+def test_load_config_reads_daily_preview_limit_override(monkeypatch):
+    monkeypatch.setenv("TELEGRAM_BOT_TOKEN", "token")
+    monkeypatch.setenv("TELEGRAM_OWNER_CHAT_ID", "123")
+    monkeypatch.setenv("TELEGRAM_CHANNEL_ID", "@channel")
+    monkeypatch.setenv("DAILY_SLOT_PREVIEW_LIMIT", "7")
+    monkeypatch.delenv("STATE_DIR", raising=False)
+    monkeypatch.delenv("SOURCES_PATH", raising=False)
+
+    config = load_config()
+
+    assert config.daily_slot_preview_limit == 7
+
+
 def test_load_config_rejects_non_positive_poll_interval(monkeypatch):
     monkeypatch.setenv("TELEGRAM_BOT_TOKEN", "token")
     monkeypatch.setenv("TELEGRAM_OWNER_CHAT_ID", "123")
@@ -79,3 +93,17 @@ def test_load_config_rejects_non_positive_poll_interval(monkeypatch):
         assert "TELEGRAM_POLL_INTERVAL_SECONDS must be a positive integer" in str(exc)
     else:
         raise AssertionError("Expected non-positive poll interval to fail")
+
+
+def test_load_config_rejects_non_positive_daily_preview_limit(monkeypatch):
+    monkeypatch.setenv("TELEGRAM_BOT_TOKEN", "token")
+    monkeypatch.setenv("TELEGRAM_OWNER_CHAT_ID", "123")
+    monkeypatch.setenv("TELEGRAM_CHANNEL_ID", "@channel")
+    monkeypatch.setenv("DAILY_SLOT_PREVIEW_LIMIT", "0")
+
+    try:
+        load_config()
+    except ValueError as exc:
+        assert "DAILY_SLOT_PREVIEW_LIMIT must be a positive integer" in str(exc)
+    else:
+        raise AssertionError("Expected non-positive daily preview limit to fail")

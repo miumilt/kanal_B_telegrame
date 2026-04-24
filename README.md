@@ -28,10 +28,11 @@ Community-originated topics stay out of the actionable draft flow until a strong
 ## Current operating model
 
 - GitHub Actions `daily-slot` is the only scheduled GitHub job used in normal operation.
-- `daily-slot` runs at `18:00 Europe/Moscow` and sends up to `3` separate single-post owner previews.
+- `daily-slot` runs at `18:00 Europe/Moscow` and sends up to `10` separate single-post owner previews by default.
 - `daily-slot` auto-selects only topics from the last `24` hours.
-- The first preview becomes the persisted actionable draft.
-- Additional previews are owner-facing suggestions; they are not persisted as separate actionable drafts.
+- The preview limit can be changed with `DAILY_SLOT_PREVIEW_LIMIT`.
+- Every preview is persisted as an actionable owner draft with buttons.
+- Before sending selected previews, `daily-slot` tries to refresh article media from the source page and prefers page-level `og:video` / `og:image` over small RSS thumbnails.
 - Draft buttons are only `Edit`, `Publish now`, and `Skip`.
 - Telegram callback processing now runs locally on Windows through `scripts/run_local_polling.py`.
 - Unpublished backlog items stay valid for up to `14` days; older items are dropped as stale.
@@ -61,6 +62,14 @@ python scripts/run_local_polling.py
 ```
 
 The poller reads `TELEGRAM_POLL_INTERVAL_SECONDS` from the environment and defaults to `30` seconds.
+
+For buttons to work without manual GitHub Actions runs:
+
+- Keep the PowerShell window with `python scripts/run_local_polling.py` open, or run it through Windows Task Scheduler.
+- Set `TELEGRAM_BOT_TOKEN`, `TELEGRAM_OWNER_CHAT_ID`, and `TELEGRAM_CHANNEL_ID` in the same Windows environment where the poller runs.
+- The poller automatically pulls the latest `master` before checking Telegram updates and pushes state after handling a button.
+- Button presses are not instant if the poller is between cycles; with the default interval they are usually handled within `30` seconds.
+- If buttons stop reacting, stop the poller, run `git pull --rebase --autostash origin master`, then start `python scripts/run_local_polling.py` again.
 
 ## Task Scheduler setup
 

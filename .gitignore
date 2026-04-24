@@ -2,5 +2,12 @@
 .venv/
 __pycache__/
 .pytest_cache/
+.pytest-bt/
+.pytest-tmp/
+.tmp-pytest/
+.tmp-pytest-local/
+pytest-cache-files-*/
+state/pttmp/
+state/pytest-temp-tests/
 *.pyc
 *.egg-info/

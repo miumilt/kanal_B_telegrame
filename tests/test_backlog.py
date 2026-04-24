@@ -563,7 +563,7 @@ def test_select_daily_slot_items_returns_highest_scoring_candidates():
         ),
     ]
 
-    selected = select_daily_slot_items(backlog)
+    selected = select_daily_slot_items(backlog, limit=3)
 
     assert [item.item_id for item in selected] == ["major-1", "major-2", "freebie-1"]
 

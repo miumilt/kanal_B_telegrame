@@ -22,6 +22,7 @@ def _item(
     status: str = "queued",
     category: str = "major_news",
     image_url: str | None = None,
+    video_url: str | None = None,
     published_at: str = "2026-04-19T10:00:00+00:00",
 ) -> BacklogItem:
     return BacklogItem(
@@ -38,6 +39,7 @@ def _item(
         last_considered_at=published_at,
         category=category,
         image_url=image_url,
+        video_url=video_url,
     )
 
 
@@ -46,6 +48,7 @@ class FakeTelegramApi:
         self._updates = updates or []
         self.sent_messages: list[dict] = []
         self.sent_photos: list[dict] = []
+        self.sent_videos: list[dict] = []
         self.answered_callbacks: list[dict] = []
 
     def send_message(self, chat_id: str, text: str, reply_markup: dict | None = None) -> dict:
@@ -67,6 +70,22 @@ class FakeTelegramApi:
             "reply_markup": reply_markup,
         }
         self.sent_photos.append(payload)
+        return payload
+
+    def send_video(
+        self,
+        chat_id: str,
+        video_url: str,
+        caption: str | None = None,
+        reply_markup: dict | None = None,
+    ) -> dict:
+        payload = {
+            "chat_id": chat_id,
+            "video_url": video_url,
+            "caption": caption,
+            "reply_markup": reply_markup,
+        }
+        self.sent_videos.append(payload)
         return payload
 
     def get_updates(self, offset: int) -> list[dict]:
@@ -155,6 +174,18 @@ class CrashAfterChannelSendTelegramApi(FakeTelegramApi):
             raise SystemExit("crashed after channel send")
         return payload
 
+    def send_video(
+        self,
+        chat_id: str,
+        video_url: str,
+        caption: str | None = None,
+        reply_markup: dict | None = None,
+    ) -> dict:
+        payload = super().send_video(chat_id, video_url, caption, reply_markup)
+        if str(chat_id).startswith("@"):
+            raise SystemExit("crashed after channel send")
+        return payload
+
 
 class FailBeforeChannelSendTelegramApi(FakeTelegramApi):
     def send_message(self, chat_id: str, text: str, reply_markup: dict | None = None) -> dict:
@@ -172,6 +203,17 @@ class FailBeforeChannelSendTelegramApi(FakeTelegramApi):
         if str(chat_id).startswith("@"):
             raise RuntimeError("send failed before acceptance")
         return super().send_photo(chat_id, photo_url, caption, reply_markup)
+
+    def send_video(
+        self,
+        chat_id: str,
+        video_url: str,
+        caption: str | None = None,
+        reply_markup: dict | None = None,
+    ) -> dict:
+        if str(chat_id).startswith("@"):
+            raise RuntimeError("send failed before acceptance")
+        return super().send_video(chat_id, video_url, caption, reply_markup)
 
 
 def test_daily_slot_script_builds_pending_single_post_and_notifies_owner(tmp_path: Path):
@@ -278,6 +320,136 @@ def test_daily_slot_script_sends_separate_owner_messages_for_multiple_candidates
             ]
         ]
     }
+
+
+def test_daily_slot_script_sends_up_to_ten_actionable_owner_previews(tmp_path: Path):
+    store = JsonStateStore(tmp_path)
+    store.save_backlog(
+        [
+            _item(
+                f"item-{index}",
+                f"AI Launch {index}",
+                "A useful AI launch.",
+                published_at=f"2026-04-19T10:{index:02d}:00+00:00",
+            )
+            for index in range(1, 13)
+        ]
+    )
+
+    build_main_slot_draft = _load_script_module("run_daily_slot").build_main_slot_draft
+
+    telegram_api = FakeTelegramApi()
+
+    build_main_slot_draft(store, telegram_api=telegram_api, owner_chat_id="owner-chat")
+
+    owner_drafts = store.load_owner_drafts()
+    assert len(owner_drafts) == 10
+    assert all(draft.status == "pending" for draft in owner_drafts)
+    assert all(draft.selected_story_ids for draft in owner_drafts)
+    assert len(telegram_api.sent_messages) == 10
+    assert len(telegram_api.sent_photos) == 0
+    assert len(telegram_api.sent_videos) == 0
+    assert sum(1 for item in store.load_backlog() if item.status == "drafted") == 10
+    assert sum(1 for item in store.load_backlog() if item.status == "queued") == 2
+
+
+def test_daily_slot_refreshes_selected_media_from_article_page(tmp_path: Path):
+    store = JsonStateStore(tmp_path)
+    store.save_backlog(
+        [
+            _item(
+                "item-1",
+                "GPT Image 2 Released",
+                "New image model rollout.",
+                image_url="https://example.com/tiny-rss-thumb.png",
+            )
+        ]
+    )
+
+    build_main_slot_draft = _load_script_module("run_daily_slot").build_main_slot_draft
+
+    telegram_api = FakeTelegramApi()
+
+    draft = build_main_slot_draft(
+        store,
+        telegram_api=telegram_api,
+        owner_chat_id="owner-chat",
+        media_refresher=lambda url: (
+            "https://example.com/high-res-og-image.png",
+            "https://example.com/demo.mp4",
+        ),
+    )
+
+    assert draft.image_url == "https://example.com/high-res-og-image.png"
+    assert draft.video_url == "https://example.com/demo.mp4"
+    assert store.load_current_draft() == draft
+    assert store.load_backlog()[0].image_url == "https://example.com/high-res-og-image.png"
+    assert store.load_backlog()[0].video_url == "https://example.com/demo.mp4"
+    assert telegram_api.sent_videos == [
+        {
+            "chat_id": "owner-chat",
+            "video_url": "https://example.com/demo.mp4",
+            "caption": draft.generated_text,
+            "reply_markup": {
+                "inline_keyboard": [
+                    [
+                        {"text": "Edit", "callback_data": f"edit:{draft.draft_id}"},
+                        {"text": "Publish now", "callback_data": f"publish_now:{draft.draft_id}"},
+                        {"text": "Skip", "callback_data": f"skip:{draft.draft_id}"},
+                    ]
+                ]
+            },
+        }
+    ]
+    assert telegram_api.sent_photos == []
+    assert telegram_api.sent_messages == []
+
+
+def test_daily_slot_keeps_original_media_when_article_media_refresh_fails(tmp_path: Path):
+    store = JsonStateStore(tmp_path)
+    store.save_backlog(
+        [
+            _item(
+                "item-1",
+                "Claude Tool Released",
+                "New agent feature.",
+                image_url="https://example.com/feed-image.png",
+            )
+        ]
+    )
+
+    build_main_slot_draft = _load_script_module("run_daily_slot").build_main_slot_draft
+
+    def failing_media_refresher(url: str) -> tuple[str | None, str | None]:
+        raise RuntimeError("page fetch failed")
+
+    telegram_api = FakeTelegramApi()
+
+    draft = build_main_slot_draft(
+        store,
+        telegram_api=telegram_api,
+        owner_chat_id="owner-chat",
+        media_refresher=failing_media_refresher,
+    )
+
+    assert draft.image_url == "https://example.com/feed-image.png"
+    assert draft.video_url is None
+    assert telegram_api.sent_photos == [
+        {
+            "chat_id": "owner-chat",
+            "photo_url": "https://example.com/feed-image.png",
+            "caption": draft.generated_text,
+            "reply_markup": {
+                "inline_keyboard": [
+                    [
+                        {"text": "Edit", "callback_data": f"edit:{draft.draft_id}"},
+                        {"text": "Publish now", "callback_data": f"publish_now:{draft.draft_id}"},
+                        {"text": "Skip", "callback_data": f"skip:{draft.draft_id}"},
+                    ]
+                ]
+            },
+        }
+    ]
 
 
 def test_daily_slot_run_refreshes_backlog_before_building_first_draft(tmp_path: Path):
@@ -672,6 +844,62 @@ def test_process_updates_publish_now_uses_photo_when_draft_has_image(tmp_path: P
             "reply_markup": None,
         }
     ]
+    assert telegram_api.sent_messages == []
+
+
+def test_process_updates_publish_now_prefers_video_when_draft_has_video(tmp_path: Path):
+    store = JsonStateStore(tmp_path)
+    store.save_backlog(
+        [
+            _item(
+                "item-1",
+                "GPT Image 2 Released",
+                "New image and video model demo.",
+                image_url="https://example.com/preview.png",
+                video_url="https://example.com/demo.mp4",
+            )
+        ]
+    )
+
+    build_main_slot_draft = _load_script_module("run_daily_slot").build_main_slot_draft
+    process_updates = _load_script_module("poll_telegram_updates").process_updates
+
+    draft = build_main_slot_draft(store)
+    current = store.load_current_draft()
+    assert current is not None
+    assert current.image_url == "https://example.com/preview.png"
+    assert current.video_url == "https://example.com/demo.mp4"
+
+    telegram_api = FakeTelegramApi(
+        updates=[
+            {
+                "update_id": 25,
+                "callback_query": {
+                    "id": "cb-publish-video",
+                    "data": f"publish_now:{draft.draft_id}",
+                    "message": {"chat": {"id": "owner-chat"}},
+                },
+            }
+        ]
+    )
+    config = SimpleNamespace(
+        telegram_owner_chat_id="owner-chat",
+        telegram_channel_id="@channel",
+        daily_slot_hour=18,
+        daily_slot_minute=0,
+    )
+
+    process_updates(store, telegram_api, config)
+
+    assert telegram_api.sent_videos == [
+        {
+            "chat_id": "@channel",
+            "video_url": "https://example.com/demo.mp4",
+            "caption": draft.current_text,
+            "reply_markup": None,
+        }
+    ]
+    assert telegram_api.sent_photos == []
     assert telegram_api.sent_messages == []
 
 

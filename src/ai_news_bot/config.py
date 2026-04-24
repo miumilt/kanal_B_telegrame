@@ -31,6 +31,7 @@ class AppConfig:
     draft_generation_hour: int = 17
     draft_generation_minute: int = 30
     telegram_poll_interval_seconds: int = 30
+    daily_slot_preview_limit: int = 10
 
 
 def _load_positive_int(env_name: str, default: int) -> int:
@@ -52,4 +53,5 @@ def load_config() -> AppConfig:
         state_dir=Path(os.environ.get("STATE_DIR", project_root / "state")),
         sources_path=Path(os.environ.get("SOURCES_PATH", project_root / "sources.yaml")),
         telegram_poll_interval_seconds=_load_positive_int("TELEGRAM_POLL_INTERVAL_SECONDS", 30),
+        daily_slot_preview_limit=_load_positive_int("DAILY_SLOT_PREVIEW_LIMIT", 10),
     )

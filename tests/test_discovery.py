@@ -35,6 +35,7 @@ def test_fetch_candidates_from_sources_builds_backlog_items(monkeypatch):
                 summary="CLI tool for developers",
                 published="2026-04-20T10:00:00+00:00",
                 media_thumbnail=[{"url": "/images/feed-thumb.png"}],
+                media_content=[{"url": "/videos/demo.mp4", "type": "video/mp4"}],
                 source={"title": "OpenAI Blog"},
             )
         ],
@@ -54,6 +55,7 @@ def test_fetch_candidates_from_sources_builds_backlog_items(monkeypatch):
     assert items[0].summary_candidate == "CLI tool for developers"
     assert items[0].category == "major_news"
     assert items[0].image_url == "https://example.com/images/feed-thumb.png"
+    assert items[0].video_url == "https://example.com/videos/demo.mp4"
 
 
 def test_fetch_candidates_from_sources_marks_community_items_unconfirmed(monkeypatch):
@@ -97,6 +99,7 @@ def test_fetch_candidates_from_sources_marks_community_items_unconfirmed(monkeyp
     assert items[0].source_kind == "hackernews"
     assert items[0].category == "major_news"
     assert items[0].image_url is None
+    assert items[0].video_url is None
 
 
 def test_fetch_candidates_from_sources_uses_page_text_for_website_sources(monkeypatch):
@@ -130,7 +133,8 @@ def test_fetch_candidates_from_sources_uses_page_text_for_website_sources(monkey
     monkeypatch.setattr(
         "ai_news_bot.discovery.fetch_page_html",
         lambda url: (
-            "<html><head><meta property='og:image' content='/images/article.png'></head>"
+            "<html><head><meta property='og:image' content='/images/article.png'>"
+            "<meta property='og:video' content='/videos/article-demo.mp4'></head>"
             "<body><img src='https://example.com/images/fallback.png'>Fetched from website body</body></html>"
         ),
     )
@@ -142,3 +146,4 @@ def test_fetch_candidates_from_sources_uses_page_text_for_website_sources(monkey
     assert items[0].summary_candidate == "Fetched from website body"
     assert items[0].category == "major_news"
     assert items[0].image_url == "https://example.com/images/feed-image.png"
+    assert items[0].video_url == "https://example.com/videos/article-demo.mp4"

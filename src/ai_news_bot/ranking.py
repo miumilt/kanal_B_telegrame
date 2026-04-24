@@ -81,7 +81,7 @@ def score_item(item: BacklogItem) -> int:
     tier_score = _TIER_WEIGHTS.get(item.source_tier, 0)
     confirmation_score = 3 if item.confirmed else -3
     priority_score = item.source_priority
-    evidence_score = max(0, len(item.evidence_urls or []) - 1)
+    evidence_score = max(0, len(item.evidence_urls or []) - 1) * 4
     frontier_score = _frontier_source_score(item) + _frontier_model_score(text)
     return (
         keyword_score

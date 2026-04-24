@@ -1,4 +1,4 @@
-from ai_news_bot.media import extract_image_url
+from ai_news_bot.media import extract_image_url, extract_media_urls
 
 
 def test_extract_image_url_prefers_og_image_over_img_fallback():
@@ -39,3 +39,19 @@ def test_extract_image_url_falls_back_to_first_image():
     """
 
     assert extract_image_url(html, "https://example.com/article") == "https://example.com/images/first.png"
+
+
+def test_extract_media_urls_reads_og_video_and_og_image():
+    html = """
+    <html>
+      <head>
+        <meta property="og:image" content="https://example.com/hero.png">
+        <meta property="og:video" content="https://example.com/clip.mp4">
+      </head>
+    </html>
+    """
+
+    assert extract_media_urls(html, "https://example.com/article") == (
+        "https://example.com/hero.png",
+        "https://example.com/clip.mp4",
+    )

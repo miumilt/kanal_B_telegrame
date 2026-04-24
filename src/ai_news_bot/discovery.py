@@ -6,7 +6,7 @@ from uuid import uuid4
 
 from ai_news_bot.config import resolve_project_root
 from ai_news_bot.editorial import classify_candidate
-from ai_news_bot.media import extract_image_url
+from ai_news_bot.media import extract_media_urls
 from ai_news_bot.models import BacklogItem
 from ai_news_bot.source_registry import SourceConfig, load_sources
 
@@ -55,7 +55,10 @@ def _resolve_image_url(page_url: str, candidate: str) -> str:
     return urljoin(page_url, candidate)
 
 
-def _extract_feed_image_url(entry, page_url: str) -> str | None:
+def _extract_feed_media_urls(entry, page_url: str) -> tuple[str | None, str | None]:
+    image_url: str | None = None
+    video_url: str | None = None
+
     for key in ("media_thumbnail", "media_content"):
         media_items = _entry_value(entry, key, [])
         if isinstance(media_items, list):
@@ -63,7 +66,13 @@ def _extract_feed_image_url(entry, page_url: str) -> str | None:
                 if isinstance(media_item, dict):
                     candidate = media_item.get("url")
                     if isinstance(candidate, str) and candidate.strip():
-                        return _resolve_image_url(page_url, candidate.strip())
+                        resolved = _resolve_image_url(page_url, candidate.strip())
+                        media_type = str(media_item.get("type", "")).lower()
+                        if media_type.startswith("video/"):
+                            if video_url is None:
+                                video_url = resolved
+                        elif image_url is None:
+                            image_url = resolved
 
     links = _entry_value(entry, "links", [])
     if isinstance(links, list):
@@ -73,36 +82,48 @@ def _extract_feed_image_url(entry, page_url: str) -> str | None:
             href = link.get("href")
             link_type = str(link.get("type", "")).lower()
             rel = str(link.get("rel", "")).lower()
-            if isinstance(href, str) and href.strip() and rel == "enclosure" and link_type.startswith("image/"):
-                return _resolve_image_url(page_url, href.strip())
+            if not (isinstance(href, str) and href.strip() and rel == "enclosure"):
+                continue
+            resolved = _resolve_image_url(page_url, href.strip())
+            if link_type.startswith("video/") and video_url is None:
+                video_url = resolved
+            elif link_type.startswith("image/") and image_url is None:
+                image_url = resolved
 
     for key in ("summary", "content", "description"):
         value = _entry_value(entry, key, "")
-        if isinstance(value, str) and ("<img" in value.lower() or "og:image" in value.lower()):
-            candidate = extract_image_url(value, page_url)
-            if candidate:
-                return candidate
+        if isinstance(value, str) and any(token in value.lower() for token in ("<img", "<video", "og:image", "og:video")):
+            candidate_image, candidate_video = extract_media_urls(value, page_url)
+            if image_url is None and candidate_image:
+                image_url = candidate_image
+            if video_url is None and candidate_video:
+                video_url = candidate_video
         if isinstance(value, list):
             for item in value:
                 if isinstance(item, dict):
                     html = item.get("value", "")
-                    if isinstance(html, str) and ("<img" in html.lower() or "og:image" in html.lower()):
-                        candidate = extract_image_url(html, page_url)
-                        if candidate:
-                            return candidate
-    return None
+                    if isinstance(html, str) and any(token in html.lower() for token in ("<img", "<video", "og:image", "og:video")):
+                        candidate_image, candidate_video = extract_media_urls(html, page_url)
+                        if image_url is None and candidate_image:
+                            image_url = candidate_image
+                        if video_url is None and candidate_video:
+                            video_url = candidate_video
+    return image_url, video_url
 
 
 def build_candidate_from_entry(source: SourceConfig, entry, now_iso: str) -> BacklogItem:
     title = _get_value(entry, "title", "")
     url = _get_value(entry, "link", "")
     summary = _get_value(entry, "summary", "")
-    image_url: str | None = _extract_feed_image_url(entry, url)
+    image_url, video_url = _extract_feed_media_urls(entry, url)
     if source.kind == "website" and not summary:
         page_html = fetch_page_html(url)
         summary = extract_text_from_html(page_html)
+        page_image_url, page_video_url = extract_media_urls(page_html, url)
         if image_url is None:
-            image_url = extract_image_url(page_html, url)
+            image_url = page_image_url
+        if video_url is None:
+            video_url = page_video_url
     category = classify_candidate(
         BacklogItem(
             item_id="",
@@ -139,6 +160,7 @@ def build_candidate_from_entry(source: SourceConfig, entry, now_iso: str) -> Bac
         evidence_urls=[url],
         category=category,
         image_url=image_url,
+        video_url=video_url,
     )
 
 

@@ -7,6 +7,7 @@ from ai_news_bot.approval import build_draft_keyboard
 from ai_news_bot.backlog import merge_candidates, select_daily_slot_items_with_age
 from ai_news_bot.config import load_config
 from ai_news_bot.drafts import build_single_post_text
+from ai_news_bot.media import extract_media_urls
 from ai_news_bot.models import BacklogItem, DraftRecord
 from ai_news_bot.storage import JsonStateStore
 from ai_news_bot.telegram_api import TelegramApi
@@ -29,6 +30,14 @@ def _send_owner_draft_preview(
     draft: DraftRecord,
     reply_markup: dict | None = None,
 ) -> None:
+    if draft.video_url:
+        telegram_api.send_video(
+            owner_chat_id,
+            draft.video_url,
+            caption=draft.current_text,
+            reply_markup=reply_markup,
+        )
+        return
     if draft.image_url:
         telegram_api.send_photo(
             owner_chat_id,
@@ -58,7 +67,27 @@ def _build_preview_draft(primary_item: BacklogItem) -> DraftRecord:
         category=primary_item.category,
         header_label="Single Post",
         image_url=primary_item.image_url,
+        video_url=primary_item.video_url,
     )
+
+
+def _refresh_selected_media(items: list[BacklogItem], media_refresher=None) -> list[BacklogItem]:
+    if media_refresher is None:
+        return items
+
+    refreshed_items: list[BacklogItem] = []
+    for item in items:
+        try:
+            image_url, video_url = media_refresher(item.source_url)
+        except Exception:
+            refreshed_items.append(item)
+            continue
+        if image_url:
+            item.image_url = image_url
+        if video_url:
+            item.video_url = video_url
+        refreshed_items.append(item)
+    return refreshed_items
 
 
 def release_unpublished_draft_items(
@@ -131,6 +160,8 @@ def build_main_slot_draft(
     owner_chat_id: str | None = None,
     now_iso: str | None = None,
     max_age_days: int | None = None,
+    preview_limit: int = 10,
+    media_refresher=None,
 ) -> DraftRecord:
     current_draft = _require_replaceable_draft(store.load_current_draft())
     release_unpublished_owner_drafts(store)
@@ -141,10 +172,12 @@ def build_main_slot_draft(
         backlog,
         now_iso=now_iso,
         max_age_days=max_age_days,
+        limit=preview_limit,
     )
     if not selected:
         raise RuntimeError("No eligible backlog items for draft")
 
+    selected = _refresh_selected_media(selected, media_refresher=media_refresher)
     owner_drafts = [_build_preview_draft(item) for item in selected]
     draft = owner_drafts[0]
     store.save_current_draft(draft)
@@ -177,6 +210,8 @@ def run_daily_slot(
     owner_chat_id: str | None = None,
     now_iso: str | None = None,
     fetcher=None,
+    preview_limit: int = 10,
+    media_refresher=None,
 ) -> DraftRecord | None:
     current_now_iso = now_iso or datetime.now(UTC).isoformat()
     if fetcher is None:
@@ -188,6 +223,7 @@ def run_daily_slot(
         backlog,
         now_iso=current_now_iso,
         max_age_days=DAILY_CANDIDATE_MAX_AGE_DAYS,
+        limit=preview_limit,
     ):
         if telegram_api is not None and owner_chat_id:
             telegram_api.send_message(
@@ -202,6 +238,8 @@ def run_daily_slot(
         owner_chat_id=owner_chat_id,
         now_iso=current_now_iso,
         max_age_days=DAILY_CANDIDATE_MAX_AGE_DAYS,
+        preview_limit=preview_limit,
+        media_refresher=media_refresher,
     )
 
 
@@ -209,13 +247,21 @@ def main() -> DraftRecord | None:
     config = load_config()
     store = JsonStateStore(config.state_dir)
     telegram_api = TelegramApi(config.telegram_bot_token)
-    from ai_news_bot.discovery import fetch_candidates
+    from ai_news_bot.discovery import fetch_candidates, fetch_page_html
+
+    def media_refresher(url: str) -> tuple[str | None, str | None]:
+        html = fetch_page_html(url)
+        if not html:
+            return (None, None)
+        return extract_media_urls(html, url)
 
     return run_daily_slot(
         store,
         telegram_api=telegram_api,
         owner_chat_id=config.telegram_owner_chat_id,
         fetcher=lambda now_iso: fetch_candidates(now_iso, sources_path=config.sources_path),
+        preview_limit=config.daily_slot_preview_limit,
+        media_refresher=media_refresher,
     )
 
 

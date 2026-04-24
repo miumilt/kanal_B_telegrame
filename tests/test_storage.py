@@ -26,6 +26,7 @@ def test_store_round_trip_backlog_and_draft(tmp_path: Path):
         evidence_urls=["https://example.com/story"],
         category="major_news",
         image_url="https://example.com/story.jpg",
+        video_url="https://example.com/story.mp4",
     )
     draft = DraftRecord(
         draft_id="draft-1",
@@ -38,6 +39,7 @@ def test_store_round_trip_backlog_and_draft(tmp_path: Path):
         category="news",
         header_label="Top story",
         image_url=None,
+        video_url="https://example.com/draft.mp4",
     )
 
     store.save_backlog([item])
@@ -47,11 +49,13 @@ def test_store_round_trip_backlog_and_draft(tmp_path: Path):
     assert store.load_backlog()[0].item_id == "item-1"
     assert store.load_backlog()[0].category == "major_news"
     assert store.load_backlog()[0].image_url == "https://example.com/story.jpg"
+    assert store.load_backlog()[0].video_url == "https://example.com/story.mp4"
     loaded = store.load_current_draft()
     assert loaded.draft_id == "draft-1"
     assert loaded.category == "news"
     assert loaded.header_label == "Top story"
     assert loaded.image_url is None
+    assert loaded.video_url == "https://example.com/draft.mp4"
     assert store.load_owner_drafts()[0].draft_id == "draft-1"
 
 
@@ -76,6 +80,7 @@ def test_store_round_trip_backlog_includes_metadata(tmp_path: Path):
         evidence_urls=[],
         category="freebie/useful_find",
         image_url="https://example.com/meta.png",
+        video_url="https://example.com/meta.mp4",
     )
 
     store.save_backlog([item])
@@ -88,6 +93,7 @@ def test_store_round_trip_backlog_includes_metadata(tmp_path: Path):
     assert loaded.evidence_urls == []
     assert loaded.category == "freebie/useful_find"
     assert loaded.image_url == "https://example.com/meta.png"
+    assert loaded.video_url == "https://example.com/meta.mp4"
 
 
 def test_store_loads_old_backlog_records_with_safe_defaults(tmp_path: Path):
@@ -123,6 +129,7 @@ def test_store_loads_old_backlog_records_with_safe_defaults(tmp_path: Path):
     assert loaded.evidence_urls == []
     assert loaded.category == "major_news"
     assert loaded.image_url is None
+    assert loaded.video_url is None
 
 
 def test_store_round_trip_current_draft_none(tmp_path: Path):
@@ -159,6 +166,7 @@ def test_store_loads_legacy_current_draft_with_null_image_url(tmp_path: Path):
     assert loaded.category == "digest"
     assert loaded.header_label == "Digest"
     assert loaded.image_url is None
+    assert loaded.video_url is None
 
 
 def test_store_migrates_legacy_approved_current_draft_to_publishing(tmp_path: Path):

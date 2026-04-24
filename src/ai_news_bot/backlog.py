@@ -80,14 +80,14 @@ def select_main_slot_items(backlog: list[BacklogItem], limit: int = 5) -> list[B
     return sorted(queued, key=score_item, reverse=True)[:limit]
 
 
-def select_daily_slot_items(backlog: list[BacklogItem], limit: int = 3) -> list[BacklogItem]:
+def select_daily_slot_items(backlog: list[BacklogItem], limit: int = 10) -> list[BacklogItem]:
     return select_daily_slot_items_with_age(backlog, limit=limit)
 
 
 def select_daily_slot_items_with_age(
     backlog: list[BacklogItem],
     *,
-    limit: int = 3,
+    limit: int = 10,
     now_iso: str | None = None,
     max_age_days: int | None = None,
 ) -> list[BacklogItem]:

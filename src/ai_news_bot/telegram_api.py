@@ -48,6 +48,20 @@ class TelegramApi:
             payload["reply_markup"] = reply_markup
         return self._post("sendPhoto", payload)
 
+    def send_video(
+        self,
+        chat_id: str,
+        video_url: str,
+        caption: str | None = None,
+        reply_markup: dict | None = None,
+    ) -> dict:
+        payload: dict[str, object] = {"chat_id": chat_id, "video": video_url}
+        if caption is not None:
+            payload["caption"] = caption
+        if reply_markup is not None:
+            payload["reply_markup"] = reply_markup
+        return self._post("sendVideo", payload)
+
     def get_updates(self, offset: int) -> list[dict]:
         response = requests.get(
             f"{self.base_url}/getUpdates",

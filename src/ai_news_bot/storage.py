@@ -98,6 +98,7 @@ class JsonStateStore:
             "evidence_urls": [],
             "category": "major_news",
             "image_url": None,
+            "video_url": None,
         }
 
     def _load_backlog_item(self, item: object) -> BacklogItem:
@@ -123,6 +124,7 @@ class JsonStateStore:
             "evidence_urls",
             "category",
             "image_url",
+            "video_url",
         }
         allowed_fields = core_fields | metadata_fields
         self._require_fields("backlog.json item", value, core_fields)
@@ -155,6 +157,9 @@ class JsonStateStore:
         image_url = normalized["image_url"]
         if image_url is not None:
             self._require_string("backlog.json item", "image_url", image_url)
+        video_url = normalized["video_url"]
+        if video_url is not None:
+            self._require_string("backlog.json item", "video_url", video_url)
         return BacklogItem(**normalized)
 
     def _load_draft_record(self, item: object, *, name: str = "current_draft.json") -> DraftRecord:
@@ -172,6 +177,7 @@ class JsonStateStore:
             "category",
             "header_label",
             "image_url",
+            "video_url",
             "approved_for_slot",
             "approved_at",
             "publication_state",
@@ -205,6 +211,9 @@ class JsonStateStore:
         image_url = value.get("image_url")
         if image_url is not None:
             self._require_string(name, "image_url", image_url)
+        video_url = value.get("video_url")
+        if video_url is not None:
+            self._require_string(name, "video_url", video_url)
         status = value["status"]
         approved_at = value.get("approved_at")
         if approved_at is not None:
@@ -231,6 +240,7 @@ class JsonStateStore:
             "category": category,
             "header_label": header_label,
             "image_url": image_url,
+            "video_url": video_url,
             "publication_state": publication_state,
         }
         return DraftRecord(**normalized)

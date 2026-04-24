@@ -87,3 +87,34 @@ def test_send_photo_uses_telegram_photo_endpoint_and_caption(monkeypatch: pytest
         },
         "timeout": 30,
     }
+
+
+def test_send_video_uses_telegram_video_endpoint_and_caption(monkeypatch: pytest.MonkeyPatch) -> None:
+    api = TelegramApi("token")
+    captured: dict[str, Any] = {}
+
+    def fake_post(*args: Any, **kwargs: Any) -> _FakeResponse:
+        captured["args"] = args
+        captured["kwargs"] = kwargs
+        return _FakeResponse(status_code=200, payload={"ok": True, "result": {"message_id": 321}})
+
+    monkeypatch.setattr(requests, "post", fake_post)
+
+    result = api.send_video(
+        "chat-id",
+        "https://example.com/video.mp4",
+        caption="Draft video",
+        reply_markup={"inline_keyboard": []},
+    )
+
+    assert result == {"message_id": 321}
+    assert captured["args"] == ("https://api.telegram.org/bottoken/sendVideo",)
+    assert captured["kwargs"] == {
+        "json": {
+            "chat_id": "chat-id",
+            "video": "https://example.com/video.mp4",
+            "caption": "Draft video",
+            "reply_markup": {"inline_keyboard": []},
+        },
+        "timeout": 30,
+    }
