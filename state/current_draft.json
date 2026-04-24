@@ -1,15 +1,15 @@
 {
-  "draft_id": "fe7c3dc0-596e-4fd6-b3cc-bf7430ec93f3",
-  "generated_text": "Команда Alibaba Qwen выпускает Qwen3.6-27B: плотную модель с открытым весом, превосходящую 397B MoE по тестам агентного кодирования\nКоманда Qwen из Alibaba выпустила Qwen3.6-27B, первую плотную модель с открытым весом в семействе Qwen3.6 — и, возможно, самую функциональную модель с 27 миллиардами параметров, доступную сегодня для агентов кодирования. Он вносит существен\nSource: https://www.marktechpost.com/2026/04/22/alibaba-qwen-team-releases-qwen3-6-27b-a-dense-open-weight-model-outperforming-397b-moe-on-agentic-coding-benchmarks/",
-  "current_text": "Команда Alibaba Qwen выпускает Qwen3.6-27B: плотную модель с открытым весом, превосходящую 397B MoE по тестам агентного кодирования\nКоманда Qwen из Alibaba выпустила Qwen3.6-27B, первую плотную модель с открытым весом в семействе Qwen3.6 — и, возможно, самую функциональную модель с 27 миллиардами параметров, доступную сегодня для агентов кодирования. Он вносит существен\nSource: https://www.marktechpost.com/2026/04/22/alibaba-qwen-team-releases-qwen3-6-27b-a-dense-open-weight-model-outperforming-397b-moe-on-agentic-coding-benchmarks/",
+  "draft_id": "1d63b2ac-1fef-40a0-809f-c167e59ddb3b",
+  "generated_text": "OpenAI выпускает GPT-5.5, приближая компанию на шаг к созданию «суперприложения» для искусственного интеллекта\nOpenAI заявляет, что ее последняя модель предлагает расширенные возможности в самых разных категориях.\nSource: https://techcrunch.com/2026/04/23/openai-chatgpt-gpt-5-5-ai-model-superapp/",
+  "current_text": "OpenAI выпускает GPT-5.5, приближая компанию на шаг к созданию «суперприложения» для искусственного интеллекта\nOpenAI заявляет, что ее последняя модель предлагает расширенные возможности в самых разных категориях.\nSource: https://techcrunch.com/2026/04/23/openai-chatgpt-gpt-5-5-ai-model-superapp/",
   "selected_story_ids": [
-    "41e75827-1d41-426a-928e-59a41dfe5988"
+    "b51a2e87-663a-4e3a-81a4-106510c145f4"
   ],
   "draft_type": "single_post",
   "status": "pending",
-  "created_at": "2026-04-23T16:26:33.421218+00:00",
+  "created_at": "2026-04-24T16:02:39.820841+00:00",
   "category": "major_news",
   "header_label": "Single Post",
-  "image_url": "https://www.marktechpost.com/wp-content/uploads/2026/04/Screenshot-2026-04-22-at-12.39.13-PM-1-150x150.png",
+  "image_url": null,
   "publication_state": "finalize_only"
 }
