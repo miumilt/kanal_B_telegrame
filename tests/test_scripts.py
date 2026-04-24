@@ -295,15 +295,7 @@ def test_daily_slot_script_builds_pending_single_post_and_notifies_owner(tmp_pat
         {
             "chat_id": "owner-chat",
             "text": draft.generated_text,
-            "reply_markup": {
-                "inline_keyboard": [
-                    [
-                        {"text": "Edit", "callback_data": f"edit:{draft.draft_id}"},
-                        {"text": "Publish now", "callback_data": f"publish_now:{draft.draft_id}"},
-                        {"text": "Skip", "callback_data": f"skip:{draft.draft_id}"},
-                    ]
-                ]
-            },
+            "reply_markup": None,
         }
     ]
     assert telegram_api.sent_photos == []
@@ -347,41 +339,17 @@ def test_daily_slot_script_sends_separate_owner_messages_for_multiple_candidates
             "chat_id": "owner-chat",
             "photo_url": "https://example.com/image-1.png",
             "caption": draft.generated_text,
-            "reply_markup": {
-                "inline_keyboard": [
-                    [
-                        {"text": "Edit", "callback_data": f"edit:{draft.draft_id}"},
-                        {"text": "Publish now", "callback_data": f"publish_now:{draft.draft_id}"},
-                        {"text": "Skip", "callback_data": f"skip:{draft.draft_id}"},
-                    ]
-                ]
-            },
+            "reply_markup": None,
         }
     ]
     assert [payload["chat_id"] for payload in telegram_api.sent_messages] == ["owner-chat", "owner-chat"]
     assert telegram_api.sent_messages[0]["text"].endswith("Тестим здесь: https://example.com/item-2")
     assert telegram_api.sent_messages[1]["text"].endswith("Подробнее: https://example.com/item-3")
-    assert telegram_api.sent_messages[0]["reply_markup"] == {
-        "inline_keyboard": [
-            [
-                {"text": "Edit", "callback_data": f"edit:{owner_drafts[1].draft_id}"},
-                {"text": "Publish now", "callback_data": f"publish_now:{owner_drafts[1].draft_id}"},
-                {"text": "Skip", "callback_data": f"skip:{owner_drafts[1].draft_id}"},
-            ]
-        ]
-    }
-    assert telegram_api.sent_messages[1]["reply_markup"] == {
-        "inline_keyboard": [
-            [
-                {"text": "Edit", "callback_data": f"edit:{owner_drafts[2].draft_id}"},
-                {"text": "Publish now", "callback_data": f"publish_now:{owner_drafts[2].draft_id}"},
-                {"text": "Skip", "callback_data": f"skip:{owner_drafts[2].draft_id}"},
-            ]
-        ]
-    }
+    assert telegram_api.sent_messages[0]["reply_markup"] is None
+    assert telegram_api.sent_messages[1]["reply_markup"] is None
 
 
-def test_daily_slot_script_sends_up_to_ten_actionable_owner_previews(tmp_path: Path):
+def test_daily_slot_script_sends_up_to_ten_owner_previews_without_buttons(tmp_path: Path):
     store = JsonStateStore(tmp_path)
     store.save_backlog(
         [
@@ -406,6 +374,7 @@ def test_daily_slot_script_sends_up_to_ten_actionable_owner_previews(tmp_path: P
     assert all(draft.status == "pending" for draft in owner_drafts)
     assert all(draft.selected_story_ids for draft in owner_drafts)
     assert len(telegram_api.sent_messages) == 10
+    assert all(payload["reply_markup"] is None for payload in telegram_api.sent_messages)
     assert len(telegram_api.sent_photos) == 0
     assert len(telegram_api.sent_videos) == 0
     assert sum(1 for item in store.load_backlog() if item.status == "drafted") == 10
@@ -449,15 +418,7 @@ def test_daily_slot_refreshes_selected_media_from_article_page(tmp_path: Path):
             "chat_id": "owner-chat",
             "video_url": "https://example.com/demo.mp4",
             "caption": draft.generated_text,
-            "reply_markup": {
-                "inline_keyboard": [
-                    [
-                        {"text": "Edit", "callback_data": f"edit:{draft.draft_id}"},
-                        {"text": "Publish now", "callback_data": f"publish_now:{draft.draft_id}"},
-                        {"text": "Skip", "callback_data": f"skip:{draft.draft_id}"},
-                    ]
-                ]
-            },
+            "reply_markup": None,
         }
     ]
     assert telegram_api.sent_photos == []
@@ -498,15 +459,7 @@ def test_daily_slot_keeps_original_media_when_article_media_refresh_fails(tmp_pa
             "chat_id": "owner-chat",
             "photo_url": "https://example.com/feed-image.png",
             "caption": draft.generated_text,
-            "reply_markup": {
-                "inline_keyboard": [
-                    [
-                        {"text": "Edit", "callback_data": f"edit:{draft.draft_id}"},
-                        {"text": "Publish now", "callback_data": f"publish_now:{draft.draft_id}"},
-                        {"text": "Skip", "callback_data": f"skip:{draft.draft_id}"},
-                    ]
-                ]
-            },
+            "reply_markup": None,
         }
     ]
 
@@ -533,15 +486,7 @@ def test_daily_slot_falls_back_to_text_when_owner_preview_photo_is_rejected(tmp_
         {
             "chat_id": "owner-chat",
             "text": draft.generated_text,
-            "reply_markup": {
-                "inline_keyboard": [
-                    [
-                        {"text": "Edit", "callback_data": f"edit:{draft.draft_id}"},
-                        {"text": "Publish now", "callback_data": f"publish_now:{draft.draft_id}"},
-                        {"text": "Skip", "callback_data": f"skip:{draft.draft_id}"},
-                    ]
-                ]
-            },
+            "reply_markup": None,
         }
     ]
     assert store.load_current_draft() == draft

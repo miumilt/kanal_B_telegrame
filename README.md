@@ -28,57 +28,23 @@ Community-originated topics stay out of the actionable draft flow until a strong
 ## Current operating model
 
 - GitHub Actions `daily-slot` is the only scheduled GitHub job used in normal operation.
-- `daily-slot` runs at `18:00 Europe/Moscow` and sends up to `10` separate single-post owner previews by default.
+- `daily-slot` runs at `18:00 Europe/Moscow` and sends up to `10` separate single-post news drafts to the owner by default.
 - `daily-slot` auto-selects only topics from the last `24` hours.
 - The preview limit can be changed with `DAILY_SLOT_PREVIEW_LIMIT`.
-- Every preview is persisted as an actionable owner draft with buttons.
+- Messages are sent without inline buttons; the owner edits and posts manually.
 - Before sending selected previews, `daily-slot` tries to refresh article media from the source page and prefers page-level `og:video` / `og:image` over small RSS thumbnails.
-- Draft buttons are only `Edit`, `Publish now`, and `Skip`.
-- Telegram callback processing now runs locally on Windows through `scripts/run_local_polling.py`.
+- Telegram callback polling is not required for the normal workflow.
 - Unpublished backlog items stay valid for up to `14` days; older items are dropped as stale.
 
 ## Local commands
 
 - `python -m pytest -q`
 - `python scripts/run_daily_slot.py`
-- `python scripts/run_local_polling.py`
 
-## Telegram owner commands
+## Optional legacy Telegram owner commands
 
 - `/backlog`
 - `/short <item_id>`
 - `/publish_now <item_id>`
-- Press `Edit`, then send replacement text as the next message
-- Press `Publish now`
-- Press `Skip`
 
-## Windows local poller
-
-Run the local poller from the repository root:
-
-```powershell
-cd C:\Users\qqqma\OneDrive\Desktop\kanal_B_telegrame
-python scripts/run_local_polling.py
-```
-
-The poller reads `TELEGRAM_POLL_INTERVAL_SECONDS` from the environment and defaults to `30` seconds.
-
-For buttons to work without manual GitHub Actions runs:
-
-- Keep the PowerShell window with `python scripts/run_local_polling.py` open, or run it through Windows Task Scheduler.
-- Set `TELEGRAM_BOT_TOKEN`, `TELEGRAM_OWNER_CHAT_ID`, and `TELEGRAM_CHANNEL_ID` in the same Windows environment where the poller runs.
-- The poller automatically pulls the latest `master` before checking Telegram updates and pushes state after handling a button.
-- Button presses are not instant if the poller is between cycles; with the default interval they are usually handled within `30` seconds.
-- If buttons stop reacting, stop the poller, run `git pull --rebase --autostash origin master`, then start `python scripts/run_local_polling.py` again.
-
-## Task Scheduler setup
-
-Recommended Windows Task Scheduler settings:
-
-- Trigger: `At log on`
-- Action: start `python` with argument `scripts/run_local_polling.py`
-- Start in: `C:\Users\qqqma\OneDrive\Desktop\kanal_B_telegrame`
-- Run only when user is logged on
-- Restart on failure: enabled
-
-If the PC is off or you are not logged in, button presses will wait until the local poller starts again.
+These commands require `scripts/run_local_polling.py`, but they are not needed when using the manual posting workflow.

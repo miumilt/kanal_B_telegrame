@@ -5,7 +5,6 @@ from uuid import uuid4
 
 import requests
 
-from ai_news_bot.approval import build_draft_keyboard
 from ai_news_bot.backlog import merge_candidates, select_daily_slot_items_with_age
 from ai_news_bot.config import load_config
 from ai_news_bot.drafts import build_single_post_text
@@ -205,7 +204,6 @@ def build_main_slot_draft(
                 telegram_api,
                 owner_chat_id,
                 preview_draft,
-                build_draft_keyboard(preview_draft.draft_id),
             )
 
     return draft
