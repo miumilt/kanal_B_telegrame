@@ -7,6 +7,8 @@ import sys
 from pathlib import Path
 from types import SimpleNamespace
 
+import requests
+
 from ai_news_bot.models import BacklogItem, DraftRecord
 from ai_news_bot.storage import JsonStateStore
 
@@ -216,6 +218,26 @@ class FailBeforeChannelSendTelegramApi(FakeTelegramApi):
         return super().send_video(chat_id, video_url, caption, reply_markup)
 
 
+class RejectMediaTelegramApi(FakeTelegramApi):
+    def send_photo(
+        self,
+        chat_id: str,
+        photo_url: str,
+        caption: str | None = None,
+        reply_markup: dict | None = None,
+    ) -> dict:
+        raise requests.HTTPError("telegram rejected photo")
+
+    def send_video(
+        self,
+        chat_id: str,
+        video_url: str,
+        caption: str | None = None,
+        reply_markup: dict | None = None,
+    ) -> dict:
+        raise requests.HTTPError("telegram rejected video")
+
+
 def test_daily_slot_script_builds_pending_single_post_and_notifies_owner(tmp_path: Path):
     store = JsonStateStore(tmp_path)
     store.save_backlog([_item("item-1", "Gemini CLI Released", "CLI tool for developers.")])
@@ -300,8 +322,8 @@ def test_daily_slot_script_sends_separate_owner_messages_for_multiple_candidates
         }
     ]
     assert [payload["chat_id"] for payload in telegram_api.sent_messages] == ["owner-chat", "owner-chat"]
-    assert telegram_api.sent_messages[0]["text"].endswith("Source: https://example.com/item-2")
-    assert telegram_api.sent_messages[1]["text"].endswith("Source: https://example.com/item-3")
+    assert telegram_api.sent_messages[0]["text"].endswith("Тестим здесь: https://example.com/item-2")
+    assert telegram_api.sent_messages[1]["text"].endswith("Подробнее: https://example.com/item-3")
     assert telegram_api.sent_messages[0]["reply_markup"] == {
         "inline_keyboard": [
             [
@@ -450,6 +472,42 @@ def test_daily_slot_keeps_original_media_when_article_media_refresh_fails(tmp_pa
             },
         }
     ]
+
+
+def test_daily_slot_falls_back_to_text_when_owner_preview_photo_is_rejected(tmp_path: Path):
+    store = JsonStateStore(tmp_path)
+    store.save_backlog(
+        [
+            _item(
+                "item-1",
+                "GPT Image 2 Released",
+                "New image model rollout.",
+                image_url="https://example.com/bad-image.png",
+            )
+        ]
+    )
+
+    build_main_slot_draft = _load_script_module("run_daily_slot").build_main_slot_draft
+    telegram_api = RejectMediaTelegramApi()
+
+    draft = build_main_slot_draft(store, telegram_api=telegram_api, owner_chat_id="owner-chat")
+
+    assert telegram_api.sent_messages == [
+        {
+            "chat_id": "owner-chat",
+            "text": draft.generated_text,
+            "reply_markup": {
+                "inline_keyboard": [
+                    [
+                        {"text": "Edit", "callback_data": f"edit:{draft.draft_id}"},
+                        {"text": "Publish now", "callback_data": f"publish_now:{draft.draft_id}"},
+                        {"text": "Skip", "callback_data": f"skip:{draft.draft_id}"},
+                    ]
+                ]
+            },
+        }
+    ]
+    assert store.load_current_draft() == draft
 
 
 def test_daily_slot_run_refreshes_backlog_before_building_first_draft(tmp_path: Path):
@@ -901,6 +959,57 @@ def test_process_updates_publish_now_prefers_video_when_draft_has_video(tmp_path
     ]
     assert telegram_api.sent_photos == []
     assert telegram_api.sent_messages == []
+
+
+def test_process_updates_publish_now_falls_back_to_text_when_photo_is_rejected(tmp_path: Path):
+    store = JsonStateStore(tmp_path)
+    store.save_backlog(
+        [
+            _item(
+                "item-1",
+                "Gemini CLI Released",
+                "CLI tool for developers.",
+                image_url="https://example.com/rejected-preview.png",
+            )
+        ]
+    )
+
+    build_main_slot_draft = _load_script_module("run_daily_slot").build_main_slot_draft
+    process_updates = _load_script_module("poll_telegram_updates").process_updates
+
+    draft = build_main_slot_draft(store)
+    telegram_api = RejectMediaTelegramApi(
+        updates=[
+            {
+                "update_id": 26,
+                "callback_query": {
+                    "id": "cb-publish-rejected-photo",
+                    "data": f"publish_now:{draft.draft_id}",
+                    "message": {"chat": {"id": "owner-chat"}},
+                },
+            }
+        ]
+    )
+    config = SimpleNamespace(
+        telegram_owner_chat_id="owner-chat",
+        telegram_channel_id="@channel",
+        daily_slot_hour=18,
+        daily_slot_minute=0,
+    )
+
+    process_updates(store, telegram_api, config)
+
+    current = store.load_current_draft()
+    assert current is not None
+    assert current.status == "published"
+    assert telegram_api.sent_messages == [
+        {
+            "chat_id": "@channel",
+            "text": draft.current_text,
+            "reply_markup": None,
+        }
+    ]
+    assert store.load_published() == ["https://example.com/item-1"]
 
 
 def test_process_updates_completes_legacy_approved_draft_on_next_poll(tmp_path: Path):

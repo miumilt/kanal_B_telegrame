@@ -74,9 +74,8 @@ def test_build_short_post_text_renders_single_item():
     )
 
     assert text == (
-        "RU:Gemini CLI Released\n"
-        "RU:CLI tool for developers.\n"
-        "Source: https://example.com/1"
+        "RU:Gemini CLI Released — RU:CLI tool for developers.\n\n"
+        "Подробнее: https://example.com/1"
     )
 
 
@@ -120,8 +119,9 @@ def test_build_short_post_text_truncates_long_summaries_to_280_characters():
         translated_body=lambda s: s,
     )
 
-    assert text.splitlines()[1] == "x" * 280
-    assert len(text.splitlines()[1]) == 280
+    assert text.splitlines()[0].startswith("Long Summary Story — ")
+    assert len(text.splitlines()[0]) <= 305
+    assert text.splitlines()[-1] == "Подробнее: https://example.com/long"
 
 
 def test_build_short_post_text_truncates_after_translation_expands_text():
@@ -145,8 +145,9 @@ def test_build_short_post_text_truncates_after_translation_expands_text():
         translated_body=lambda s: s.upper() * 2,
     )
 
-    assert len(text.splitlines()[1]) == 280
-    assert text.splitlines()[1] == "X" * 280
+    assert text.splitlines()[0].startswith("Short expansion — ")
+    assert "X" * 100 in text.splitlines()[0]
+    assert text.splitlines()[-1] == "Подробнее: https://example.com/expand-short"
 
 
 def test_build_single_post_text_renders_short_telegram_style_output():
@@ -171,9 +172,11 @@ def test_build_single_post_text_renders_short_telegram_style_output():
     )
 
     assert text == (
-        "RU:Claude now builds map routes\n"
-        "RU:Plans the route, suggests places, and accounts for schedules.\n"
-        "Source: https://example.com/1"
+        "RU:Claude now builds map routes — RU:Plans the route.\n\n"
+        "Главное:\n"
+        "• suggests places.\n"
+        "• and accounts for schedules.\n\n"
+        "Подробнее: https://example.com/1"
     )
 
 
@@ -198,8 +201,9 @@ def test_build_single_post_text_truncates_long_summaries_to_240_characters():
         translated_body=lambda s: s,
     )
 
-    assert text.splitlines()[1] == "x" * 240
-    assert len(text.splitlines()[1]) == 240
+    assert text.splitlines()[0].startswith("Long Summary Story — ")
+    assert len(text.splitlines()[0]) <= 265
+    assert text.splitlines()[-1] == "Подробнее: https://example.com/long"
 
 
 def test_build_single_post_text_truncates_after_translation_expands_text():
@@ -223,8 +227,9 @@ def test_build_single_post_text_truncates_after_translation_expands_text():
         translated_body=lambda s: s.upper() * 2,
     )
 
-    assert len(text.splitlines()[1]) == 240
-    assert text.splitlines()[1] == "X" * 240
+    assert text.splitlines()[0].startswith("Single expansion — ")
+    assert "X" * 100 in text.splitlines()[0]
+    assert text.splitlines()[-1] == "Подробнее: https://example.com/expand-single"
 
 
 def test_build_single_post_text_strips_html_and_normalizes_whitespace():
@@ -249,7 +254,31 @@ def test_build_single_post_text_strips_html_and_normalizes_whitespace():
     )
 
     assert text == (
-        "OpenAI Privacy Filter\n"
-        "Detects PII in text and cleans it.\n"
-        "Source: https://example.com/html"
+        "OpenAI Privacy Filter — Detects PII in text and cleans it.\n\n"
+        "Подробнее: https://example.com/html"
     )
+
+
+def test_build_single_post_text_uses_freebie_link_label():
+    item = BacklogItem(
+        item_id="freebie",
+        source_url="https://example.com/freebie",
+        source_title="Dreamina is free for everyone",
+        normalized_title="dreamina is free for everyone",
+        topic_fingerprint="dreamina-free",
+        source_name="Example",
+        published_at="2026-04-19T10:00:00+00:00",
+        summary_candidate="Image generation, video generation, and prompt cleanup in one service.",
+        status="queued",
+        first_seen_at="2026-04-19T10:00:00+00:00",
+        last_considered_at="2026-04-19T10:00:00+00:00",
+        category="freebie/useful_find",
+    )
+
+    text = build_single_post_text(
+        item,
+        translated_title=lambda s: s,
+        translated_body=lambda s: s,
+    )
+
+    assert text.endswith("Тестим здесь: https://example.com/freebie")

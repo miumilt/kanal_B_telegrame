@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from datetime import UTC, datetime
 
+import requests
+
 from ai_news_bot.approval import (
     build_draft_keyboard,
     mark_draft_editing,
@@ -112,12 +114,18 @@ def _release_unpublished_draft_items(
 def _publish_draft(store: JsonStateStore, telegram_api: TelegramApi, channel_id: str, draft: DraftRecord) -> None:
     def _send_current_draft() -> None:
         if draft.video_url:
-            telegram_api.send_video(channel_id, draft.video_url, caption=draft.current_text)
-            return
+            try:
+                telegram_api.send_video(channel_id, draft.video_url, caption=draft.current_text)
+                return
+            except requests.HTTPError:
+                pass
         if draft.image_url:
-            telegram_api.send_photo(channel_id, draft.image_url, caption=draft.current_text)
-        else:
-            telegram_api.send_message(channel_id, draft.current_text)
+            try:
+                telegram_api.send_photo(channel_id, draft.image_url, caption=draft.current_text)
+                return
+            except requests.HTTPError:
+                pass
+        telegram_api.send_message(channel_id, draft.current_text)
 
     if draft.status == "published":
         return
@@ -159,11 +167,17 @@ def _publish_draft(store: JsonStateStore, telegram_api: TelegramApi, channel_id:
 def _send_owner_draft_preview(telegram_api: TelegramApi, chat_id: str, draft: DraftRecord) -> None:
     reply_markup = build_draft_keyboard(draft.draft_id)
     if draft.video_url:
-        telegram_api.send_video(chat_id, draft.video_url, caption=draft.generated_text, reply_markup=reply_markup)
-        return
+        try:
+            telegram_api.send_video(chat_id, draft.video_url, caption=draft.generated_text, reply_markup=reply_markup)
+            return
+        except requests.HTTPError:
+            pass
     if draft.image_url:
-        telegram_api.send_photo(chat_id, draft.image_url, caption=draft.generated_text, reply_markup=reply_markup)
-        return
+        try:
+            telegram_api.send_photo(chat_id, draft.image_url, caption=draft.generated_text, reply_markup=reply_markup)
+            return
+        except requests.HTTPError:
+            pass
     telegram_api.send_message(chat_id, draft.generated_text, reply_markup)
 
 

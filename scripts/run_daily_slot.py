@@ -3,6 +3,8 @@ from __future__ import annotations
 from datetime import UTC, datetime
 from uuid import uuid4
 
+import requests
+
 from ai_news_bot.approval import build_draft_keyboard
 from ai_news_bot.backlog import merge_candidates, select_daily_slot_items_with_age
 from ai_news_bot.config import load_config
@@ -31,21 +33,27 @@ def _send_owner_draft_preview(
     reply_markup: dict | None = None,
 ) -> None:
     if draft.video_url:
-        telegram_api.send_video(
-            owner_chat_id,
-            draft.video_url,
-            caption=draft.current_text,
-            reply_markup=reply_markup,
-        )
-        return
+        try:
+            telegram_api.send_video(
+                owner_chat_id,
+                draft.video_url,
+                caption=draft.current_text,
+                reply_markup=reply_markup,
+            )
+            return
+        except requests.HTTPError:
+            pass
     if draft.image_url:
-        telegram_api.send_photo(
-            owner_chat_id,
-            draft.image_url,
-            caption=draft.current_text,
-            reply_markup=reply_markup,
-        )
-        return
+        try:
+            telegram_api.send_photo(
+                owner_chat_id,
+                draft.image_url,
+                caption=draft.current_text,
+                reply_markup=reply_markup,
+            )
+            return
+        except requests.HTTPError:
+            pass
 
     telegram_api.send_message(
         owner_chat_id,
