@@ -1,15 +1,16 @@
 {
-  "draft_id": "1d63b2ac-1fef-40a0-809f-c167e59ddb3b",
-  "generated_text": "OpenAI выпускает GPT-5.5, приближая компанию на шаг к созданию «суперприложения» для искусственного интеллекта\nOpenAI заявляет, что ее последняя модель предлагает расширенные возможности в самых разных категориях.\nSource: https://techcrunch.com/2026/04/23/openai-chatgpt-gpt-5-5-ai-model-superapp/",
-  "current_text": "OpenAI выпускает GPT-5.5, приближая компанию на шаг к созданию «суперприложения» для искусственного интеллекта\nOpenAI заявляет, что ее последняя модель предлагает расширенные возможности в самых разных категориях.\nSource: https://techcrunch.com/2026/04/23/openai-chatgpt-gpt-5-5-ai-model-superapp/",
+  "draft_id": "31ed3b94-776a-4ba0-8937-42614953a62e",
+  "generated_text": "OpenAI выпускает GPT-5.5, полностью переобученную агентную модель, которая набирает 82,7% на Terminal-Bench 2.0 и 84,9% на GDPval — Модель нацелена на полный комплекс компьютерной работы — кодирование.\n\nГлавное:\n• исследования.\n• анализ данных и работу с программным обеспечением — без необходимости контроля человека за каждым шагом.\n\nПодробнее: https://www.marktechpost.com/2026/04/23/openai-releases-gpt-5-5-a-fully-retrained-agentic-model-that-scores-82-7-on-terminal-bench-2-0-and-84-9-on-gdpval/",
+  "current_text": "OpenAI выпускает GPT-5.5, полностью переобученную агентную модель, которая набирает 82,7% на Terminal-Bench 2.0 и 84,9% на GDPval — Модель нацелена на полный комплекс компьютерной работы — кодирование.\n\nГлавное:\n• исследования.\n• анализ данных и работу с программным обеспечением — без необходимости контроля человека за каждым шагом.\n\nПодробнее: https://www.marktechpost.com/2026/04/23/openai-releases-gpt-5-5-a-fully-retrained-agentic-model-that-scores-82-7-on-terminal-bench-2-0-and-84-9-on-gdpval/",
   "selected_story_ids": [
-    "b51a2e87-663a-4e3a-81a4-106510c145f4"
+    "c0ade826-23f9-4f3b-b5f5-7488ef968019"
   ],
   "draft_type": "single_post",
   "status": "pending",
-  "created_at": "2026-04-24T16:02:39.820841+00:00",
+  "created_at": "2026-04-24T20:33:41.108697+00:00",
   "category": "major_news",
   "header_label": "Single Post",
-  "image_url": null,
+  "image_url": "https://www.marktechpost.com/wp-content/uploads/2026/04/blog-67.png",
+  "video_url": null,
   "publication_state": "finalize_only"
 }
