@@ -1,22 +1,6 @@
 [
   {
-    "draft_id": "31ed3b94-776a-4ba0-8937-42614953a62e",
-    "generated_text": "OpenAI выпускает GPT-5.5, полностью переобученную агентную модель, которая набирает 82,7% на Terminal-Bench 2.0 и 84,9% на GDPval — Модель нацелена на полный комплекс компьютерной работы — кодирование.\n\nГлавное:\n• исследования.\n• анализ данных и работу с программным обеспечением — без необходимости контроля человека за каждым шагом.\n\nПодробнее: https://www.marktechpost.com/2026/04/23/openai-releases-gpt-5-5-a-fully-retrained-agentic-model-that-scores-82-7-on-terminal-bench-2-0-and-84-9-on-gdpval/",
-    "current_text": "OpenAI выпускает GPT-5.5, полностью переобученную агентную модель, которая набирает 82,7% на Terminal-Bench 2.0 и 84,9% на GDPval — Модель нацелена на полный комплекс компьютерной работы — кодирование.\n\nГлавное:\n• исследования.\n• анализ данных и работу с программным обеспечением — без необходимости контроля человека за каждым шагом.\n\nПодробнее: https://www.marktechpost.com/2026/04/23/openai-releases-gpt-5-5-a-fully-retrained-agentic-model-that-scores-82-7-on-terminal-bench-2-0-and-84-9-on-gdpval/",
-    "selected_story_ids": [
-      "c0ade826-23f9-4f3b-b5f5-7488ef968019"
-    ],
-    "draft_type": "single_post",
-    "status": "pending",
-    "created_at": "2026-04-24T20:33:41.108697+00:00",
-    "category": "major_news",
-    "header_label": "Single Post",
-    "image_url": "https://www.marktechpost.com/wp-content/uploads/2026/04/blog-67.png",
-    "video_url": null,
-    "publication_state": "finalize_only"
-  },
-  {
-    "draft_id": "6212169f-27aa-4eba-9c6c-1483ef6467e1",
+    "draft_id": "21a8559c-8a4d-485e-847a-7cda0158faa5",
     "generated_text": "8 советов Близнецам по организации своего пространства (и жизни) — Черный экран с иллюстрациями.\n\nГлавное:\n• включая ноутбук с выходящими значками документов и электронной почты.\n• улыбающегося человека.\n• держащего телефон и просматривающего контрольный список.\n• и пользователя.\n\nПодробнее: https://blog.google/products-and-platforms/products/gemini/gemini-spring-cleaning-tips/",
     "current_text": "8 советов Близнецам по организации своего пространства (и жизни) — Черный экран с иллюстрациями.\n\nГлавное:\n• включая ноутбук с выходящими значками документов и электронной почты.\n• улыбающегося человека.\n• держащего телефон и просматривающего контрольный список.\n• и пользователя.\n\nПодробнее: https://blog.google/products-and-platforms/products/gemini/gemini-spring-cleaning-tips/",
     "selected_story_ids": [
@@ -24,7 +8,7 @@
     ],
     "draft_type": "single_post",
     "status": "pending",
-    "created_at": "2026-04-24T20:33:43.045299+00:00",
+    "created_at": "2026-04-25T05:09:06.611508+00:00",
     "category": "major_news",
     "header_label": "Single Post",
     "image_url": "https://storage.googleapis.com/gweb-uniblog-publish-prod/images/Gemini_Spring_Cleaning_ss.width-1300.png",
@@ -32,31 +16,15 @@
     "publication_state": "finalize_only"
   },
   {
-    "draft_id": "36287694-67a0-4124-93d1-4b6f357d9411",
-    "generated_text": "Google DeepMind представляет разделенный DiLoCo: архитектуру асинхронного обучения... — Обучение передовых моделей ИИ по своей сути является проблемой координации.\n\nГлавное:\n• Тысячи чипов должны постоянно взаимодействовать друг с другом, синхронизируя каждое обновление градиента по сети.\n• Когда один чип выходит из строя или даже тормозит, весь тренировочный прогон может остановиться.\n• По мере того, как модели масштабируются до сотен миллиардов параметров...\n• […] Сообщение Google DeepMind представляет разделенный DiLoCo: архитектуру асинхронного обучения...\n\nПодробнее: https://www.marktechpost.com/2026/04/23/google-deepmind-introduces-decoupled-diloco-an-asynchronous-training-architecture-achieving-88-goodput-under-high-hardware-failure-rates/",
-    "current_text": "Google DeepMind представляет разделенный DiLoCo: архитектуру асинхронного обучения... — Обучение передовых моделей ИИ по своей сути является проблемой координации.\n\nГлавное:\n• Тысячи чипов должны постоянно взаимодействовать друг с другом, синхронизируя каждое обновление градиента по сети.\n• Когда один чип выходит из строя или даже тормозит, весь тренировочный прогон может остановиться.\n• По мере того, как модели масштабируются до сотен миллиардов параметров...\n• […] Сообщение Google DeepMind представляет разделенный DiLoCo: архитектуру асинхронного обучения...\n\nПодробнее: https://www.marktechpost.com/2026/04/23/google-deepmind-introduces-decoupled-diloco-an-asynchronous-training-architecture-achieving-88-goodput-under-high-hardware-failure-rates/",
-    "selected_story_ids": [
-      "1f6f421e-5b44-43ff-b1ed-0e01744a3cbe"
-    ],
-    "draft_type": "single_post",
-    "status": "pending",
-    "created_at": "2026-04-24T20:33:43.284903+00:00",
-    "category": "major_news",
-    "header_label": "Single Post",
-    "image_url": "https://www.marktechpost.com/wp-content/uploads/2026/04/blog-68.png",
-    "video_url": null,
-    "publication_state": "finalize_only"
-  },
-  {
-    "draft_id": "5d93d448-f22a-4cc4-8316-06a4f232308a",
-    "generated_text": "Google инвестирует в Anthropic до $40 млрд наличными и компьютерными технологиями — Google планирует инвестировать до 40 миллиардов долларов в Anthropic.\n\nГлавное:\n• поскольку конкуренты в сфере искусственного интеллекта стремятся обеспечить огромные вычислительные мощности после...\n• ориентированной на кибербезопасность.\n\nПодробнее: https://techcrunch.com/2026/04/24/google-to-invest-up-to-40b-in-anthropic-in-cash-and-compute/",
-    "current_text": "Google инвестирует в Anthropic до $40 млрд наличными и компьютерными технологиями — Google планирует инвестировать до 40 миллиардов долларов в Anthropic.\n\nГлавное:\n• поскольку конкуренты в сфере искусственного интеллекта стремятся обеспечить огромные вычислительные мощности после...\n• ориентированной на кибербезопасность.\n\nПодробнее: https://techcrunch.com/2026/04/24/google-to-invest-up-to-40b-in-anthropic-in-cash-and-compute/",
+    "draft_id": "26dd8316-ad45-4381-97ed-9f5a8903ec7e",
+    "generated_text": "Google инвестирует в Anthropic до $40 млрд наличными и компьютерными технологиями — Google планирует инвестировать до 40 миллиардов долларов в Anthropic.\n\nГлавное:\n• поскольку конкуренты в области искусственного интеллекта стремятся обеспечить огромные вычислительные мощности после...\n• ориентированной на кибербезопасность.\n\nПодробнее: https://techcrunch.com/2026/04/24/google-to-invest-up-to-40b-in-anthropic-in-cash-and-compute/",
+    "current_text": "Google инвестирует в Anthropic до $40 млрд наличными и компьютерными технологиями — Google планирует инвестировать до 40 миллиардов долларов в Anthropic.\n\nГлавное:\n• поскольку конкуренты в области искусственного интеллекта стремятся обеспечить огромные вычислительные мощности после...\n• ориентированной на кибербезопасность.\n\nПодробнее: https://techcrunch.com/2026/04/24/google-to-invest-up-to-40b-in-anthropic-in-cash-and-compute/",
     "selected_story_ids": [
       "74e91e7a-d2f8-44c0-b5be-3b76716cf994"
     ],
     "draft_type": "single_post",
     "status": "pending",
-    "created_at": "2026-04-24T20:33:43.515543+00:00",
+    "created_at": "2026-04-25T05:09:07.277123+00:00",
     "category": "major_news",
     "header_label": "Single Post",
     "image_url": "https://techcrunch.com/wp-content/uploads/2026/01/GettyImages-2252871842.jpg?w=1024",
@@ -64,39 +32,55 @@
     "publication_state": "finalize_only"
   },
   {
-    "draft_id": "5a25cbcd-6287-4619-97e4-c8aeda375b61",
-    "generated_text": "Учебное пособие по кодированию на OpenMythos для преобразователей рекуррентной глубины с экстраполяцией глубины... — В этом уроке мы исследуем реализацию OpenMythos, теоретической реконструкции архитектуры Claude Mythos, которая обеспечивает более глубокие рассуждения посредством итеративных вычислений, а не увеличения размера параметров.\n\nГлавное:\n• Мы создаем и анализируем модели, используя механизмы внимания как GQA, так и MLA...\n\nПодробнее: https://www.marktechpost.com/2026/04/23/a-coding-tutorial-on-openmythos-on-recurrent-depth-transformers-with-depth-extrapolation-adaptive-computation-and-mixture-of-experts-routing/",
-    "current_text": "Учебное пособие по кодированию на OpenMythos для преобразователей рекуррентной глубины с экстраполяцией глубины... — В этом уроке мы исследуем реализацию OpenMythos, теоретической реконструкции архитектуры Claude Mythos, которая обеспечивает более глубокие рассуждения посредством итеративных вычислений, а не увеличения размера параметров.\n\nГлавное:\n• Мы создаем и анализируем модели, используя механизмы внимания как GQA, так и MLA...\n\nПодробнее: https://www.marktechpost.com/2026/04/23/a-coding-tutorial-on-openmythos-on-recurrent-depth-transformers-with-depth-extrapolation-adaptive-computation-and-mixture-of-experts-routing/",
+    "draft_id": "dc93ec31-e441-482e-b8e0-2908e26a8122",
+    "generated_text": "Встречайте GitNexus: механизм графов знаний с открытым исходным кодом, основанный на MCP... — GitNexus Абхигяна Патвари незаметно преодолел 19 000 звезд GitHub, решив проблему, с которой сталкивался каждый разработчик с помощью искусственного интеллекта, но редко называл ее — агенты, которые редактируют код...\n\nГлавное:\n• Публикация «Знакомьтесь с GitNexus: MCP-родной графический движок знаний с открытым исходным кодом...\n\nТестим здесь: https://www.marktechpost.com/2026/04/24/meet-gitnexus-an-open-source-mcp-native-knowledge-graph-engine-that-gives-claude-code-and-cursor-full-codebase-structural-awareness/",
+    "current_text": "Встречайте GitNexus: механизм графов знаний с открытым исходным кодом, основанный на MCP... — GitNexus Абхигяна Патвари незаметно преодолел 19 000 звезд GitHub, решив проблему, с которой сталкивался каждый разработчик с помощью искусственного интеллекта, но редко называл ее — агенты, которые редактируют код...\n\nГлавное:\n• Публикация «Знакомьтесь с GitNexus: MCP-родной графический движок знаний с открытым исходным кодом...\n\nТестим здесь: https://www.marktechpost.com/2026/04/24/meet-gitnexus-an-open-source-mcp-native-knowledge-graph-engine-that-gives-claude-code-and-cursor-full-codebase-structural-awareness/",
     "selected_story_ids": [
-      "55bd1019-4318-44d2-90b1-b76713fe6741"
+      "b239a98f-e23a-43a0-8504-30c4efb8bacd"
     ],
     "draft_type": "single_post",
     "status": "pending",
-    "created_at": "2026-04-24T20:33:44.828096+00:00",
-    "category": "major_news",
+    "created_at": "2026-04-25T05:09:09.270079+00:00",
+    "category": "freebie/useful_find",
     "header_label": "Single Post",
-    "image_url": "https://www.marktechpost.com/wp-content/uploads/2026/04/blog-1-15.png",
+    "image_url": "https://www.marktechpost.com/wp-content/uploads/2026/04/blog-1-17-1024x731.png",
     "video_url": null,
     "publication_state": "finalize_only"
   },
   {
-    "draft_id": "d2430785-cd9f-41f7-b6bf-478eb63c2c88",
-    "generated_text": "DeepSeek-V4: контекст на миллион токенов, который агенты могут использовать.\n\nПодробнее: https://huggingface.co/blog/deepseekv4",
-    "current_text": "DeepSeek-V4: контекст на миллион токенов, который агенты могут использовать.\n\nПодробнее: https://huggingface.co/blog/deepseekv4",
+    "draft_id": "a819afd0-9f58-4954-90e0-17f66cb4a65c",
+    "generated_text": "Google инвестирует в Anthropic до $40 млрд. — Это последовало за аналогичными.\n\nГлавное:\n• но меньшими инвестициями Amazon.\n• сделанными всего несколько дней назад.\n\nПодробнее: https://arstechnica.com/ai/2026/04/google-will-invest-as-much-as-40-billion-in-anthropic/",
+    "current_text": "Google инвестирует в Anthropic до $40 млрд. — Это последовало за аналогичными.\n\nГлавное:\n• но меньшими инвестициями Amazon.\n• сделанными всего несколько дней назад.\n\nПодробнее: https://arstechnica.com/ai/2026/04/google-will-invest-as-much-as-40-billion-in-anthropic/",
     "selected_story_ids": [
-      "2386f36a-48cf-4d30-8340-85b6df97acff"
+      "ff5ef973-3617-4f7b-8527-461b8ae816da"
     ],
     "draft_type": "single_post",
     "status": "pending",
-    "created_at": "2026-04-24T20:33:44.928460+00:00",
+    "created_at": "2026-04-25T05:09:10.681156+00:00",
     "category": "major_news",
     "header_label": "Single Post",
-    "image_url": "https://huggingface.co/blog/assets/deepseekv4/thumbnail.png",
+    "image_url": "https://cdn.arstechnica.net/wp-content/uploads/2026/04/TPU-8i-rack-2560x1440.jpg",
     "video_url": null,
     "publication_state": "finalize_only"
   },
   {
-    "draft_id": "c7b61110-e6ea-4c5c-8605-09c67b2a1436",
+    "draft_id": "24d29082-509b-4a86-b6c9-b13be8c75260",
+    "generated_text": "Три причины, почему новая модель DeepSeek важна — В пятницу китайская компания DeepSeek, занимающаяся искусственным интеллектом, выпустила предварительный просмотр V4, своей долгожданной новой флагманской модели.\n\nГлавное:\n• Примечательно, что модель может обрабатывать гораздо более длинные запросы, чем предыдущее поколение...\n• Как и предыдущие модели DeepSeek, версия V4 имеет открытый исходный код, то есть она доступна….\n\nТестим здесь: https://www.technologyreview.com/2026/04/24/1136422/why-deepseeks-v4-matters/",
+    "current_text": "Три причины, почему новая модель DeepSeek важна — В пятницу китайская компания DeepSeek, занимающаяся искусственным интеллектом, выпустила предварительный просмотр V4, своей долгожданной новой флагманской модели.\n\nГлавное:\n• Примечательно, что модель может обрабатывать гораздо более длинные запросы, чем предыдущее поколение...\n• Как и предыдущие модели DeepSeek, версия V4 имеет открытый исходный код, то есть она доступна….\n\nТестим здесь: https://www.technologyreview.com/2026/04/24/1136422/why-deepseeks-v4-matters/",
+    "selected_story_ids": [
+      "2fd5cdee-a7fb-4e65-8daf-a05c11480530"
+    ],
+    "draft_type": "single_post",
+    "status": "pending",
+    "created_at": "2026-04-25T05:09:12.617727+00:00",
+    "category": "freebie/useful_find",
+    "header_label": "Single Post",
+    "image_url": "https://wp.technologyreview.com/wp-content/uploads/2026/04/260424_deepseek.jpg?resize=1200,600",
+    "video_url": null,
+    "publication_state": "finalize_only"
+  },
+  {
+    "draft_id": "712da035-08d1-46fe-9855-f229a78e5d4d",
     "generated_text": "DeepSeek AI выпускает DeepSeek-V4: сжатое разреженное внимание и сильно сжатое внимание позволяют создавать контексты с миллионом токенов — DeepSeek-AI выпустила предварительную версию серии DeepSeek-V4: две языковые модели Mixture-of-Experts (MoE), построенные вокруг одной основной задачи: сделать контекстные окна на один миллион токенов практичными и доступными во время...\n\nГлавное:\n• Серия состоит из DeepSeek-V4-Pro с общим количеством параметров 1,6Т и активацией 49Б на токен...\n• […] Сообщение DeepSeek AI выпускает DeepSeek-V4: сжатое разреженное внимание и сильно сжатое внимание позволяют...\n\nПодробнее: https://www.marktechpost.com/2026/04/24/deepseek-ai-releases-deepseek-v4-compressed-sparse-attention-and-heavily-compressed-attention-enable-one-million-token-contexts/",
     "current_text": "DeepSeek AI выпускает DeepSeek-V4: сжатое разреженное внимание и сильно сжатое внимание позволяют создавать контексты с миллионом токенов — DeepSeek-AI выпустила предварительную версию серии DeepSeek-V4: две языковые модели Mixture-of-Experts (MoE), построенные вокруг одной основной задачи: сделать контекстные окна на один миллион токенов практичными и доступными во время...\n\nГлавное:\n• Серия состоит из DeepSeek-V4-Pro с общим количеством параметров 1,6Т и активацией 49Б на токен...\n• […] Сообщение DeepSeek AI выпускает DeepSeek-V4: сжатое разреженное внимание и сильно сжатое внимание позволяют...\n\nПодробнее: https://www.marktechpost.com/2026/04/24/deepseek-ai-releases-deepseek-v4-compressed-sparse-attention-and-heavily-compressed-attention-enable-one-million-token-contexts/",
     "selected_story_ids": [
@@ -104,7 +88,7 @@
     ],
     "draft_type": "single_post",
     "status": "pending",
-    "created_at": "2026-04-24T20:33:46.606489+00:00",
+    "created_at": "2026-04-25T05:09:13.118496+00:00",
     "category": "major_news",
     "header_label": "Single Post",
     "image_url": "https://www.marktechpost.com/wp-content/uploads/2026/04/blog-69.png",
@@ -112,7 +96,23 @@
     "publication_state": "finalize_only"
   },
   {
-    "draft_id": "79ed1f81-0316-4057-a76a-38393dfb8636",
+    "draft_id": "cf37eb49-a567-42da-b5a5-4ece4433080c",
+    "generated_text": "Реализация кода на OpenMementos от Microsoft с анализом структуры трассировки, сжатием контекста и точной настройкой подготовки данных — В этом руководстве мы работаем с набором данных Microsoft OpenMementos и исследуем, как следы рассуждений структурируются с помощью блоков и сувениров в практическом рабочем процессе, готовом к работе с Colab.\n\nГлавное:\n• Мы эффективно передаем набор данных, анализируем его специальный формат токенов, проверяем...\n• Когда мы […] Публикация «Реализация кодирования на OpenMementos от Microsoft с анализом структуры трассировки...\n\nПодробнее: https://www.marktechpost.com/2026/04/24/a-coding-implementation-on-microsofts-openmementos-with-trace-structure-analysis-context-compression-and-fine-tuning-data-preparation/",
+    "current_text": "Реализация кода на OpenMementos от Microsoft с анализом структуры трассировки, сжатием контекста и точной настройкой подготовки данных — В этом руководстве мы работаем с набором данных Microsoft OpenMementos и исследуем, как следы рассуждений структурируются с помощью блоков и сувениров в практическом рабочем процессе, готовом к работе с Colab.\n\nГлавное:\n• Мы эффективно передаем набор данных, анализируем его специальный формат токенов, проверяем...\n• Когда мы […] Публикация «Реализация кодирования на OpenMementos от Microsoft с анализом структуры трассировки...\n\nПодробнее: https://www.marktechpost.com/2026/04/24/a-coding-implementation-on-microsofts-openmementos-with-trace-structure-analysis-context-compression-and-fine-tuning-data-preparation/",
+    "selected_story_ids": [
+      "d324853c-8a49-423f-9a36-b90dc45f6072"
+    ],
+    "draft_type": "single_post",
+    "status": "pending",
+    "created_at": "2026-04-25T05:09:15.665773+00:00",
+    "category": "major_news",
+    "header_label": "Single Post",
+    "image_url": "https://www.marktechpost.com/wp-content/uploads/2026/04/blog-70.png",
+    "video_url": null,
+    "publication_state": "finalize_only"
+  },
+  {
+    "draft_id": "741e6d97-33b0-4dfb-8402-cad37c0acab3",
     "generated_text": "DeepSeek представляет новую модель искусственного интеллекта, которая «закрывает разрыв» с передовыми моделями — DeepSeek заявляет.\n\nГлавное:\n• что обе модели более эффективны и производительны.\n• чем DeepSeek V3.2.\n• благодаря архитектурным усовершенствованиям.\n• и почти «сократили разрыв» с текущими ведущими моделями.\n\nПодробнее: https://techcrunch.com/2026/04/24/deepseek-previews-new-ai-model-that-closes-the-gap-with-frontier-models/",
     "current_text": "DeepSeek представляет новую модель искусственного интеллекта, которая «закрывает разрыв» с передовыми моделями — DeepSeek заявляет.\n\nГлавное:\n• что обе модели более эффективны и производительны.\n• чем DeepSeek V3.2.\n• благодаря архитектурным усовершенствованиям.\n• и почти «сократили разрыв» с текущими ведущими моделями.\n\nПодробнее: https://techcrunch.com/2026/04/24/deepseek-previews-new-ai-model-that-closes-the-gap-with-frontier-models/",
     "selected_story_ids": [
@@ -120,7 +120,7 @@
     ],
     "draft_type": "single_post",
     "status": "pending",
-    "created_at": "2026-04-24T20:33:46.838566+00:00",
+    "created_at": "2026-04-25T05:09:16.231084+00:00",
     "category": "major_news",
     "header_label": "Single Post",
     "image_url": "https://techcrunch.com/wp-content/uploads/2026/04/GettyImages-2272184430.jpg?w=1024",
@@ -128,23 +128,7 @@
     "publication_state": "finalize_only"
   },
   {
-    "draft_id": "149579b0-0c91-4990-9cec-283ac7e7643b",
-    "generated_text": "Mend выпускает структуру управления безопасностью ИИ: охватывающую инвентаризацию активов, распределение рисков... — Новая структура Mend.io дает командам инженеров и безопасности практическое руководство по управлению системами ИИ до того, как следующий инцидент вызовет разговор.\n\nГлавное:\n• Статья Mend выпускает структуру управления безопасностью ИИ: инвентаризация активов, распределение рисков...\n\nПодробнее: https://www.marktechpost.com/2026/04/23/mend-releases-ai-security-governance-framework/",
-    "current_text": "Mend выпускает структуру управления безопасностью ИИ: охватывающую инвентаризацию активов, распределение рисков... — Новая структура Mend.io дает командам инженеров и безопасности практическое руководство по управлению системами ИИ до того, как следующий инцидент вызовет разговор.\n\nГлавное:\n• Статья Mend выпускает структуру управления безопасностью ИИ: инвентаризация активов, распределение рисков...\n\nПодробнее: https://www.marktechpost.com/2026/04/23/mend-releases-ai-security-governance-framework/",
-    "selected_story_ids": [
-      "2f387228-8e78-43f2-91bb-5f20b4fe2d4b"
-    ],
-    "draft_type": "single_post",
-    "status": "pending",
-    "created_at": "2026-04-24T20:33:49.123664+00:00",
-    "category": "major_news",
-    "header_label": "Single Post",
-    "image_url": "https://www.marktechpost.com/wp-content/uploads/2026/04/blog-1-16-1024x731.png",
-    "video_url": null,
-    "publication_state": "finalize_only"
-  },
-  {
-    "draft_id": "3ac4e0c2-57ee-4b25-86f1-cbecbe7e9974",
+    "draft_id": "239ab153-87e6-4e0a-b24b-65f4e45fd91b",
     "generated_text": "Размеченные Mac mini заполонили eBay из-за дефицита, вызванного искусственным интеллектом — Распроданный Mac mini от Apple порождает размеченные списки на eBay.\n\nГлавное:\n• поскольку спрос на компактный настольный компьютер растет.\n• и теперь он предпочтителен для запуска локальных моделей и инструментов искусственного интеллекта.\n\nПодробнее: https://techcrunch.com/2026/04/24/mac-mini-price-expensive-ebay-shortage-ai-memory/",
     "current_text": "Размеченные Mac mini заполонили eBay из-за дефицита, вызванного искусственным интеллектом — Распроданный Mac mini от Apple порождает размеченные списки на eBay.\n\nГлавное:\n• поскольку спрос на компактный настольный компьютер растет.\n• и теперь он предпочтителен для запуска локальных моделей и инструментов искусственного интеллекта.\n\nПодробнее: https://techcrunch.com/2026/04/24/mac-mini-price-expensive-ebay-shortage-ai-memory/",
     "selected_story_ids": [
@@ -152,10 +136,26 @@
     ],
     "draft_type": "single_post",
     "status": "pending",
-    "created_at": "2026-04-24T20:33:50.542286+00:00",
+    "created_at": "2026-04-25T05:09:16.810725+00:00",
     "category": "major_news",
     "header_label": "Single Post",
     "image_url": "https://techcrunch.com/wp-content/uploads/2024/11/CMC_8135.jpg?resize=1200,800",
+    "video_url": null,
+    "publication_state": "finalize_only"
+  },
+  {
+    "draft_id": "8ef8426f-fb33-492c-a9f6-2b8b7ccd851d",
+    "generated_text": "Отчет о ракете: ракета Артемида III готовится; SpaceX теперь является компанией, занимающейся искусственным интеллектом — «Если он не зависит от твердого тела.\n\nГлавное:\n• нет причин.\n• по которым мы не сможем запустить».\n\nПодробнее: https://arstechnica.com/space/2026/04/rocket-report-some-canadians-dont-want-a-spaceport-falcon-hits-600-landings/",
+    "current_text": "Отчет о ракете: ракета Артемида III готовится; SpaceX теперь является компанией, занимающейся искусственным интеллектом — «Если он не зависит от твердого тела.\n\nГлавное:\n• нет причин.\n• по которым мы не сможем запустить».\n\nПодробнее: https://arstechnica.com/space/2026/04/rocket-report-some-canadians-dont-want-a-spaceport-falcon-hits-600-landings/",
+    "selected_story_ids": [
+      "b18f8903-f6e3-4d2c-92f4-6904b1a4f910"
+    ],
+    "draft_type": "single_post",
+    "status": "pending",
+    "created_at": "2026-04-25T05:09:19.262717+00:00",
+    "category": "major_news",
+    "header_label": "Single Post",
+    "image_url": "https://cdn.arstechnica.net/wp-content/uploads/2026/04/RDRE-Hot-Fire-Image-2048x1366-1-1152x648.jpg",
     "video_url": null,
     "publication_state": "finalize_only"
   }

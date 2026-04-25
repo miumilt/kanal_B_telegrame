@@ -1,16 +1,16 @@
 {
-  "draft_id": "31ed3b94-776a-4ba0-8937-42614953a62e",
-  "generated_text": "OpenAI выпускает GPT-5.5, полностью переобученную агентную модель, которая набирает 82,7% на Terminal-Bench 2.0 и 84,9% на GDPval — Модель нацелена на полный комплекс компьютерной работы — кодирование.\n\nГлавное:\n• исследования.\n• анализ данных и работу с программным обеспечением — без необходимости контроля человека за каждым шагом.\n\nПодробнее: https://www.marktechpost.com/2026/04/23/openai-releases-gpt-5-5-a-fully-retrained-agentic-model-that-scores-82-7-on-terminal-bench-2-0-and-84-9-on-gdpval/",
-  "current_text": "OpenAI выпускает GPT-5.5, полностью переобученную агентную модель, которая набирает 82,7% на Terminal-Bench 2.0 и 84,9% на GDPval — Модель нацелена на полный комплекс компьютерной работы — кодирование.\n\nГлавное:\n• исследования.\n• анализ данных и работу с программным обеспечением — без необходимости контроля человека за каждым шагом.\n\nПодробнее: https://www.marktechpost.com/2026/04/23/openai-releases-gpt-5-5-a-fully-retrained-agentic-model-that-scores-82-7-on-terminal-bench-2-0-and-84-9-on-gdpval/",
+  "draft_id": "21a8559c-8a4d-485e-847a-7cda0158faa5",
+  "generated_text": "8 советов Близнецам по организации своего пространства (и жизни) — Черный экран с иллюстрациями.\n\nГлавное:\n• включая ноутбук с выходящими значками документов и электронной почты.\n• улыбающегося человека.\n• держащего телефон и просматривающего контрольный список.\n• и пользователя.\n\nПодробнее: https://blog.google/products-and-platforms/products/gemini/gemini-spring-cleaning-tips/",
+  "current_text": "8 советов Близнецам по организации своего пространства (и жизни) — Черный экран с иллюстрациями.\n\nГлавное:\n• включая ноутбук с выходящими значками документов и электронной почты.\n• улыбающегося человека.\n• держащего телефон и просматривающего контрольный список.\n• и пользователя.\n\nПодробнее: https://blog.google/products-and-platforms/products/gemini/gemini-spring-cleaning-tips/",
   "selected_story_ids": [
-    "c0ade826-23f9-4f3b-b5f5-7488ef968019"
+    "f1682795-585a-4d06-84cf-b9b55dfa3f9d"
   ],
   "draft_type": "single_post",
   "status": "pending",
-  "created_at": "2026-04-24T20:33:41.108697+00:00",
+  "created_at": "2026-04-25T05:09:06.611508+00:00",
   "category": "major_news",
   "header_label": "Single Post",
-  "image_url": "https://www.marktechpost.com/wp-content/uploads/2026/04/blog-67.png",
+  "image_url": "https://storage.googleapis.com/gweb-uniblog-publish-prod/images/Gemini_Spring_Cleaning_ss.width-1300.png",
   "video_url": null,
   "publication_state": "finalize_only"
 }
