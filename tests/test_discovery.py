@@ -102,6 +102,76 @@ def test_fetch_candidates_from_sources_marks_community_items_unconfirmed(monkeyp
     assert items[0].video_url is None
 
 
+def test_fetch_candidates_from_sources_confirms_trusted_community_ai_signals(monkeypatch):
+    sources = [
+        SourceConfig(
+            id="product-hunt",
+            name="Product Hunt",
+            tier="tier4_community",
+            kind="rss",
+            url="https://www.producthunt.com",
+            feed_url="https://www.producthunt.com/feed",
+            language="en",
+            priority=5,
+            enabled=True,
+            tags=("community", "tool-launches", "trusted-signal"),
+        )
+    ]
+
+    monkeypatch.setattr(
+        "ai_news_bot.discovery.parse_feed",
+        lambda url: [
+            FakeEntry(
+                title="New AI agent for browser automation",
+                link="https://example.com/product",
+                summary="Launch includes a free plan and an LLM workflow builder.",
+                published="2026-04-20T10:00:00+00:00",
+            )
+        ],
+    )
+
+    items = fetch_candidates_from_sources(sources, now_iso="2026-04-20T12:00:00+00:00")
+
+    assert len(items) == 1
+    assert items[0].confirmed is True
+    assert items[0].status == "new"
+
+
+def test_fetch_candidates_from_sources_keeps_trusted_community_noise_unconfirmed(monkeypatch):
+    sources = [
+        SourceConfig(
+            id="product-hunt",
+            name="Product Hunt",
+            tier="tier4_community",
+            kind="rss",
+            url="https://www.producthunt.com",
+            feed_url="https://www.producthunt.com/feed",
+            language="en",
+            priority=5,
+            enabled=True,
+            tags=("community", "tool-launches", "trusted-signal"),
+        )
+    ]
+
+    monkeypatch.setattr(
+        "ai_news_bot.discovery.parse_feed",
+        lambda url: [
+            FakeEntry(
+                title="New recipe organizer for home cooks",
+                link="https://example.com/product",
+                summary="Save meals and shopping lists.",
+                published="2026-04-20T10:00:00+00:00",
+            )
+        ],
+    )
+
+    items = fetch_candidates_from_sources(sources, now_iso="2026-04-20T12:00:00+00:00")
+
+    assert len(items) == 1
+    assert items[0].confirmed is False
+    assert items[0].status == "observed_unconfirmed"
+
+
 def test_fetch_candidates_from_sources_uses_page_text_for_website_sources(monkeypatch):
     sources = [
         SourceConfig(

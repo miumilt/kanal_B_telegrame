@@ -2,6 +2,7 @@ from pathlib import Path
 
 import pytest
 
+from ai_news_bot.config import resolve_project_root
 from ai_news_bot.source_registry import load_sources
 
 
@@ -37,6 +38,16 @@ sources:
     sources = load_sources(config)
 
     assert [source.id for source in sources] == ["openai-blog"]
+
+
+def test_repository_sources_file_loads_expanded_feeds():
+    sources = load_sources(resolve_project_root() / "sources.yaml")
+    source_ids = {source.id for source in sources}
+
+    assert "the-decoder" in source_ids
+    assert "product-hunt" in source_ids
+    assert "simon-willison" in source_ids
+    assert "github-codex-releases" in source_ids
 
 
 def test_load_sources_rejects_missing_required_fields(tmp_path: Path):

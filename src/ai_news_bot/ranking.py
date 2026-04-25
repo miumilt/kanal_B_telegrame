@@ -7,17 +7,31 @@ from ai_news_bot.models import BacklogItem
 
 _KEYWORD_WEIGHTS: tuple[tuple[str, int], ...] = (
     ("introducing", 3),
+    ("announcing", 3),
     ("release", 4),
     ("released", 4),
     ("launch", 4),
+    ("launched", 4),
+    ("ships", 4),
     ("rolling out", 3),
     ("model", 3),
     ("research", 3),
     ("benchmark", 3),
+    ("leaderboard", 3),
     ("funding", 2),
     ("regulation", 2),
     ("open source", 3),
+    ("open weights", 4),
     ("cli", 2),
+    ("agent", 3),
+    ("agents", 3),
+    ("api", 2),
+    ("demo", 3),
+    ("free", 1),
+    ("try", 2),
+    ("tool", 1),
+    ("github", 2),
+    ("show hn", 3),
 )
 
 _FRONTIER_SOURCE_WEIGHTS: tuple[tuple[str, int], ...] = (
@@ -32,6 +46,18 @@ _FRONTIER_SOURCE_WEIGHTS: tuple[tuple[str, int], ...] = (
     ("microsoft", 10),
     ("nvidia", 9),
     ("hugging face", 8),
+    ("the decoder", 8),
+    ("tldr ai", 7),
+    ("product hunt", 7),
+    ("simon willison", 7),
+    ("karpathy", 7),
+    ("one useful thing", 7),
+    ("ethan mollick", 7),
+    ("import ai", 7),
+    ("interconnects", 7),
+    ("chip huyen", 6),
+    ("latent space", 6),
+    ("github releases", 6),
 )
 
 _FRONTIER_MODEL_PATTERNS: tuple[tuple[re.Pattern[str], int], ...] = (
@@ -44,6 +70,9 @@ _FRONTIER_MODEL_PATTERNS: tuple[tuple[re.Pattern[str], int], ...] = (
     (re.compile(r"\bmistral\b|\bmixtral\b|\bmagistral\b"), 14),
     (re.compile(r"\bcodex\b"), 12),
     (re.compile(r"\bagents?\s+sdk\b|\bworkspace agents?\b"), 9),
+    (re.compile(r"\bproduct\s+hunt\b|\bshow\s+hn\b"), 8),
+    (re.compile(r"\bfree\s+(?:tier|trial|access|credits|plan|to\s+use)\b"), 8),
+    (re.compile(r"\bopen[-\s]?weights?\b|\bopen[-\s]?source\b"), 8),
 )
 
 _SECONDARY_SOURCE_PENALTIES: tuple[tuple[str, int], ...] = (

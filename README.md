@@ -28,6 +28,7 @@ Supported kinds:
 - `hackernews`
 
 Community-originated topics stay out of the actionable draft flow until a stronger source confirms them.
+Sources tagged with `trusted-signal` are the exception: they can enter the draft flow when the title or summary contains a clear AI signal. This is used for Product Hunt and high-signal Hacker News feeds, so useful demos and tool launches can surface without opening the door to unrelated community noise.
 
 ## Current operating model
 

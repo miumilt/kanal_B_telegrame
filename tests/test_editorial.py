@@ -1,4 +1,4 @@
-from ai_news_bot.editorial import build_header_label, classify_candidate
+from ai_news_bot.editorial import build_header_label, classify_candidate, is_ai_relevant_candidate
 from ai_news_bot.models import BacklogItem
 
 
@@ -52,6 +52,24 @@ def test_classify_candidate_ignores_generic_launch_copy():
     )
 
     assert classify_candidate(item) == "major_news"
+
+
+def test_is_ai_relevant_candidate_detects_ai_tooling_signal():
+    item = make_item(
+        title="Show HN: an AI agent that books meetings",
+        summary="The demo uses an LLM to call tools and plan tasks.",
+    )
+
+    assert is_ai_relevant_candidate(item) is True
+
+
+def test_is_ai_relevant_candidate_rejects_unrelated_product_launch():
+    item = make_item(
+        title="A new calendar app for families",
+        summary="Shared lists, reminders, and simple scheduling.",
+    )
+
+    assert is_ai_relevant_candidate(item) is False
 
 
 def test_build_header_label_formats_candidate_position_and_category():

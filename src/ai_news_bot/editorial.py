@@ -12,10 +12,33 @@ FREEBIE_PHRASES = (
     "free trial",
     "free plan",
     "free credits",
+    "free to use",
     "open-source",
     "open source",
     "open weights",
     "no waitlist",
+    "public beta",
+)
+
+AI_RELEVANCE_PHRASES = (
+    "ai",
+    "artificial intelligence",
+    "agent",
+    "agents",
+    "chatgpt",
+    "claude",
+    "codex",
+    "gemini",
+    "gpt",
+    "grok",
+    "llm",
+    "llama",
+    "mistral",
+    "model",
+    "openai",
+    "prompt",
+    "reasoning",
+    "transformer",
 )
 
 CATEGORY_LABELS = {
@@ -29,6 +52,11 @@ def classify_candidate(item: BacklogItem) -> str:
     if any(pattern.search(haystack) for pattern in FREEBIE_PATTERNS):
         return "freebie/useful_find"
     return "major_news"
+
+
+def is_ai_relevant_candidate(item: BacklogItem) -> bool:
+    haystack = f"{item.source_title} {item.summary_candidate}".lower()
+    return any(pattern.search(haystack) for pattern in AI_RELEVANCE_PATTERNS)
 
 
 def build_header_label(index: int, total: int, category: str) -> str:
@@ -47,4 +75,9 @@ def _category_label(category: str) -> str:
 FREEBIE_PATTERNS = tuple(
     re.compile(rf"(?<!\w){_phrase_pattern(phrase)}(?!\w)")
     for phrase in FREEBIE_PHRASES
+)
+
+AI_RELEVANCE_PATTERNS = tuple(
+    re.compile(rf"(?<!\w){_phrase_pattern(phrase)}(?!\w)")
+    for phrase in AI_RELEVANCE_PHRASES
 )

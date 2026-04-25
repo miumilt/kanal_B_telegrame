@@ -5,7 +5,7 @@ from pathlib import Path
 from uuid import uuid4
 
 from ai_news_bot.config import resolve_project_root
-from ai_news_bot.editorial import classify_candidate
+from ai_news_bot.editorial import classify_candidate, is_ai_relevant_candidate
 from ai_news_bot.media import extract_media_urls
 from ai_news_bot.models import BacklogItem
 from ai_news_bot.source_registry import SourceConfig, load_sources
@@ -125,22 +125,22 @@ def build_candidate_from_entry(source: SourceConfig, entry, now_iso: str) -> Bac
             image_url = page_image_url
         if video_url is None:
             video_url = page_video_url
-    category = classify_candidate(
-        BacklogItem(
-            item_id="",
-            source_url=url,
-            source_title=title,
-            normalized_title=normalize_title(title),
-            topic_fingerprint=build_topic_fingerprint(title, summary),
-            source_name=source.name,
-            published_at=_get_value(entry, "published", now_iso),
-            summary_candidate=summary[:800],
-            status="new",
-            first_seen_at=now_iso,
-            last_considered_at=now_iso,
-        )
+    candidate = BacklogItem(
+        item_id="",
+        source_url=url,
+        source_title=title,
+        normalized_title=normalize_title(title),
+        topic_fingerprint=build_topic_fingerprint(title, summary),
+        source_name=source.name,
+        published_at=_get_value(entry, "published", now_iso),
+        summary_candidate=summary[:800],
+        status="new",
+        first_seen_at=now_iso,
+        last_considered_at=now_iso,
     )
-    is_confirmed = source.tier != "tier4_community"
+    category = classify_candidate(candidate)
+    is_trusted_signal = "trusted-signal" in source.tags
+    is_confirmed = source.tier != "tier4_community" or (is_trusted_signal and is_ai_relevant_candidate(candidate))
     status = "new" if is_confirmed else "observed_unconfirmed"
     return BacklogItem(
         item_id=str(uuid4()),

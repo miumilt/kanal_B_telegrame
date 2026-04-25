@@ -329,3 +329,253 @@ sources:
     priority: 3
     enabled: true
     tags: [community, reddit, research]
+  - id: the-decoder
+    name: The Decoder
+    tier: tier2_media
+    kind: rss
+    url: https://the-decoder.com/
+    feed_url: https://the-decoder.com/feed
+    language: en
+    priority: 8
+    enabled: true
+    tags: [media, ai, frontier, practical]
+  - id: tldr-ai
+    name: TLDR AI
+    tier: tier3_ai_publications
+    kind: rss
+    url: https://tldr.tech/ai
+    feed_url: https://tldr.tech/api/rss/ai
+    language: en
+    priority: 7
+    enabled: true
+    tags: [publication, newsletter, ai, practical]
+  - id: artificialintelligence-news
+    name: AI News
+    tier: tier2_media
+    kind: rss
+    url: https://www.artificialintelligence-news.com/
+    feed_url: https://www.artificialintelligence-news.com/feed/
+    language: en
+    priority: 6
+    enabled: true
+    tags: [media, ai, business, products]
+  - id: zdnet-ai
+    name: ZDNET AI
+    tier: tier2_media
+    kind: rss
+    url: https://www.zdnet.com/topic/artificial-intelligence/
+    feed_url: https://www.zdnet.com/topic/artificial-intelligence/rss.xml
+    language: en
+    priority: 6
+    enabled: true
+    tags: [media, ai, consumer-tech, products]
+  - id: siliconangle-ai
+    name: SiliconANGLE AI
+    tier: tier2_media
+    kind: rss
+    url: https://siliconangle.com/category/ai/
+    feed_url: https://siliconangle.com/category/ai/feed/
+    language: en
+    priority: 6
+    enabled: true
+    tags: [media, ai, enterprise, startups]
+  - id: simon-willison
+    name: Simon Willison
+    tier: tier3_ai_publications
+    kind: atom
+    url: https://simonwillison.net/
+    feed_url: https://simonwillison.net/atom/everything/
+    language: en
+    priority: 7
+    enabled: true
+    tags: [people, developer-tools, ai, practical]
+  - id: one-useful-thing
+    name: One Useful Thing
+    tier: tier3_ai_publications
+    kind: rss
+    url: https://www.oneusefulthing.org/
+    feed_url: https://www.oneusefulthing.org/feed
+    language: en
+    priority: 7
+    enabled: true
+    tags: [people, ai-adoption, practical]
+  - id: karpathy-bearblog
+    name: Andrej Karpathy
+    tier: tier3_ai_publications
+    kind: rss
+    url: https://karpathy.bearblog.dev/
+    feed_url: https://karpathy.bearblog.dev/feed/
+    language: en
+    priority: 7
+    enabled: true
+    tags: [people, research, ai, developer-tools]
+  - id: chip-huyen
+    name: Chip Huyen
+    tier: tier3_ai_publications
+    kind: rss
+    url: https://huyenchip.com/
+    feed_url: https://huyenchip.com/feed.xml
+    language: en
+    priority: 6
+    enabled: true
+    tags: [people, mlops, ai-engineering, practical]
+  - id: import-ai
+    name: Import AI
+    tier: tier3_ai_publications
+    kind: rss
+    url: https://importai.substack.com/
+    feed_url: https://importai.substack.com/feed
+    language: en
+    priority: 7
+    enabled: true
+    tags: [publication, newsletter, research, policy]
+  - id: interconnects
+    name: Interconnects
+    tier: tier3_ai_publications
+    kind: rss
+    url: https://www.interconnects.ai/
+    feed_url: https://www.interconnects.ai/feed
+    language: en
+    priority: 7
+    enabled: true
+    tags: [publication, people, open-source, models]
+  - id: understanding-ai
+    name: Understanding AI
+    tier: tier3_ai_publications
+    kind: rss
+    url: https://www.understandingai.org/
+    feed_url: https://www.understandingai.org/feed
+    language: en
+    priority: 6
+    enabled: true
+    tags: [publication, ai, explainers, business]
+  - id: latent-space
+    name: Latent Space
+    tier: tier3_ai_publications
+    kind: rss
+    url: https://www.latent.space/
+    feed_url: https://www.latent.space/feed
+    language: en
+    priority: 6
+    enabled: true
+    tags: [publication, ai-engineering, agents, developer-tools]
+  - id: ahead-of-ai
+    name: Ahead of AI
+    tier: tier3_ai_publications
+    kind: rss
+    url: https://magazine.sebastianraschka.com/
+    feed_url: https://magazine.sebastianraschka.com/feed
+    language: en
+    priority: 6
+    enabled: true
+    tags: [publication, people, research, education]
+  - id: product-hunt
+    name: Product Hunt
+    tier: tier4_community
+    kind: rss
+    url: https://www.producthunt.com/
+    feed_url: https://www.producthunt.com/feed
+    language: en
+    priority: 5
+    enabled: true
+    tags: [community, product-hunt, tool-launches, trusted-signal]
+  - id: hackernews-best-ai
+    name: Hacker News Best AI
+    tier: tier4_community
+    kind: hackernews
+    url: https://news.ycombinator.com/best
+    feed_url: https://hnrss.org/best?q=AI
+    language: en
+    priority: 5
+    enabled: true
+    tags: [community, hn, discussion, trusted-signal]
+  - id: hackernews-show-ai
+    name: Hacker News Show HN AI
+    tier: tier4_community
+    kind: hackernews
+    url: https://news.ycombinator.com/show
+    feed_url: https://hnrss.org/show?q=AI
+    language: en
+    priority: 5
+    enabled: true
+    tags: [community, hn, demos, trusted-signal]
+  - id: github-codex-releases
+    name: GitHub Releases - OpenAI Codex
+    tier: tier3_ai_publications
+    kind: atom
+    url: https://github.com/openai/codex
+    feed_url: https://github.com/openai/codex/releases.atom
+    language: en
+    priority: 7
+    enabled: true
+    tags: [github, releases, developer-tools, agents]
+  - id: github-ollama-releases
+    name: GitHub Releases - Ollama
+    tier: tier3_ai_publications
+    kind: atom
+    url: https://github.com/ollama/ollama
+    feed_url: https://github.com/ollama/ollama/releases.atom
+    language: en
+    priority: 6
+    enabled: true
+    tags: [github, releases, open-source, local-ai]
+  - id: github-transformers-releases
+    name: GitHub Releases - Transformers
+    tier: tier3_ai_publications
+    kind: atom
+    url: https://github.com/huggingface/transformers
+    feed_url: https://github.com/huggingface/transformers/releases.atom
+    language: en
+    priority: 6
+    enabled: true
+    tags: [github, releases, open-source, models]
+  - id: github-vllm-releases
+    name: GitHub Releases - vLLM
+    tier: tier3_ai_publications
+    kind: atom
+    url: https://github.com/vllm-project/vllm
+    feed_url: https://github.com/vllm-project/vllm/releases.atom
+    language: en
+    priority: 6
+    enabled: true
+    tags: [github, releases, inference, open-source]
+  - id: github-langchain-releases
+    name: GitHub Releases - LangChain
+    tier: tier3_ai_publications
+    kind: atom
+    url: https://github.com/langchain-ai/langchain
+    feed_url: https://github.com/langchain-ai/langchain/releases.atom
+    language: en
+    priority: 6
+    enabled: true
+    tags: [github, releases, agents, developer-tools]
+  - id: github-dify-releases
+    name: GitHub Releases - Dify
+    tier: tier3_ai_publications
+    kind: atom
+    url: https://github.com/langgenius/dify
+    feed_url: https://github.com/langgenius/dify/releases.atom
+    language: en
+    priority: 6
+    enabled: true
+    tags: [github, releases, agents, open-source]
+  - id: github-browser-use-releases
+    name: GitHub Releases - Browser Use
+    tier: tier3_ai_publications
+    kind: atom
+    url: https://github.com/browser-use/browser-use
+    feed_url: https://github.com/browser-use/browser-use/releases.atom
+    language: en
+    priority: 6
+    enabled: true
+    tags: [github, releases, agents, browser]
+  - id: github-open-webui-releases
+    name: GitHub Releases - Open WebUI
+    tier: tier3_ai_publications
+    kind: atom
+    url: https://github.com/open-webui/open-webui
+    feed_url: https://github.com/open-webui/open-webui/releases.atom
+    language: en
+    priority: 6
+    enabled: true
+    tags: [github, releases, open-source, local-ai]
