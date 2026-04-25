@@ -57,6 +57,32 @@ def test_rewrite_with_openrouter_sends_chat_completion_request(monkeypatch: pyte
     assert captured["kwargs"]["json"]["model"] == "test/model"
 
 
+def test_rewrite_with_openrouter_asks_for_living_telegram_style(monkeypatch: pytest.MonkeyPatch):
+    captured: dict[str, Any] = {}
+
+    def fake_post(*args: Any, **kwargs: Any) -> _FakeResponse:
+        captured["kwargs"] = kwargs
+        return _FakeResponse(
+            status_code=200,
+            payload={"choices": [{"message": {"content": "Короткий пост\nГде посмотреть: https://example.com/story"}}]},
+        )
+
+    monkeypatch.setattr(requests, "post", fake_post)
+
+    rewrite_with_openrouter(_item(), "fallback", api_key="key")
+
+    messages = captured["kwargs"]["json"]["messages"]
+    system_prompt = messages[0]["content"]
+    user_prompt = messages[1]["content"]
+    combined_prompt = f"{system_prompt}\n{user_prompt}"
+
+    assert "живой короткий Telegram-пост" in combined_prompt
+    assert "1-2 коротких абзаца" in combined_prompt
+    assert "не делай обязательный блок 'Главное:'" in combined_prompt
+    assert "Где попробовать:" in combined_prompt
+    assert "Источник:" in combined_prompt
+
+
 def test_maybe_rewrite_post_falls_back_without_key():
     assert maybe_rewrite_post(_item(), "fallback", api_key=None) == "fallback"
 
