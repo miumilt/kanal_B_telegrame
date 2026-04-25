@@ -107,6 +107,7 @@ def build_short_post_text(
     return _build_post_text(
         item,
         body_limit=280,
+        include_bullets=True,
         translated_title=translated_title,
         translated_body=translated_body,
     )
@@ -121,6 +122,7 @@ def build_single_post_text(
     return _build_post_text(
         item,
         body_limit=240,
+        include_bullets=False,
         translated_title=translated_title,
         translated_body=translated_body,
     )
@@ -130,6 +132,7 @@ def _build_post_text(
     item: BacklogItem,
     *,
     body_limit: int,
+    include_bullets: bool,
     translated_title: Translator,
     translated_body: Translator,
 ) -> str:
@@ -146,9 +149,11 @@ def _build_post_text(
 
     lines = [intro]
     bullets = [_truncate(_strip_final_punctuation(point), 120) for point in points[1:5]]
-    if bullets:
+    if bullets and include_bullets:
         lines.extend(["", "Главное:"])
         lines.extend(f"• {_ensure_sentence(point)}" for point in bullets)
+    elif bullets:
+        lines.append(" ".join(_ensure_sentence(point) for point in bullets))
 
     lines.extend(["", f"{_link_label(item.category)} {item.source_url}", f"Источник: {item.source_name}"])
     return "\n".join(lines)

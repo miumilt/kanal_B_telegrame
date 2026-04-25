@@ -664,6 +664,57 @@ def test_select_watcher_items_excludes_sent_topics_and_old_items():
     assert [item.item_id for item in selected] == ["fresh"]
 
 
+def test_select_watcher_items_excludes_low_signal_release_notes():
+    backlog = [
+        BacklogItem(
+            item_id="adapter-release",
+            source_url="https://example.com/adapter-release",
+            source_title="langchain-openai==1.2.1",
+            normalized_title="langchain-openai==1.2.1",
+            topic_fingerprint="langchain-openai-1.2.1",
+            source_name="GitHub Releases - LangChain",
+            published_at="2026-04-20T10:30:00+00:00",
+            summary_candidate="hotfix: bump min core versions (#36996) release(openai): 1.2.1 (#36995)",
+            status="queued",
+            first_seen_at="2026-04-20T10:30:00+00:00",
+            last_considered_at="2026-04-20T10:30:00+00:00",
+            source_tier="tier3_ai_publications",
+            source_kind="atom",
+            source_priority=6,
+            confirmed=True,
+            evidence_urls=["https://example.com/adapter-release"],
+        ),
+        BacklogItem(
+            item_id="tool-release",
+            source_url="https://example.com/tool-release",
+            source_title="0.12.3 - Browser Use CLI 2.0",
+            normalized_title="0.12.3 browser use cli 2.0",
+            topic_fingerprint="browser-use-cli-2.0",
+            source_name="GitHub Releases - Browser Use",
+            published_at="2026-04-20T10:35:00+00:00",
+            summary_candidate="The fastest browser automation for AI coding agents. 2x faster and 50% fewer tokens.",
+            status="queued",
+            first_seen_at="2026-04-20T10:35:00+00:00",
+            last_considered_at="2026-04-20T10:35:00+00:00",
+            source_tier="tier3_ai_publications",
+            source_kind="atom",
+            source_priority=6,
+            confirmed=True,
+            evidence_urls=["https://example.com/tool-release"],
+        ),
+    ]
+
+    selected = select_watcher_items(
+        backlog,
+        sent_topics=set(),
+        limit=3,
+        now_iso="2026-04-20T11:00:00+00:00",
+        max_age_hours=2,
+    )
+
+    assert [item.item_id for item in selected] == ["tool-release"]
+
+
 def test_select_daily_slot_items_with_age_ignores_items_older_than_one_day():
     backlog = [
         BacklogItem(

@@ -80,6 +80,8 @@ def test_rewrite_with_openrouter_asks_for_living_telegram_style(monkeypatch: pyt
     assert "1-2 коротких абзаца" in combined_prompt
     assert "не делай обязательный блок 'Главное:'" in combined_prompt
     assert "Где попробовать:" in combined_prompt
+    assert "Игнорируй технический шум" in combined_prompt
+    assert "path d=" in combined_prompt
     assert "Источник:" in combined_prompt
 
 

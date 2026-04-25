@@ -133,6 +133,7 @@ def select_watcher_items(
     limit: int,
     now_iso: str,
     max_age_hours: int,
+    min_score: int = 20,
 ) -> list[BacklogItem]:
     now = _parse_timestamp(now_iso)
     cutoff = timedelta(hours=max_age_hours)
@@ -142,6 +143,7 @@ def select_watcher_items(
         and item.confirmed
         and item.topic_fingerprint not in sent_topics
         and now - _parse_timestamp(item.published_at) <= cutoff
+        and score_item(item) >= min_score
     ]
     if limit <= 0 or not queued:
         return []

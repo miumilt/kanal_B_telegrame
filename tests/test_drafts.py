@@ -175,10 +175,8 @@ def test_build_single_post_text_renders_short_telegram_style_output():
     )
 
     assert text == (
-        "RU:Claude now builds map routes — RU:Plans the route.\n\n"
-        "Главное:\n"
-        "• suggests places.\n"
-        "• and accounts for schedules.\n\n"
+        "RU:Claude now builds map routes — RU:Plans the route.\n"
+        "suggests places. and accounts for schedules.\n\n"
         "Где посмотреть: https://example.com/1\n"
         "Источник: Example"
     )

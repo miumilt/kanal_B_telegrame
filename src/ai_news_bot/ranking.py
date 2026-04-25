@@ -83,6 +83,13 @@ _SECONDARY_SOURCE_PENALTIES: tuple[tuple[str, int], ...] = (
     ("austria", -6),
 )
 
+_LOW_SIGNAL_RELEASE_PATTERNS: tuple[tuple[re.Pattern[str], int], ...] = (
+    (re.compile(r"\b[a-z0-9_.-]+-[a-z0-9_.-]+==\d+(?:\.\d+){1,3}\b"), -28),
+    (re.compile(r"\b(?:fix|chore|deps|ci|docs|hotfix)\("), -16),
+    (re.compile(r"\bbump\s+(?:min\s+)?(?:core|version|dependency|dependencies)\b"), -16),
+    (re.compile(r"\bpatch\s+release\b"), -10),
+)
+
 _TIER_WEIGHTS = {
     "tier1_official": 6,
     "tier2_media": 4,
@@ -104,6 +111,12 @@ def _secondary_penalty(text: str) -> int:
     return sum(weight for keyword, weight in _SECONDARY_SOURCE_PENALTIES if keyword in text)
 
 
+def _low_signal_release_penalty(item: BacklogItem, text: str) -> int:
+    if "github releases" not in item.source_name.lower():
+        return 0
+    return sum(weight for pattern, weight in _LOW_SIGNAL_RELEASE_PATTERNS if pattern.search(text))
+
+
 def score_item(item: BacklogItem) -> int:
     text = f"{item.source_title} {item.summary_candidate}".lower()
     keyword_score = sum(weight for keyword, weight in _KEYWORD_WEIGHTS if keyword in text)
@@ -120,4 +133,5 @@ def score_item(item: BacklogItem) -> int:
         + evidence_score
         + frontier_score
         + _secondary_penalty(text)
+        + _low_signal_release_penalty(item, text)
     )
