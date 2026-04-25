@@ -3,6 +3,7 @@ from ai_news_bot.backlog import (
     select_daily_slot_items,
     select_daily_slot_items_with_age,
     select_main_slot_items,
+    select_watcher_items,
 )
 from ai_news_bot.models import BacklogItem
 from ai_news_bot.ranking import score_item
@@ -105,6 +106,47 @@ def test_merge_candidates_drops_duplicate_normalized_titles_and_expires_old_item
     )
 
     assert [item.item_id for item in merged] == ["new"]
+
+
+def test_merge_candidates_keeps_published_status_for_duplicate_topic_with_higher_priority_incoming():
+    existing = [
+        BacklogItem(
+            item_id="sent",
+            source_url="https://example.com/openai-gpt-55",
+            source_title="OpenAI releases GPT-5.5",
+            normalized_title="openai releases gpt-5.5",
+            topic_fingerprint="topic:openai:gpt-5.5:release",
+            source_name="Example",
+            published_at="2026-04-20T10:00:00+00:00",
+            summary_candidate="release details",
+            status="published",
+            first_seen_at="2026-04-20T10:00:00+00:00",
+            last_considered_at="2026-04-20T10:00:00+00:00",
+            source_priority=3,
+        )
+    ]
+    incoming = [
+        BacklogItem(
+            item_id="new-source",
+            source_url="https://another.example.com/gpt-55",
+            source_title="ChatGPT 5.5 beats competitors",
+            normalized_title="chatgpt 5.5 beats competitors",
+            topic_fingerprint="topic:openai:gpt-5.5:release",
+            source_name="Another",
+            published_at="2026-04-20T10:30:00+00:00",
+            summary_candidate="same release",
+            status="new",
+            first_seen_at="2026-04-20T10:30:00+00:00",
+            last_considered_at="2026-04-20T10:30:00+00:00",
+            source_priority=10,
+        )
+    ]
+
+    merged = merge_candidates(existing, incoming, now_iso="2026-04-20T11:00:00+00:00", expiry_days=14)
+
+    assert len(merged) == 1
+    assert merged[0].status == "published"
+    assert merged[0].item_id == "new-source"
 
 
 def test_merge_candidates_accepts_rss_style_published_at():
@@ -566,6 +608,60 @@ def test_select_daily_slot_items_returns_highest_scoring_candidates():
     selected = select_daily_slot_items(backlog, limit=3)
 
     assert [item.item_id for item in selected] == ["major-1", "major-2", "freebie-1"]
+
+
+def test_select_watcher_items_excludes_sent_topics_and_old_items():
+    backlog = [
+        BacklogItem(
+            item_id="fresh",
+            source_url="https://example.com/fresh",
+            source_title="OpenAI releases GPT-5.5",
+            normalized_title="openai releases gpt-5.5",
+            topic_fingerprint="topic:openai:gpt-5.5:release",
+            source_name="Example",
+            published_at="2026-04-20T10:30:00+00:00",
+            summary_candidate="fresh release",
+            status="queued",
+            first_seen_at="2026-04-20T10:30:00+00:00",
+            last_considered_at="2026-04-20T10:30:00+00:00",
+        ),
+        BacklogItem(
+            item_id="sent",
+            source_url="https://example.com/sent",
+            source_title="Claude update",
+            normalized_title="claude update",
+            topic_fingerprint="topic:anthropic:claude:release",
+            source_name="Example",
+            published_at="2026-04-20T10:40:00+00:00",
+            summary_candidate="already sent",
+            status="queued",
+            first_seen_at="2026-04-20T10:40:00+00:00",
+            last_considered_at="2026-04-20T10:40:00+00:00",
+        ),
+        BacklogItem(
+            item_id="old",
+            source_url="https://example.com/old",
+            source_title="Gemini update",
+            normalized_title="gemini update",
+            topic_fingerprint="topic:google:gemini:release",
+            source_name="Example",
+            published_at="2026-04-20T07:00:00+00:00",
+            summary_candidate="old release",
+            status="queued",
+            first_seen_at="2026-04-20T07:00:00+00:00",
+            last_considered_at="2026-04-20T07:00:00+00:00",
+        ),
+    ]
+
+    selected = select_watcher_items(
+        backlog,
+        sent_topics={"topic:anthropic:claude:release"},
+        limit=3,
+        now_iso="2026-04-20T11:00:00+00:00",
+        max_age_hours=2,
+    )
+
+    assert [item.item_id for item in selected] == ["fresh"]
 
 
 def test_select_daily_slot_items_with_age_ignores_items_older_than_one_day():

@@ -343,8 +343,8 @@ def test_daily_slot_script_sends_separate_owner_messages_for_multiple_candidates
         }
     ]
     assert [payload["chat_id"] for payload in telegram_api.sent_messages] == ["owner-chat", "owner-chat"]
-    assert telegram_api.sent_messages[0]["text"].endswith("Тестим здесь: https://example.com/item-2")
-    assert telegram_api.sent_messages[1]["text"].endswith("Подробнее: https://example.com/item-3")
+    assert "Тестим здесь: https://example.com/item-2" in telegram_api.sent_messages[0]["text"]
+    assert "Где посмотреть: https://example.com/item-3" in telegram_api.sent_messages[1]["text"]
     assert telegram_api.sent_messages[0]["reply_markup"] is None
     assert telegram_api.sent_messages[1]["reply_markup"] is None
 
@@ -559,6 +559,63 @@ def test_refresh_backlog_drops_items_older_than_two_weeks(tmp_path: Path):
 
     assert refreshed == []
     assert store.load_backlog() == []
+
+
+def test_news_watcher_sends_fresh_items_and_records_sent_topics(tmp_path: Path):
+    store = JsonStateStore(tmp_path)
+    module = _load_script_module("run_news_watcher")
+    telegram_api = FakeTelegramApi()
+
+    sent = module.run_news_watcher(
+        store,
+        telegram_api=telegram_api,
+        owner_chat_id="owner-chat",
+        now_iso="2026-04-20T10:30:00+00:00",
+        fetcher=lambda now_iso: [
+            _item(
+                "item-1",
+                "OpenAI releases GPT-5.5",
+                "The model is better at coding and agents.",
+                published_at="2026-04-20T10:20:00+00:00",
+            )
+        ],
+        preview_limit=3,
+        max_age_hours=2,
+    )
+
+    assert [item.item_id for item in sent] == ["item-1"]
+    assert store.load_backlog()[0].status == "published"
+    assert store.load_published() == ["https://example.com/item-1"]
+    assert store.load_sent_topics() == ["openai-releases-gpt-5.5"]
+    assert telegram_api.sent_messages[0]["chat_id"] == "owner-chat"
+    assert telegram_api.sent_messages[0]["reply_markup"] is None
+
+
+def test_news_watcher_skips_already_sent_topics(tmp_path: Path):
+    store = JsonStateStore(tmp_path)
+    store.save_sent_topics(["openai-releases-gpt-5.5"])
+    module = _load_script_module("run_news_watcher")
+    telegram_api = FakeTelegramApi()
+
+    sent = module.run_news_watcher(
+        store,
+        telegram_api=telegram_api,
+        owner_chat_id="owner-chat",
+        now_iso="2026-04-20T10:30:00+00:00",
+        fetcher=lambda now_iso: [
+            _item(
+                "item-1",
+                "OpenAI releases GPT-5.5",
+                "The model is better at coding and agents.",
+                published_at="2026-04-20T10:20:00+00:00",
+            )
+        ],
+        preview_limit=3,
+        max_age_hours=2,
+    )
+
+    assert sent == []
+    assert telegram_api.sent_messages == []
 
 
 def test_daily_slot_run_only_selects_items_from_last_day(tmp_path: Path):

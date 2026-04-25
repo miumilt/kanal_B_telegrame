@@ -1,12 +1,12 @@
-name: daily-slot
+name: news-watcher
 
 on:
   schedule:
-    - cron: "0 3 * * *"
+    - cron: "*/30 * * * *"
   workflow_dispatch:
 
 concurrency:
-  group: daily-slot-${{ github.ref }}
+  group: news-watcher-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -20,12 +20,14 @@ jobs:
         with:
           python-version: "3.12"
       - run: python -m pip install ".[dev]"
-      - run: python scripts/run_daily_slot.py
+      - run: python scripts/run_news_watcher.py
         env:
           STATE_DIR: state
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_OWNER_CHAT_ID: ${{ secrets.TELEGRAM_OWNER_CHAT_ID }}
           TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          OPENROUTER_MODEL: ${{ vars.OPENROUTER_MODEL }}
       - name: Commit state changes
         run: |
           git config user.name "github-actions[bot]"

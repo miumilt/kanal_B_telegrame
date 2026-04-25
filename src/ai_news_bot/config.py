@@ -32,6 +32,10 @@ class AppConfig:
     draft_generation_minute: int = 30
     telegram_poll_interval_seconds: int = 30
     daily_slot_preview_limit: int = 10
+    news_watcher_preview_limit: int = 3
+    news_watcher_max_age_hours: int = 2
+    openrouter_api_key: str | None = None
+    openrouter_model: str | None = None
 
 
 def _load_positive_int(env_name: str, default: int) -> int:
@@ -54,4 +58,8 @@ def load_config() -> AppConfig:
         sources_path=Path(os.environ.get("SOURCES_PATH", project_root / "sources.yaml")),
         telegram_poll_interval_seconds=_load_positive_int("TELEGRAM_POLL_INTERVAL_SECONDS", 30),
         daily_slot_preview_limit=_load_positive_int("DAILY_SLOT_PREVIEW_LIMIT", 10),
+        news_watcher_preview_limit=_load_positive_int("NEWS_WATCHER_PREVIEW_LIMIT", 3),
+        news_watcher_max_age_hours=_load_positive_int("NEWS_WATCHER_MAX_AGE_HOURS", 2),
+        openrouter_api_key=os.environ.get("OPENROUTER_API_KEY"),
+        openrouter_model=os.environ.get("OPENROUTER_MODEL"),
     )

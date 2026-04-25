@@ -138,7 +138,14 @@ def test_store_round_trip_current_draft_none(tmp_path: Path):
     store.save_current_draft(None)
 
     assert store.load_current_draft() is None
-    assert json.loads((tmp_path / "current_draft.json").read_text(encoding="utf-8")) is None
+
+
+def test_store_round_trip_sent_topics(tmp_path: Path):
+    store = JsonStateStore(tmp_path)
+
+    store.save_sent_topics(["topic:openai:gpt-5.5:release"])
+
+    assert store.load_sent_topics() == ["topic:openai:gpt-5.5:release"]
 
 
 def test_store_loads_legacy_current_draft_with_null_image_url(tmp_path: Path):

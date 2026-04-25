@@ -75,7 +75,8 @@ def test_build_short_post_text_renders_single_item():
 
     assert text == (
         "RU:Gemini CLI Released — RU:CLI tool for developers.\n\n"
-        "Подробнее: https://example.com/1"
+        "Где посмотреть: https://example.com/1\n"
+        "Источник: Example"
     )
 
 
@@ -121,7 +122,8 @@ def test_build_short_post_text_truncates_long_summaries_to_280_characters():
 
     assert text.splitlines()[0].startswith("Long Summary Story — ")
     assert len(text.splitlines()[0]) <= 305
-    assert text.splitlines()[-1] == "Подробнее: https://example.com/long"
+    assert text.splitlines()[-2] == "Где посмотреть: https://example.com/long"
+    assert text.splitlines()[-1] == "Источник: Example"
 
 
 def test_build_short_post_text_truncates_after_translation_expands_text():
@@ -147,7 +149,8 @@ def test_build_short_post_text_truncates_after_translation_expands_text():
 
     assert text.splitlines()[0].startswith("Short expansion — ")
     assert "X" * 100 in text.splitlines()[0]
-    assert text.splitlines()[-1] == "Подробнее: https://example.com/expand-short"
+    assert text.splitlines()[-2] == "Где посмотреть: https://example.com/expand-short"
+    assert text.splitlines()[-1] == "Источник: Example"
 
 
 def test_build_single_post_text_renders_short_telegram_style_output():
@@ -176,7 +179,8 @@ def test_build_single_post_text_renders_short_telegram_style_output():
         "Главное:\n"
         "• suggests places.\n"
         "• and accounts for schedules.\n\n"
-        "Подробнее: https://example.com/1"
+        "Где посмотреть: https://example.com/1\n"
+        "Источник: Example"
     )
 
 
@@ -203,7 +207,8 @@ def test_build_single_post_text_truncates_long_summaries_to_240_characters():
 
     assert text.splitlines()[0].startswith("Long Summary Story — ")
     assert len(text.splitlines()[0]) <= 265
-    assert text.splitlines()[-1] == "Подробнее: https://example.com/long"
+    assert text.splitlines()[-2] == "Где посмотреть: https://example.com/long"
+    assert text.splitlines()[-1] == "Источник: Example"
 
 
 def test_build_single_post_text_truncates_after_translation_expands_text():
@@ -229,7 +234,8 @@ def test_build_single_post_text_truncates_after_translation_expands_text():
 
     assert text.splitlines()[0].startswith("Single expansion — ")
     assert "X" * 100 in text.splitlines()[0]
-    assert text.splitlines()[-1] == "Подробнее: https://example.com/expand-single"
+    assert text.splitlines()[-2] == "Где посмотреть: https://example.com/expand-single"
+    assert text.splitlines()[-1] == "Источник: Example"
 
 
 def test_build_single_post_text_strips_html_and_normalizes_whitespace():
@@ -255,7 +261,8 @@ def test_build_single_post_text_strips_html_and_normalizes_whitespace():
 
     assert text == (
         "OpenAI Privacy Filter — Detects PII in text and cleans it.\n\n"
-        "Подробнее: https://example.com/html"
+        "Где посмотреть: https://example.com/html\n"
+        "Источник: Example"
     )
 
 
@@ -281,4 +288,4 @@ def test_build_single_post_text_uses_freebie_link_label():
         translated_body=lambda s: s,
     )
 
-    assert text.endswith("Тестим здесь: https://example.com/freebie")
+    assert text.endswith("Тестим здесь: https://example.com/freebie\nИсточник: Example")

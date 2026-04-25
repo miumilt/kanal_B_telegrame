@@ -9,6 +9,7 @@ from ai_news_bot.editorial import classify_candidate
 from ai_news_bot.media import extract_media_urls
 from ai_news_bot.models import BacklogItem
 from ai_news_bot.source_registry import SourceConfig, load_sources
+from ai_news_bot.topics import build_topic_fingerprint
 
 
 def normalize_title(title: str) -> str:
@@ -130,7 +131,7 @@ def build_candidate_from_entry(source: SourceConfig, entry, now_iso: str) -> Bac
             source_url=url,
             source_title=title,
             normalized_title=normalize_title(title),
-            topic_fingerprint=normalize_title(title).replace(" ", "-"),
+            topic_fingerprint=build_topic_fingerprint(title, summary),
             source_name=source.name,
             published_at=_get_value(entry, "published", now_iso),
             summary_candidate=summary[:800],
@@ -146,7 +147,7 @@ def build_candidate_from_entry(source: SourceConfig, entry, now_iso: str) -> Bac
         source_url=url,
         source_title=title,
         normalized_title=normalize_title(title),
-        topic_fingerprint=normalize_title(title).replace(" ", "-"),
+        topic_fingerprint=build_topic_fingerprint(title, summary),
         source_name=source.name,
         published_at=_get_value(entry, "published", now_iso),
         summary_candidate=summary[:800],

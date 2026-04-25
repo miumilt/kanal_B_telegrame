@@ -73,7 +73,7 @@ def _extract_points(value: str, *, max_points: int) -> list[str]:
 def _link_label(category: str) -> str:
     if category == "freebie/useful_find":
         return "Тестим здесь:"
-    return "Подробнее:"
+    return "Где посмотреть:"
 
 
 def build_digest_text(
@@ -150,5 +150,5 @@ def _build_post_text(
         lines.extend(["", "Главное:"])
         lines.extend(f"• {_ensure_sentence(point)}" for point in bullets)
 
-    lines.extend(["", f"{_link_label(item.category)} {item.source_url}"])
+    lines.extend(["", f"{_link_label(item.category)} {item.source_url}", f"Источник: {item.source_name}"])
     return "\n".join(lines)

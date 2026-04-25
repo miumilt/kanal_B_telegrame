@@ -292,3 +292,15 @@ class JsonStateStore:
         for index, source_url in enumerate(source_urls):
             self._require_string("published.json", str(index), source_url)
         self._write_json("published.json", source_urls)
+
+    def load_sent_topics(self) -> list[str]:
+        raw = self._read_json("sent_topics.json", [])
+        items = self._require_list("sent_topics.json", raw)
+        for index, item in enumerate(items):
+            self._require_string("sent_topics.json", str(index), item)
+        return items
+
+    def save_sent_topics(self, topic_fingerprints: list[str]) -> None:
+        for index, topic_fingerprint in enumerate(topic_fingerprints):
+            self._require_string("sent_topics.json", str(index), topic_fingerprint)
+        self._write_json("sent_topics.json", topic_fingerprints)

@@ -24,6 +24,10 @@ def test_load_config_reads_env_state_dir_and_uses_defaults(monkeypatch, tmp_path
     assert config.draft_generation_minute == 30
     assert config.telegram_poll_interval_seconds == 30
     assert config.daily_slot_preview_limit == 10
+    assert config.news_watcher_preview_limit == 3
+    assert config.news_watcher_max_age_hours == 2
+    assert config.openrouter_api_key is None
+    assert config.openrouter_model is None
 
 
 def test_load_config_uses_project_root_state_dir_by_default(monkeypatch):
@@ -79,6 +83,23 @@ def test_load_config_reads_daily_preview_limit_override(monkeypatch):
     config = load_config()
 
     assert config.daily_slot_preview_limit == 7
+
+
+def test_load_config_reads_news_watcher_and_openrouter_overrides(monkeypatch):
+    monkeypatch.setenv("TELEGRAM_BOT_TOKEN", "token")
+    monkeypatch.setenv("TELEGRAM_OWNER_CHAT_ID", "123")
+    monkeypatch.setenv("TELEGRAM_CHANNEL_ID", "@channel")
+    monkeypatch.setenv("NEWS_WATCHER_PREVIEW_LIMIT", "2")
+    monkeypatch.setenv("NEWS_WATCHER_MAX_AGE_HOURS", "6")
+    monkeypatch.setenv("OPENROUTER_API_KEY", "openrouter-key")
+    monkeypatch.setenv("OPENROUTER_MODEL", "test/model")
+
+    config = load_config()
+
+    assert config.news_watcher_preview_limit == 2
+    assert config.news_watcher_max_age_hours == 6
+    assert config.openrouter_api_key == "openrouter-key"
+    assert config.openrouter_model == "test/model"
 
 
 def test_load_config_rejects_non_positive_poll_interval(monkeypatch):
