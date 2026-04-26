@@ -48,6 +48,9 @@ def test_repository_sources_file_loads_expanded_feeds():
     assert "product-hunt" in source_ids
     assert "simon-willison" in source_ids
     assert "github-codex-releases" in source_ids
+    assert "hackernews-free-ai" in source_ids
+    assert "hackernews-open-source-ai" in source_ids
+    assert "hackernews-ai-deal" in source_ids
 
 
 def test_load_sources_rejects_missing_required_fields(tmp_path: Path):

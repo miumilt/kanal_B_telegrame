@@ -499,6 +499,66 @@ sources:
     priority: 5
     enabled: true
     tags: [community, hn, demos, trusted-signal]
+  - id: hackernews-free-ai
+    name: Hacker News Free AI
+    tier: tier4_community
+    kind: hackernews
+    url: https://news.ycombinator.com/newest
+    feed_url: https://hnrss.org/newest?q=free%20AI
+    language: en
+    priority: 5
+    enabled: true
+    tags: [community, hn, freebie, deals, trusted-signal]
+  - id: hackernews-open-source-ai
+    name: Hacker News Open Source AI
+    tier: tier4_community
+    kind: hackernews
+    url: https://news.ycombinator.com/newest
+    feed_url: https://hnrss.org/newest?q=open%20source%20AI
+    language: en
+    priority: 5
+    enabled: true
+    tags: [community, hn, open-source, local-ai, trusted-signal]
+  - id: hackernews-ai-tool-free
+    name: Hacker News AI Tool Free
+    tier: tier4_community
+    kind: hackernews
+    url: https://news.ycombinator.com/newest
+    feed_url: https://hnrss.org/newest?q=AI%20tool%20free
+    language: en
+    priority: 5
+    enabled: true
+    tags: [community, hn, tool-launches, freebie, trusted-signal]
+  - id: hackernews-ai-credits
+    name: Hacker News AI Credits
+    tier: tier4_community
+    kind: hackernews
+    url: https://news.ycombinator.com/newest
+    feed_url: https://hnrss.org/newest?q=AI%20credits
+    language: en
+    priority: 5
+    enabled: true
+    tags: [community, hn, credits, freebie, trusted-signal]
+  - id: hackernews-ai-deal
+    name: Hacker News AI Deal
+    tier: tier4_community
+    kind: hackernews
+    url: https://news.ycombinator.com/newest
+    feed_url: https://hnrss.org/newest?q=AI%20deal
+    language: en
+    priority: 4
+    enabled: true
+    tags: [community, hn, deals, freebie, trusted-signal]
+  - id: hackernews-free-llm
+    name: Hacker News Free LLM
+    tier: tier4_community
+    kind: hackernews
+    url: https://news.ycombinator.com/newest
+    feed_url: https://hnrss.org/newest?q=free%20LLM
+    language: en
+    priority: 5
+    enabled: true
+    tags: [community, hn, llm, freebie, trusted-signal]
   - id: github-codex-releases
     name: GitHub Releases - OpenAI Codex
     tier: tier3_ai_publications

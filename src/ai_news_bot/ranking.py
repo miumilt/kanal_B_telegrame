@@ -27,7 +27,19 @@ _KEYWORD_WEIGHTS: tuple[tuple[str, int], ...] = (
     ("agents", 3),
     ("api", 2),
     ("demo", 3),
-    ("free", 1),
+    ("free", 2),
+    ("free credits", 7),
+    ("free tier", 6),
+    ("free trial", 6),
+    ("free plan", 6),
+    ("free to use", 6),
+    ("try for free", 6),
+    ("promo code", 8),
+    ("coupon code", 7),
+    ("discount", 5),
+    ("lifetime deal", 8),
+    ("public beta", 5),
+    ("no waitlist", 5),
     ("try", 2),
     ("tool", 1),
     ("github", 2),
@@ -58,6 +70,9 @@ _FRONTIER_SOURCE_WEIGHTS: tuple[tuple[str, int], ...] = (
     ("chip huyen", 6),
     ("latent space", 6),
     ("github releases", 6),
+    ("hacker news free ai", 7),
+    ("hacker news open source ai", 6),
+    ("hacker news ai tool", 5),
 )
 
 _FRONTIER_MODEL_PATTERNS: tuple[tuple[re.Pattern[str], int], ...] = (
@@ -72,6 +87,9 @@ _FRONTIER_MODEL_PATTERNS: tuple[tuple[re.Pattern[str], int], ...] = (
     (re.compile(r"\bagents?\s+sdk\b|\bworkspace agents?\b"), 9),
     (re.compile(r"\bproduct\s+hunt\b|\bshow\s+hn\b"), 8),
     (re.compile(r"\bfree\s+(?:tier|trial|access|credits|plan|to\s+use)\b"), 8),
+    (re.compile(r"\b(?:promo|coupon|discount)\s+code\b"), 9),
+    (re.compile(r"\b(?:api|starter|trial)\s+credits\b"), 8),
+    (re.compile(r"\blifetime\s+deal\b|\bfree\s+forever\b"), 8),
     (re.compile(r"\bopen[-\s]?weights?\b|\bopen[-\s]?source\b"), 8),
 )
 

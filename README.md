@@ -29,6 +29,7 @@ Supported kinds:
 
 Community-originated topics stay out of the actionable draft flow until a stronger source confirms them.
 Sources tagged with `trusted-signal` are the exception: they can enter the draft flow when the title or summary contains a clear AI signal. This is used for Product Hunt and high-signal Hacker News feeds, so useful demos and tool launches can surface without opening the door to unrelated community noise.
+Freebie signals are intentionally boosted when they are publishable and legal: free tiers, free credits, public betas, promo/coupon codes, lifetime deals, open-source tools, local AI apps, and no-waitlist demos.
 
 ## Current operating model
 

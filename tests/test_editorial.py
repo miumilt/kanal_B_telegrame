@@ -27,6 +27,15 @@ def test_classify_candidate_marks_freebie_keywords_as_useful_find():
     assert classify_candidate(item) == "freebie/useful_find"
 
 
+def test_classify_candidate_marks_deals_and_credits_as_useful_find():
+    item = make_item(
+        title="New AI coding assistant offers free credits and a promo code",
+        summary="The launch includes a lifetime deal, API credits, and a public beta discount.",
+    )
+
+    assert classify_candidate(item) == "freebie/useful_find"
+
+
 def test_classify_candidate_defaults_to_major_news():
     item = make_item(
         title="Claude now builds map routes",

@@ -37,3 +37,21 @@ def test_score_item_penalizes_low_signal_adapter_release_notes():
 
     assert score_item(adapter_release) < 20
     assert score_item(adapter_release) < score_item(useful_tool_release)
+
+
+def test_score_item_boosts_freebie_deals_above_generic_tool_news():
+    freebie = _item(
+        title="Free AI video editor gives creators 500 credits",
+        summary="Public beta includes free credits, a promo code, and a free plan for new users.",
+        source_name="Hacker News Free AI",
+        priority=5,
+    )
+    generic_tool = _item(
+        title="New AI productivity tool launches",
+        summary="The team launched a dashboard for organizing prompts and documents.",
+        source_name="Hacker News AI Tool",
+        priority=5,
+    )
+
+    assert score_item(freebie) >= 25
+    assert score_item(freebie) > score_item(generic_tool)
