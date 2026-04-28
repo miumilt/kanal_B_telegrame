@@ -71,5 +71,7 @@
   "title:show-hn-i-built-ai-character-chat-that",
   "topic:anthropic:microsoft:update",
   "topic:meta:nvidia:update",
-  "topic:mistral:update"
+  "topic:mistral:update",
+  "title:0.126.0-alpha.10",
+  "topic:nvidia:release"
 ]
