@@ -80,5 +80,7 @@
   "https://www.zdnet.com/article/microsoft-open-sources-dos-1-0-much-more-than-the-code/",
   "https://github.com/huggingface/transformers/releases/tag/v5.7.0",
   "https://github.com/ollama/ollama/releases/tag/v0.22.1-rc0",
-  "https://slopit.io/"
+  "https://slopit.io/",
+  "https://github.com/openai/codex/releases/tag/rust-v0.126.0-alpha.11",
+  "https://github.com/techomancer/iris"
 ]
