@@ -73,5 +73,8 @@
   "topic:meta:nvidia:update",
   "topic:mistral:update",
   "title:0.126.0-alpha.10",
-  "topic:nvidia:release"
+  "topic:nvidia:release",
+  "title:here-is-what-llm-that-knows-nothing-after",
+  "topic:anthropic:google:update",
+  "topic:microsoft:open-source"
 ]
