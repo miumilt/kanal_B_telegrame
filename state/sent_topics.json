@@ -62,5 +62,8 @@
   "topic:huggingface:microsoft:release",
   "title:show-hn-gate-ai-workers-handle-dev-tickets",
   "topic:openai:anthropic:free",
-  "topic:openai:google:free"
+  "topic:openai:google:free",
+  "title:show-hn-minimal-linux-sandboxes-manage-ai-generated-code",
+  "title:show-hn-newsroom-that-runs-itself-hiring-ai",
+  "topic:microsoft:gpt-4:update"
 ]
