@@ -118,5 +118,6 @@
   "topic:google:microsoft:update",
   "title:show-hn-mcp-servers-can-fix-biggest-problem",
   "topic:openai:anthropic:gpt-5.5:release",
-  "topic:openai:xai:update"
+  "topic:openai:xai:update",
+  "title:langchain-1.2.17"
 ]
