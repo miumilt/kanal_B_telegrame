@@ -126,5 +126,8 @@
   "topic:meta:open-source",
   "topic:openai:anthropic:gpt-5.5:gpt-5:release",
   "topic:openai:google:gpt-5.4:gpt-5:benchmark",
-  "title:show-hn-revdoku-visual-document-review-ai-open-source"
+  "title:show-hn-revdoku-visual-document-review-ai-open-source",
+  "title:0.129.0-alpha.2",
+  "topic:anthropic:release",
+  "topic:openai:gpt-039:update"
 ]
