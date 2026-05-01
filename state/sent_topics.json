@@ -136,5 +136,7 @@
   "topic:anthropic:nvidia:update",
   "title:how-we-test-ai-at-zdnet",
   "title:rust-v0.129.0-alpha.3",
-  "title:show-hn-duo-ai-matchmaking-over-imessage"
+  "title:show-hn-duo-ai-matchmaking-over-imessage",
+  "title:v0.20.1-dsv4-add-knob-enable-pre-attn-gemm-41443",
+  "topic:openai:anthropic:gpt-5:sonnet-3.5:release"
 ]
