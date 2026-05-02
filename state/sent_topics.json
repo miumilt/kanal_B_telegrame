@@ -151,5 +151,6 @@
   "title:meta-acquires-assured-robot-intelligence-accelerate-humanoid-robot",
   "topic:openai:meta:open-source",
   "topic:xai:release",
-  "topic:openai:anthropic:gpt-5.5:opus-4.7:benchmark"
+  "topic:openai:anthropic:gpt-5.5:opus-4.7:benchmark",
+  "title:show-hn-vdiff-cli-help-you-review-ai-generated"
 ]
