@@ -149,5 +149,6 @@
   "title:v0.20.1-revert-temporary-disable-persistent-topk-41442",
   "topic:openai:anthropic:grok-4.3:grok-4.3:release",
   "title:meta-acquires-assured-robot-intelligence-accelerate-humanoid-robot",
-  "topic:openai:meta:open-source"
+  "topic:openai:meta:open-source",
+  "topic:xai:release"
 ]
