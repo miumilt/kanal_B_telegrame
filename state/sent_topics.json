@@ -153,5 +153,6 @@
   "topic:xai:release",
   "topic:openai:anthropic:gpt-5.5:opus-4.7:benchmark",
   "title:show-hn-vdiff-cli-help-you-review-ai-generated",
-  "title:show-hn-which-public-repos-are-friendliest-ai"
+  "title:show-hn-which-public-repos-are-friendliest-ai",
+  "title:show-hn-i-built-dev-workspace-ai-as"
 ]
