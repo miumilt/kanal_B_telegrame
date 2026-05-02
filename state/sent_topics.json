@@ -144,5 +144,8 @@
   "title:show-hn-stealth-benchmark-test-if-ai-coding",
   "title:v0.20.1-retry-10-times",
   "topic:anthropic:opus-4.6:release",
-  "title:show-hn-i-made-ai-task-scheduling-app"
+  "title:show-hn-i-made-ai-task-scheduling-app",
+  "title:ainews-ai-engineer-world-s-fair-autoresearch-memory",
+  "title:v0.20.1-revert-temporary-disable-persistent-topk-41442",
+  "topic:openai:anthropic:grok-4.3:grok-4.3:release"
 ]
