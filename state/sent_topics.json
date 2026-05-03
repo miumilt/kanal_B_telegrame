@@ -158,5 +158,8 @@
   "title:fun-open-source-ai-transparency-project",
   "topic:anthropic:meta:release",
   "title:same-prompt-different-morals-how-frontier-ai-models",
-  "title:show-hn-uigen-runtime-front-end-any-openapi"
+  "title:show-hn-uigen-runtime-front-end-any-openapi",
+  "title:mit-study-explains-why-scaling-language-models-works",
+  "topic:anthropic:deepseek:opus:opus-4.6:release",
+  "topic:deepseek:benchmark"
 ]
