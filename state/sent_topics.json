@@ -185,5 +185,8 @@
   "title:show-hn-noreporter-ai-only-newsroom-1-year",
   "title:0.129.0-alpha.5",
   "title:notepad++-mac-release-is-disavowed-by-creator-original",
-  "topic:openai:anthropic:gpt-5.5:opus-4.7:release"
+  "topic:openai:anthropic:gpt-5.5:opus-4.7:release",
+  "title:0.129.0-alpha.6",
+  "title:ainews-other-vs-utility",
+  "topic:huggingface:release"
 ]
