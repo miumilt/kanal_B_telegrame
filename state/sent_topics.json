@@ -190,5 +190,7 @@
   "title:ainews-other-vs-utility",
   "topic:huggingface:release",
   "title:show-hn-retroguard-verifiably-secure-ai-guardrails",
-  "title:show-hn-songshift-advanced-ai-powered-song-conversion-service"
+  "title:show-hn-songshift-advanced-ai-powered-song-conversion-service",
+  "topic:meta:deepseek:update",
+  "topic:openai:anthropic:gpt-2:release"
 ]
