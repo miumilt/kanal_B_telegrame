@@ -188,5 +188,7 @@
   "topic:openai:anthropic:gpt-5.5:opus-4.7:release",
   "title:0.129.0-alpha.6",
   "title:ainews-other-vs-utility",
-  "topic:huggingface:release"
+  "topic:huggingface:release",
+  "title:show-hn-retroguard-verifiably-secure-ai-guardrails",
+  "title:show-hn-songshift-advanced-ai-powered-song-conversion-service"
 ]
