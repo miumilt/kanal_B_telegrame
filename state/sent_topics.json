@@ -223,5 +223,8 @@
   "title:show-hn-recursant-service-mesh-governing-ai-agents",
   "topic:anthropic:claude-2026:update",
   "topic:google:release",
-  "topic:xai:update"
+  "topic:xai:update",
+  "title:rust-v0.129.0-alpha.11",
+  "topic:anthropic:nvidia:opus:update",
+  "topic:openai:nvidia:benchmark"
 ]
