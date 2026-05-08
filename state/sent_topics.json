@@ -278,5 +278,8 @@
   "title:why-age-assurance-laws-matter-developers",
   "title:cybersecqwen-4b-why-defensive-cyber-needs-small-specialized-locally-runnable",
   "title:rust-v0.130.0-alpha.9",
-  "topic:openai:deepseek:deepseek-v4.1:release"
+  "topic:openai:deepseek:deepseek-v4.1:release",
+  "title:0.130.0-alpha.10",
+  "title:v0.20.2-ci-automate-docker-hub-release-image-publishing",
+  "topic:anthropic:google:release"
 ]
