@@ -281,5 +281,8 @@
   "topic:openai:deepseek:deepseek-v4.1:release",
   "title:0.130.0-alpha.10",
   "title:v0.20.2-ci-automate-docker-hub-release-image-publishing",
-  "topic:anthropic:google:release"
+  "topic:anthropic:google:release",
+  "title:rust-v0.130.0",
+  "title:rust-v0.130.0-alpha.11",
+  "topic:anthropic:gpt-4:gpt-5.5:update"
 ]
