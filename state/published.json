@@ -241,5 +241,8 @@
   "https://github.com/jam5991/anam",
   "https://github.com/openai/codex/releases/tag/rust-v0.130.0-alpha.2",
   "https://github.com/openai/codex/releases/tag/rust-v0.130.0-alpha.3",
-  "https://github.com/openai/codex/releases/tag/rust-v0.130.0-alpha.4"
+  "https://github.com/openai/codex/releases/tag/rust-v0.130.0-alpha.4",
+  "https://huggingface.co/blog/lablab-ai-amd-developer-hackathon/medqa",
+  "https://www.marktechpost.com/2026/05/08/anthropic-introduces-natural-language-autoencoders-that-convert-claudes-internal-activations-directly-into-human-readable-text-explanations/",
+  "https://www.producthunt.com/products/kuku"
 ]
