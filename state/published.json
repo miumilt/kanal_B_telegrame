@@ -282,5 +282,8 @@
   "https://wuphf.team",
   "https://github.com/huggingface/transformers/releases/tag/v5.6.0",
   "https://github.com/open-webui/open-webui/releases/tag/v0.8.11",
-  "https://github.com/vllm-project/vllm/releases/tag/v0.19.0"
+  "https://github.com/vllm-project/vllm/releases/tag/v0.19.0",
+  "https://github.com/huggingface/transformers/releases/tag/v5.5.0",
+  "https://github.com/open-webui/open-webui/releases/tag/v0.8.10",
+  "https://huggingface.co/blog/lablab-ai-amd-developer-hackathon/oncoagent-official-paper"
 ]
