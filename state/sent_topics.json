@@ -349,5 +349,8 @@
   "topic:openai:huggingface:release",
   "title:show-hn-kplane-isolated-cloud-environments-ai-agents",
   "title:show-hn-vibe-responsible-ai-review-cq-stack",
-  "topic:meta:xai:update"
+  "topic:meta:xai:update",
+  "title:rust-v0.131.0-alpha.10",
+  "title:show-hn-i-submitted-316-ai-generated-prs-open",
+  "title:show-hn-ralph-workflow---simple-agent-agnostic-ai"
 ]
