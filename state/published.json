@@ -371,5 +371,8 @@
   "https://mementovault.meltinbitfarm.cloud",
   "https://news.ycombinator.com/item?id=48136879",
   "https://github.blog/engineering/architecture-optimization/from-latency-to-instant-modernizing-github-issues-navigation-performance/",
-  "https://github.com/openai/codex/releases/tag/rust-v0.131.0-alpha.16"
+  "https://github.com/openai/codex/releases/tag/rust-v0.131.0-alpha.16",
+  "https://github.com/openai/codex/releases/tag/rust-v0.131.0-alpha.17",
+  "https://huggingface.co/blog/ibm-granite/granite-embedding-multilingual-r2",
+  "https://techcrunch.com/2026/05/14/clawdmeter-turns-your-claude-code-usage-stats-into-a-tiny-desktop-dashboard/"
 ]
