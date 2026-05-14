@@ -390,5 +390,7 @@
   "topic:openai:google:gpt-039:update",
   "title:show-hn-mementovault-self-hosted-ai-context-manager-served",
   "title:show-hn-opinionated-index-ai-developer-tools",
-  "topic:openai:anthropic:gpt-5.5:opus:free"
+  "topic:openai:anthropic:gpt-5.5:opus:free",
+  "title:0.131.0-alpha.16",
+  "title:latency-instant-modernizing-github-issues-navigation-performance"
 ]
