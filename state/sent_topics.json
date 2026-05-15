@@ -403,5 +403,7 @@
   "topic:openai:mistral:deepseek-r1:deepseek-v4:release",
   "title:rust-v0.131.0-alpha.19",
   "topic:google:gpt-5.5:gemini-3.1-pro:update",
-  "topic:openai:meta:qwen3.6:release"
+  "topic:openai:meta:qwen3.6:release",
+  "title:0.131.0-alpha.19",
+  "title:rust-v0.131.0-alpha.20"
 ]

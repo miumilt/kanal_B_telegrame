@@ -381,5 +381,6 @@
   "https://simonwillison.net/2026/May/14/not-so-locked-in/#atom-everything",
   "https://github.com/ollama/ollama/releases/tag/v0.24.0",
   "https://github.com/openai/codex/releases/tag/rust-v0.131.0-alpha.19",
-  "https://www.marktechpost.com/2026/05/14/poetiqs-meta-system-automatically-builds-a-model-agnostic-harness-that-improved-every-llm-tested-on-livecodebench-pro-without-fine-tuning/"
+  "https://www.marktechpost.com/2026/05/14/poetiqs-meta-system-automatically-builds-a-model-agnostic-harness-that-improved-every-llm-tested-on-livecodebench-pro-without-fine-tuning/",
+  "https://github.com/openai/codex/releases/tag/rust-v0.131.0-alpha.20"
 ]
