@@ -376,5 +376,7 @@
   "https://huggingface.co/blog/ibm-granite/granite-embedding-multilingual-r2",
   "https://techcrunch.com/2026/05/14/clawdmeter-turns-your-claude-code-usage-stats-into-a-tiny-desktop-dashboard/",
   "https://github.com/openai/codex/releases/tag/rust-v0.131.0-alpha.18",
-  "https://www.latent.space/p/abridge"
+  "https://www.latent.space/p/abridge",
+  "https://github.com/vllm-project/vllm/releases/tag/v0.21.0",
+  "https://simonwillison.net/2026/May/14/not-so-locked-in/#atom-everything"
 ]
