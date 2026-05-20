@@ -480,5 +480,8 @@
   "topic:google:gemini-0.32:gemini-0.32:release",
   "title:rust-v0.133.0-alpha.1",
   "topic:google:gemini-3.5-flash:gemini-3.5-flash:benchmark",
-  "topic:unknown:qwen3.5:qwen3:release"
+  "topic:unknown:qwen3.5:qwen3:release",
+  "title:show-hn-ai-doctor-notes-private-doctor-visit",
+  "topic:nvidia:qwen3:release",
+  "topic:openai:anthropic:gemini-3.5-flash:gemini-3.5-flash:benchmark"
 ]
