@@ -486,5 +486,8 @@
   "topic:openai:anthropic:gemini-3.5-flash:gemini-3.5-flash:benchmark",
   "title:show-hn-ocl-nexus-local-open-source-local-compute",
   "title:stability-ai-launches-stable-audio-3.0-up-six-minute",
-  "topic:google:gemini-35-flash:gemini-3.5-flash:release"
+  "topic:google:gemini-35-flash:gemini-3.5-flash:release",
+  "title:0.133.0-alpha.1",
+  "title:show-hn-headless-terminal-zig-allows-ai-agents",
+  "title:show-hn-trainy-ai-team-that-fires-you"
 ]
