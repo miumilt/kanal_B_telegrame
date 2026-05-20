@@ -477,5 +477,6 @@
   "topic:openai:anthropic:gpt-5.5:gpt-5.4:release",
   "title:rust-v0.132.0",
   "title:show-hn-agentwing-make-ai-agents-complete-tasks",
-  "topic:google:gemini-0.32:gemini-0.32:release"
+  "topic:google:gemini-0.32:gemini-0.32:release",
+  "title:rust-v0.133.0-alpha.1"
 ]
