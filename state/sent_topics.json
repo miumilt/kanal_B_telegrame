@@ -483,5 +483,8 @@
   "topic:unknown:qwen3.5:qwen3:release",
   "title:show-hn-ai-doctor-notes-private-doctor-visit",
   "topic:nvidia:qwen3:release",
-  "topic:openai:anthropic:gemini-3.5-flash:gemini-3.5-flash:benchmark"
+  "topic:openai:anthropic:gemini-3.5-flash:gemini-3.5-flash:benchmark",
+  "title:show-hn-ocl-nexus-local-open-source-local-compute",
+  "title:stability-ai-launches-stable-audio-3.0-up-six-minute",
+  "topic:google:gemini-35-flash:gemini-3.5-flash:release"
 ]
