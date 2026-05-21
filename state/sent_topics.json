@@ -494,5 +494,7 @@
   "title:rust-v0.133.0-alpha.3",
   "title:0.133.0-alpha.3",
   "title:show-hn-fast-free-ai-rewriter",
-  "topic:anthropic:xai:grok-5:update"
+  "topic:anthropic:xai:grok-5:update",
+  "title:0.133.0-alpha.4",
+  "title:show-hn-agent-chat-bridge-give-ai-ide"
 ]
