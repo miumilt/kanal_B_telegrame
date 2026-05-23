@@ -539,5 +539,8 @@
   "title:airbnb-s-chesky-says-us-misunderstanding-use-chinese",
   "title:tencent-open-sources-tencentdb-agent-memory-4-tier-local-memory",
   "title:v0.8.12",
-  "topic:openai:meta:release"
+  "topic:openai:meta:release",
+  "title:0.11.13",
+  "topic:anthropic:meta:gpt-5:opus-4.6:release",
+  "topic:openai:anthropic:claude-3:release"
 ]
