@@ -542,5 +542,6 @@
   "topic:openai:meta:release",
   "title:0.11.13",
   "topic:anthropic:meta:gpt-5:opus-4.6:release",
-  "topic:openai:anthropic:claude-3:release"
+  "topic:openai:anthropic:claude-3:release",
+  "title:show-hn-agentlens-see-if-your-ai-features"
 ]
