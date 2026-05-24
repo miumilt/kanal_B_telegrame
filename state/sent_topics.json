@@ -544,5 +544,8 @@
   "topic:anthropic:meta:gpt-5:opus-4.6:release",
   "topic:openai:anthropic:claude-3:release",
   "title:show-hn-agentlens-see-if-your-ai-features",
-  "topic:microsoft:gpt-5.4:gpt-5:release"
+  "topic:microsoft:gpt-5.4:gpt-5:release",
+  "title:quoting-armin-ronacher",
+  "title:show-hn-talktimer-micro-saas-run-by-ai-agent",
+  "title:show-hn-trickster-s-table-20-free-trick-taking"
 ]
