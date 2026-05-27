@@ -588,5 +588,8 @@
   "title:show-hn-youtube-mcp-let-your-ai-agent",
   "title:v0.22.0rc1-mrv2-bugfix-fix-kv-connector-handling-spec",
   "title:show-hn-unspaghettit-executable-behavior-specs-ai-coding",
-  "topic:anthropic:google:open-source"
+  "topic:anthropic:google:open-source",
+  "title:0.135.0-alpha.1",
+  "topic:anthropic:nvidia:qwen3.5:release",
+  "topic:openai:google:benchmark"
 ]

@@ -560,5 +560,8 @@
   "https://github.com/vllm-project/vllm/releases/tag/v0.22.0rc1",
   "https://www.mirdel.ai",
   "https://github.com/iOfficeAI/AionUi",
-  "https://github.com/lyriks-io/unspaghettit"
+  "https://github.com/lyriks-io/unspaghettit",
+  "https://github.com/openai/codex/releases/tag/rust-v0.135.0-alpha.1",
+  "https://the-decoder.com/microsofts-mai-image-2-5-pulls-even-with-googles-nano-banana-2-on-benchmarks/",
+  "https://www.marktechpost.com/2026/05/27/nvidia-releases-polar-a-token-faithful-rollout-framework-for-grpo-training-across-codex-claude-code-and-qwen-code/"
 ]
