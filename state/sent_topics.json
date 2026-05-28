@@ -596,5 +596,6 @@
   "title:show-hn-open-source-ai-racing-harness",
   "title:show-hn-vaen-package-import-portable-ai-coding-agent",
   "title:0.135.0-alpha.2",
-  "title:v0.22.0rc2-fix-early-cuda-init-43791"
+  "title:v0.22.0rc2-fix-early-cuda-init-43791",
+  "title:sqlite-agents.md"
 ]
