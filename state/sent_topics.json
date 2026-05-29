@@ -613,5 +613,6 @@
   "topic:anthropic:google:gpt-5.5:gpt-5:release",
   "topic:anthropic:opus-4.8:release",
   "title:liquid-ai-releases-lfm2.5-8b-a1b-on-device-moe-model-8.3b",
-  "topic:anthropic:opus-4.8:opus-4.8:update"
+  "topic:anthropic:opus-4.8:opus-4.8:update",
+  "title:0.136.0-alpha.1"
 ]
