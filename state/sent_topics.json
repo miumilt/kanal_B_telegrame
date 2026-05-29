@@ -614,5 +614,8 @@
   "topic:anthropic:opus-4.8:release",
   "title:liquid-ai-releases-lfm2.5-8b-a1b-on-device-moe-model-8.3b",
   "topic:anthropic:opus-4.8:opus-4.8:update",
-  "title:0.136.0-alpha.1"
+  "title:0.136.0-alpha.1",
+  "title:hexo-labs-open-sources-sia-self-improving-agent-that-updates",
+  "title:show-hn-ossentinel.live-ai-powered-open-source-security-monitoring",
+  "title:v0.22.0-bugfix-fix-hard-coded-timeout-multi-api-server-startup-43768"
 ]
