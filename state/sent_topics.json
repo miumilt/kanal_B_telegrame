@@ -628,5 +628,6 @@
   "topic:openai:gpt-5.5:gpt-4.5:update",
   "title:show-hn-clawchat-end-to-end-encrypted-coordination-multi-agent-ai",
   "title:stepfun-releases-step-3.7-flash-198b-moe-vision-language",
-  "topic:meta:nvidia:llama-3.2:llama-3:update"
+  "topic:meta:nvidia:llama-3.2:llama-3:update",
+  "topic:anthropic:opus-4:opus-4:benchmark"
 ]
