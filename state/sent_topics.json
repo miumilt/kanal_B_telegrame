@@ -666,5 +666,8 @@
   "topic:openai:gpt-5.5:release",
   "title:v0.30.0-launch-migrate-codex-config-16397",
   "title:show-hn-memex-local-first-ai-journal-that-keeps",
-  "topic:meta:nvidia:llama3.2:release"
+  "topic:meta:nvidia:llama3.2:release",
+  "title:show-hn-review-first-ai-ide-built-codex-opencode",
+  "topic:google:meta:update",
+  "topic:openai:gpt-5.5:gpt-5.4:release"
 ]
