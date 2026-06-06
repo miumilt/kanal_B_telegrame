@@ -723,5 +723,7 @@
   "title:0.138.0-alpha.5",
   "title:hermes-agent-open-source-ai-agent-persistent-memory",
   "title:0.138.0-alpha.6",
-  "topic:openai:anthropic:gpt-5.5-pro:gpt-5.5:release"
+  "topic:openai:anthropic:gpt-5.5-pro:gpt-5.5:release",
+  "title:show-hn-summarize-yt-video-by-pasting-url",
+  "topic:unknown:qwen3.7:qwen3:release"
 ]
