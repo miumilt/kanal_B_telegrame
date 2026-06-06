@@ -684,5 +684,7 @@
   "https://github.com/openai/codex/releases/tag/rusty-v8-v149.2.0",
   "https://www.latent.space/p/bad-envs",
   "https://github.com/openai/codex/releases/tag/rust-v0.138.0-alpha.5",
-  "https://hermes-agent.org/"
+  "https://hermes-agent.org/",
+  "https://github.com/openai/codex/releases/tag/rust-v0.138.0-alpha.6",
+  "https://simonwillison.net/2026/Jun/6/micropython-in-a-sandbox/#atom-everything"
 ]
