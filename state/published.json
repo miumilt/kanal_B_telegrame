@@ -698,5 +698,8 @@
   "https://github.com/browser-use/browser-use/releases/tag/0.12.4",
   "https://github.com/browser-use/browser-use/releases/tag/0.12.5",
   "https://github.com/ollama/ollama/releases/tag/v0.30.7-rc1",
-  "https://persist.chat"
+  "https://persist.chat",
+  "https://github.com/izzzzzi/agent-asearch",
+  "https://www.marktechpost.com/2026/06/06/meet-harness-1-a-20b-retrieval-subagent-trained-with-reinforcement-learning-inside-a-stateful-search-harness-on-gpt-oss-20b/",
+  "https://www.marktechpost.com/2026/06/06/nvidia-garak-tutorial-build-a-complete-defensive-llm-red-teaming-workflow-with-custom-probes-and-detectors/"
 ]
