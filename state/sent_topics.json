@@ -782,5 +782,6 @@
   "topic:google:gemini-3.5:gemini-3.5:release",
   "title:can-voice-agents-handle-bilingual-customers-benchmarking-frontier",
   "title:rust-v0.140.0-alpha.1",
-  "title:show-hn-ai-news-aggregator"
+  "title:show-hn-ai-news-aggregator",
+  "title:show-hn-localcode-turn-plain-english-into-cli"
 ]
