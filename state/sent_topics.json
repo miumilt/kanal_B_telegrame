@@ -845,5 +845,6 @@
   "topic:openai:anthropic:gemini-3.1-pro:benchmark",
   "title:show-hn-cortex-local-first-encrypted-memory-ai-agents",
   "title:show-hn-wmux-native-windows-terminal-multiplexer-ai",
-  "topic:deepseek:deepseek-v1-flash:update"
+  "topic:deepseek:deepseek-v1-flash:update",
+  "title:rust-v0.140.0-alpha.18"
 ]
