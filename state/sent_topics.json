@@ -834,5 +834,8 @@
   "topic:google:gemini-3.1-pro:gemini-3.1-pro:release",
   "title:v0.23.0-bugfix-cpu-don-t-build-triton-cpu-arm64",
   "title:show-hn-full-browser-interaction-cli-ai",
-  "topic:openai:anthropic:deepseek-v4:deepseek-v3.2:release"
+  "topic:openai:anthropic:deepseek-v4:deepseek-v3.2:release",
+  "title:0.140.0-alpha.17",
+  "title:ainews-fable-mythos-officially-too-dangerous-release",
+  "title:moonshot-ai-releases-kimi-k2.7-code-coding-model-reporting"
 ]
