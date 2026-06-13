@@ -842,5 +842,8 @@
   "title:show-hn-paca-lightweight-jira-alternative-human-ai-collaboration",
   "topic:openai:anthropic:gpt-5.5:gpt-5:update",
   "topic:anthropic:microsoft:gpt-5.5:gpt-5:update",
-  "topic:openai:anthropic:gemini-3.1-pro:benchmark"
+  "topic:openai:anthropic:gemini-3.1-pro:benchmark",
+  "title:show-hn-cortex-local-first-encrypted-memory-ai-agents",
+  "title:show-hn-wmux-native-windows-terminal-multiplexer-ai",
+  "topic:deepseek:deepseek-v1-flash:update"
 ]
