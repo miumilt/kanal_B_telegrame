@@ -832,5 +832,7 @@
   "title:0.140.0-alpha.16",
   "title:show-hn-open-infrastructure-argentina-s-ai-run-companies",
   "topic:google:gemini-3.1-pro:gemini-3.1-pro:release",
-  "title:v0.23.0-bugfix-cpu-don-t-build-triton-cpu-arm64"
+  "title:v0.23.0-bugfix-cpu-don-t-build-triton-cpu-arm64",
+  "title:show-hn-full-browser-interaction-cli-ai",
+  "topic:openai:anthropic:deepseek-v4:deepseek-v3.2:release"
 ]
