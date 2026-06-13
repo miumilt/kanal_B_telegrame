@@ -840,5 +840,7 @@
   "title:moonshot-ai-releases-kimi-k2.7-code-coding-model-reporting",
   "topic:anthropic:gpt-5.5:update",
   "title:show-hn-paca-lightweight-jira-alternative-human-ai-collaboration",
-  "topic:openai:anthropic:gpt-5.5:gpt-5:update"
+  "topic:openai:anthropic:gpt-5.5:gpt-5:update",
+  "topic:anthropic:microsoft:gpt-5.5:gpt-5:update",
+  "topic:openai:anthropic:gemini-3.1-pro:benchmark"
 ]
