@@ -868,5 +868,8 @@
   "title:show-hn-isitslop.xyz-free-ai-writing-detector-built-latest",
   "title:0.140.0-alpha.20",
   "title:pok-mon-go-data-helped-train-ai-now",
-  "topic:anthropic:gpt-5.5:benchmark"
+  "topic:anthropic:gpt-5.5:benchmark",
+  "title:0.140.0-alpha.21",
+  "title:rust-v0.140.0-alpha.22",
+  "topic:anthropic:claude-1:update"
 ]
