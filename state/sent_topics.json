@@ -997,5 +997,8 @@
   "title:show-hn-free-vin-decoder-ai-summaries-cloudflare",
   "title:0.143.0-alpha.5",
   "topic:openai:anthropic:gpt-5.5:gpt-5:benchmark",
-  "title:0.143.0-alpha.6"
+  "title:0.143.0-alpha.6",
+  "title:0.143.0-alpha.7",
+  "title:rust-v0.143.0-alpha.8",
+  "topic:unknown:gpt-5:gpt-5-pro:update"
 ]
