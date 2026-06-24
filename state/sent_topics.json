@@ -1030,5 +1030,8 @@
   "topic:anthropic:deepseek:opus-4.8:opus:free",
   "title:facebook-rolls-out-ai-companion-app-creators",
   "title:figma-bets-human-judgment-at-config-2026-while",
-  "topic:openai:anthropic:opus-4.7:opus-4.7:benchmark"
+  "topic:openai:anthropic:opus-4.7:opus-4.7:benchmark",
+  "title:0.143.0-alpha.15",
+  "topic:google:gemini-3.5:release",
+  "topic:openai:gpt-5.5:gpt-2:update"
 ]
