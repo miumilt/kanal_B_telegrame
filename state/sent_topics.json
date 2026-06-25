@@ -1045,5 +1045,7 @@
   "title:rust-v0.143.0-alpha.20",
   "topic:anthropic:meta:qwen2:release",
   "title:v0.22.0rc3-bugfix-fix-hard-coded-timeout-multi-api-server-startup-43768",
-  "topic:google:gpt-5.5:gemini-3.5-flash:benchmark"
+  "topic:google:gpt-5.5:gemini-3.5-flash:benchmark",
+  "title:1.15.0",
+  "title:authors-guild-test-finds-some-ai-detectors-perfectly"
 ]
