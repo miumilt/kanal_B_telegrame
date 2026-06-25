@@ -984,5 +984,7 @@
   "https://simonwillison.net/2026/Jun/24/browser-compat-db/#atom-everything",
   "https://github.com/ollama/ollama/releases/tag/v0.30.11-rc0",
   "https://github.com/openai/codex/releases/tag/rust-v0.143.0-alpha.20",
-  "https://github.com/openai/codex/releases/tag/rust-v0.143.0-alpha.21"
+  "https://github.com/openai/codex/releases/tag/rust-v0.143.0-alpha.21",
+  "https://github.com/vllm-project/vllm/releases/tag/v0.22.0rc3",
+  "https://the-decoder.com/google-bakes-computer-control-directly-into-gemini-3-5-flash-letting-the-model-see-and-operate-your-screen/"
 ]
