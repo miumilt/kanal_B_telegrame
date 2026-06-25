@@ -981,5 +981,8 @@
   "https://realtube.io",
   "https://github.com/CelestoAI/smolfs",
   "https://github.com/openai/codex/releases/tag/rust-v0.143.0-alpha.16",
-  "https://simonwillison.net/2026/Jun/24/browser-compat-db/#atom-everything"
+  "https://simonwillison.net/2026/Jun/24/browser-compat-db/#atom-everything",
+  "https://github.com/ollama/ollama/releases/tag/v0.30.11-rc0",
+  "https://github.com/openai/codex/releases/tag/rust-v0.143.0-alpha.20",
+  "https://github.com/openai/codex/releases/tag/rust-v0.143.0-alpha.21"
 ]

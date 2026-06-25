@@ -1040,5 +1040,8 @@
   "title:show-hn-realtube-watch-youtube-filters-ai-generated-content",
   "title:rust-v0.143.0-alpha.16",
   "title:show-hn-durable-filesystem-layer-ai-agents",
-  "topic:anthropic:gpt-5.5:opus-4.8:release"
+  "topic:anthropic:gpt-5.5:opus-4.8:release",
+  "title:0.143.0-alpha.21",
+  "title:rust-v0.143.0-alpha.20",
+  "topic:anthropic:meta:qwen2:release"
 ]
