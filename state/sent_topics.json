@@ -1062,5 +1062,7 @@
   "title:rust-v0.143.0-alpha.24",
   "title:run-vllm-server-hf-jobs-one-command",
   "title:show-hn-hoprlabs-python-lab-prototyping-ai-math",
-  "topic:openai:gpt-5.6:release"
+  "topic:openai:gpt-5.6:release",
+  "title:show-hn-shotlist-make-your-ai-agent-prove",
+  "title:v0.23.0rc2-docker-fix-cutlass-dsl-cu13-install-order"
 ]
