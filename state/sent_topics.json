@@ -1117,5 +1117,8 @@
   "topic:google:huggingface:qwen-3.5:qwen-3.5:release",
   "title:cursor-now-has-mobile-app-guiding-your-coding",
   "title:highlights-git-2.55",
-  "title:show-hn-halgorithem-open-source-tool-detecting-ai-hallucinations"
+  "title:show-hn-halgorithem-open-source-tool-detecting-ai-hallucinations",
+  "title:show-hn-fleet-local-first-console-managing-dockerized-hermes",
+  "topic:mistral:huggingface:release",
+  "topic:openai:anthropic:llama4:deepseek-v4:release"
 ]
