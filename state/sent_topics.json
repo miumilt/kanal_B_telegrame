@@ -1145,5 +1145,8 @@
   "topic:anthropic:sonnet-5:sonnet-5:release",
   "title:linq-s-imessage-apps-bring-payments-tickets-flights",
   "title:twilight-chatbots",
-  "topic:google:gemini-3.1-flash:release"
+  "topic:google:gemini-3.1-flash:release",
+  "title:0.143.0-alpha.32",
+  "topic:meta:xai:benchmark",
+  "topic:unknown:sonnet-5:update"
 ]
