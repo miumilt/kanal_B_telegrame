@@ -1148,5 +1148,7 @@
   "topic:google:gemini-3.1-flash:release",
   "title:0.143.0-alpha.32",
   "topic:meta:xai:benchmark",
-  "topic:unknown:sonnet-5:update"
+  "topic:unknown:sonnet-5:update",
+  "title:show-hn-slopenclaw-ai-agent-that-procrastinates-you",
+  "topic:anthropic:sonnet-5:sonnet-5:benchmark"
 ]
