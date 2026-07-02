@@ -1100,5 +1100,7 @@
   "https://www.marktechpost.com/2026/07/01/using-lift-to-turn-research-pdfs-into-structured-json-with-controlled-schema-guided-field-level-evaluation/",
   "https://www.orgonaut.co/tools/agentic-reorg-simulator/",
   "https://github.com/authsec-ai/authsec-ai",
-  "https://www.latent.space/p/autoresearch-introspection"
+  "https://www.latent.space/p/autoresearch-introspection",
+  "https://github.com/msitarzewski/agency-agents",
+  "https://github.com/openai/codex/releases/tag/rust-v0.143.0-alpha.33"
 ]
