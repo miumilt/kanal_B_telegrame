@@ -1289,5 +1289,8 @@
   "topic:anthropic:sonnet-5:sonnet-5:update",
   "topic:openai:anthropic:claude-160:update",
   "topic:xai:nvidia:gpt-5.5:gpt-5:release",
-  "topic:xai:opus-:grok-4.5:release"
+  "topic:xai:opus-:grok-4.5:release",
+  "title:0.144.0-alpha.1",
+  "title:rust-v0.144.0-alpha.1",
+  "title:rust-v0.144.0-alpha.2"
 ]
