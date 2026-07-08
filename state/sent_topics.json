@@ -1283,5 +1283,8 @@
   "title:show-hn-vetobench-benchmarking-ai-memory-beyond-retrieval",
   "title:show-hn-cruxible-open-source-governed-truth-layer-ai",
   "title:show-hn-engramma-memory-composable-memory-ai-agents",
-  "title:show-hn-kastor-terraform-style-specs-ai-agents"
+  "title:show-hn-kastor-terraform-style-specs-ai-agents",
+  "title:show-hn-free-open-source-risk-summary-ai",
+  "topic:anthropic:deepseek:deepseek-v4-pro:benchmark",
+  "topic:anthropic:sonnet-5:sonnet-5:update"
 ]
