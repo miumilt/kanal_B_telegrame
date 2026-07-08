@@ -1286,5 +1286,8 @@
   "title:show-hn-kastor-terraform-style-specs-ai-agents",
   "title:show-hn-free-open-source-risk-summary-ai",
   "topic:anthropic:deepseek:deepseek-v4-pro:benchmark",
-  "topic:anthropic:sonnet-5:sonnet-5:update"
+  "topic:anthropic:sonnet-5:sonnet-5:update",
+  "topic:openai:anthropic:claude-160:update",
+  "topic:xai:nvidia:gpt-5.5:gpt-5:release",
+  "topic:xai:opus-:grok-4.5:release"
 ]
