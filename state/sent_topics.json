@@ -1309,5 +1309,8 @@
   "title:show-hn-tokenstead-find-ai-models-your-hardware",
   "title:llm-meta-ai-0.1",
   "topic:openai:anthropic:grok-4.5:release",
-  "topic:openai:google:gpt-5.6:gpt-5:release"
+  "topic:openai:google:gpt-5.6:gpt-5:release",
+  "title:show-hn-free-open-source-ai+sast-code-review",
+  "title:show-hn-fudge-web-design-references-ai",
+  "topic:openai:anthropic:gpt-5.6:gpt-5:benchmark"
 ]
