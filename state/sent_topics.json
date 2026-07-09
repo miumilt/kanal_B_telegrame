@@ -1315,5 +1315,8 @@
   "topic:openai:anthropic:gpt-5.6:gpt-5:benchmark",
   "title:0.145.0-alpha.1",
   "topic:openai:anthropic:gpt-5.6:update",
-  "topic:unknown:gpt-5.6:release"
+  "topic:unknown:gpt-5.6:release",
+  "title:rust-v0.145.0-alpha.2",
+  "title:show-hn-context-aware-ai-social-workspace-learn-math",
+  "topic:unknown:gpt-5.5:opus-4.8:release"
 ]
