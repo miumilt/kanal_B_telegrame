@@ -1306,5 +1306,8 @@
   "topic:anthropic:opus:opus-4.8:benchmark",
   "title:show-hn-blocks.ai-control-plane-network-layer-agents",
   "title:show-hn-contextnest-versioned-governed-context-ai-agents",
-  "title:show-hn-tokenstead-find-ai-models-your-hardware"
+  "title:show-hn-tokenstead-find-ai-models-your-hardware",
+  "title:llm-meta-ai-0.1",
+  "topic:openai:anthropic:grok-4.5:release",
+  "topic:openai:google:gpt-5.6:gpt-5:release"
 ]
