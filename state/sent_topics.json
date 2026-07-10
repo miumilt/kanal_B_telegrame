@@ -1331,5 +1331,6 @@
   "topic:huggingface:open-source",
   "topic:openai:gpt-5.6:gpt-56:benchmark",
   "topic:xai:huggingface:release",
-  "title:kyutai-releases-muscriptor-open-weight-decoder-only-transformer-multi-instrument-music"
+  "title:kyutai-releases-muscriptor-open-weight-decoder-only-transformer-multi-instrument-music",
+  "title:rust-v0.145.0-alpha.3"
 ]
