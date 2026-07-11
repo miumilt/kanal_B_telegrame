@@ -1263,5 +1263,6 @@
   "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.3",
   "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.4",
   "https://github.com/browser-use/browser-use/releases/tag/0.13.4",
-  "https://noiseremover.ai/"
+  "https://noiseremover.ai/",
+  "https://github.com/vllm-project/vllm/releases/tag/v0.25.0"
 ]
