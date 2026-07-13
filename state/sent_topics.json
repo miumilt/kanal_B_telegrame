@@ -1368,5 +1368,8 @@
   "title:directly-responsible-individuals-dri",
   "title:shot-scraper-1.11",
   "title:v0.25.1-bugfix-guard-mixed-dtype-allreduce-rmsnorm-quant-fusions",
-  "topic:openai:anthropic:gpt-5.6:gpt-5:free"
+  "topic:openai:anthropic:gpt-5.6:gpt-5:free",
+  "title:0.145.0-alpha.7",
+  "title:rust-v0.145.0-alpha.5",
+  "title:rust-vrust-v0.145.0-alpha.6"
 ]
