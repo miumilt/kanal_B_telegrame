@@ -1359,5 +1359,7 @@
   "https://huggingface.co/blog/ibm-research/model-routing-is-simple-until-it-isnt",
   "https://www.jointjs.com/demos/ai-workflow-builder",
   "https://gate.cat/",
-  "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.14"
+  "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.14",
+  "https://github.com/astrio-labs/forall",
+  "https://github.com/openai/codex/releases/tag/rust-v0.145.0-alpha.15"
 ]
