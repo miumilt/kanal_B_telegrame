@@ -1461,5 +1461,7 @@
   "title:show-hn-poketokenbar-raise-pok-mon-your-ai",
   "title:0.145.0-alpha.18",
   "title:show-hn-pagora-ai-wordpress-ai-page-builder",
-  "topic:openai:gpt-5.6:benchmark"
+  "topic:openai:gpt-5.6:benchmark",
+  "topic:anthropic:gpt-5.6:gpt-5.6:release",
+  "topic:openai:anthropic:gpt-5.5:gpt-5.6:release"
 ]
