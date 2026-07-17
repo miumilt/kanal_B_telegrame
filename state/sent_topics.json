@@ -1466,5 +1466,8 @@
   "topic:openai:anthropic:gpt-5.5:gpt-5.6:release",
   "title:0.145.0-alpha.19",
   "title:rust-v0.145.0-alpha.20",
-  "topic:meta:llama-3.2:free"
+  "topic:meta:llama-3.2:free",
+  "title:0.13.5",
+  "title:python-v0.144.4-support-custom-transports-amazon-bedrock-33695",
+  "topic:anthropic:opus:update"
 ]
