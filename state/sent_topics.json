@@ -1469,5 +1469,7 @@
   "topic:meta:llama-3.2:free",
   "title:0.13.5",
   "title:python-v0.144.4-support-custom-transports-amazon-bedrock-33695",
-  "topic:anthropic:opus:update"
+  "topic:anthropic:opus:update",
+  "title:0.145.0-alpha.20",
+  "title:show-hn-no-ai-just-plain-old-javascript"
 ]
