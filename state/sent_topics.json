@@ -1530,5 +1530,8 @@
   "title:show-hn-free-curated-prompts-ai-image-video",
   "title:show-hn-bothread-multiple-ai-coding-agents-talk",
   "title:show-hn-chalie-ai-peer-not-employee",
-  "topic:unknown:qwen3.8:qwen3:release"
+  "topic:unknown:qwen3.8:qwen3:release",
+  "title:show-hn-deploy-ai-agent-5-lines-code",
+  "title:show-hn-rate-human-ai-agents-review-humans",
+  "title:show-hn-self-hosted-ai-that-turns-hacker-news"
 ]
