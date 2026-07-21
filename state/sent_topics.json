@@ -1564,5 +1564,8 @@
   "title:show-hn-rowset-open-source-back-end-ai-agents",
   "topic:google:gemini-3.6-flash:gemini-3.6-flash:release",
   "topic:mistral:microsoft:update",
-  "topic:openai:anthropic:gemini-1:gemini-3.5-pro:release"
+  "topic:openai:anthropic:gemini-1:gemini-3.5-pro:release",
+  "topic:google:gemini-3.6-flash:gemini-3.5-pro:release",
+  "topic:google:gemini-3.6-flash:gemini-4:update",
+  "topic:openai:anthropic:gpt-5.6:gpt-5.4:release"
 ]
