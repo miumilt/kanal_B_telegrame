@@ -1561,5 +1561,8 @@
   "topic:anthropic:google:gpt-5.6:opus-4.8:release",
   "title:show-hn-maith-open-math-research-ai",
   "title:show-hn-pinpoint-visual-feedback-ai-coding-agents",
-  "title:show-hn-rowset-open-source-back-end-ai-agents"
+  "title:show-hn-rowset-open-source-back-end-ai-agents",
+  "topic:google:gemini-3.6-flash:gemini-3.6-flash:release",
+  "topic:mistral:microsoft:update",
+  "topic:openai:anthropic:gemini-1:gemini-3.5-pro:release"
 ]
