@@ -1575,5 +1575,8 @@
   "title:open-source-ai-harness-profiler-discover-where-tf",
   "title:v0.32.2-rc1-server-detect-download-stalls-before-first-byte",
   "title:rust-v0.145.0-alpha.30",
-  "title:show-hn-jaybase-append-only-fact-store-ai-doing"
+  "title:show-hn-jaybase-append-only-fact-store-ai-doing",
+  "title:0.145.0-alpha.30",
+  "title:rust-v0.146.0-alpha.1",
+  "title:v0.32.2-test-revamp-integration-test-entrpoints-16560"
 ]
