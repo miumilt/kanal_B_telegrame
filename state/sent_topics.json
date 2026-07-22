@@ -1598,5 +1598,8 @@
   "topic:unknown:gpt-5.5:gpt-5:release",
   "title:show-hn-we-added-x402-so-ai-agents",
   "title:yope-raises-12.3m-build-private-social-network-without",
-  "topic:openai:huggingface:update"
+  "topic:openai:huggingface:update",
+  "title:rust-v0.146.0-alpha.3",
+  "title:show-hn-autograd-free-llm-guiding-0mb-vram-alternative",
+  "title:show-hn-harbinger--mtls-proxy-that-gives-ai"
 ]
