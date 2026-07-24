@@ -1639,5 +1639,6 @@
   "topic:google:xai:update",
   "title:0.146.0-alpha.6",
   "title:show-hn-continuum-switch-ai-coding-agents-without",
-  "title:show-hn-transept-ai-translation-workspace-that-puts"
+  "title:show-hn-transept-ai-translation-workspace-that-puts",
+  "topic:openai:anthropic:opus:sonnet:update"
 ]
