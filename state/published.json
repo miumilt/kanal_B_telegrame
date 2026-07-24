@@ -1540,5 +1540,7 @@
   "https://github.com/highflame-ai/ai-factory",
   "https://github.com/rafaelEt/opentrust",
   "https://github.com/tomlin7/biscuit",
-  "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.3.1"
+  "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.3.1",
+  "https://github.com/kdeps/turo",
+  "https://github.com/vllm-project/vllm/releases/tag/v0.24.0rc2"
 ]
