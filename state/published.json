@@ -1542,5 +1542,8 @@
   "https://github.com/tomlin7/biscuit",
   "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.3.1",
   "https://github.com/kdeps/turo",
-  "https://github.com/vllm-project/vllm/releases/tag/v0.24.0rc2"
+  "https://github.com/vllm-project/vllm/releases/tag/v0.24.0rc2",
+  "https://bohay.dev/",
+  "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.6",
+  "https://www.latent.space/p/ainews-black-forest-labs-flux-3-multimodal"
 ]
