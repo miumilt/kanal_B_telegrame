@@ -1646,5 +1646,8 @@
   "topic:mistral:nvidia:update",
   "title:rust-v0.146.0-alpha.7",
   "topic:anthropic:opus-5:opus-5:release",
-  "topic:anthropic:opus-5:opus:update"
+  "topic:anthropic:opus-5:opus:update",
+  "title:0.146.0-alpha.7",
+  "topic:anthropic:gpt-5.6:opus-5:benchmark",
+  "topic:anthropic:opus-5:release"
 ]
