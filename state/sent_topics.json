@@ -1643,5 +1643,8 @@
   "topic:openai:anthropic:opus:sonnet:update",
   "title:show-hn-open-source-ai-scientist-semi-autonomous-theory-discovery",
   "title:show-hn-open-source-ai-tool-status-checker",
-  "topic:mistral:nvidia:update"
+  "topic:mistral:nvidia:update",
+  "title:rust-v0.146.0-alpha.7",
+  "topic:anthropic:opus-5:opus-5:release",
+  "topic:anthropic:opus-5:opus:update"
 ]
