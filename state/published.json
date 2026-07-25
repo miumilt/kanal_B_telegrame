@@ -1565,5 +1565,8 @@
   "https://github.com/samchon/lint-plugin-evidence",
   "https://ai-meter.app",
   "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.10",
-  "https://zlvox.com/tools/anime-finder"
+  "https://zlvox.com/tools/anime-finder",
+  "https://github.com/samchon/ttsc/tree/master/packages/graph",
+  "https://github.com/vllm-project/vllm/releases/tag/v0.26.0",
+  "https://www.latent.space/p/ainews-claude-opus-5-fable-level"
 ]
