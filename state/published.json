@@ -1559,5 +1559,8 @@
   "https://the-decoder.com/anthropic-claims-its-new-claude-opus-5-delivers-near-fable-5-performance-at-half-the-token-price/",
   "https://github.com/githubscum/lotor",
   "https://arstechnica.com/ai/2026/07/anthropics-opus-5-is-about-token-efficiency-not-a-capability-leap/",
-  "https://www.marktechpost.com/2026/07/24/meet-the-new-claude-opus-5-frontier-class-agentic-coding-and-computer-use-at-unchanged-opus-pricing/"
+  "https://www.marktechpost.com/2026/07/24/meet-the-new-claude-opus-5-frontier-class-agentic-coding-and-computer-use-at-unchanged-opus-pricing/",
+  "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.8",
+  "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.9",
+  "https://github.com/samchon/lint-plugin-evidence"
 ]
