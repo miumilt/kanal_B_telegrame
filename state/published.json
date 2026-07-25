@@ -1577,5 +1577,6 @@
   "https://github.com/johndebord/protoai",
   "https://trytongue.com/demo",
   "https://github.com/ollama/ollama/releases/tag/v0.32.4-rc0",
-  "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.11"
+  "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.11",
+  "https://www.marktechpost.com/2026/07/25/meet-open-dreamer-a-jax-flax-reproduction-of-the-dreamer-4-world-model-pipeline-with-the-full-training-recipe-published/"
 ]
