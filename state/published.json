@@ -1575,5 +1575,7 @@
   "https://the-decoder.com/opus-5-may-have-solved-browser-based-prompt-injection-the-biggest-security-flaw-haunting-ai-agents/",
   "https://github.com/eliasschwalme/avatar-cursor/blob/main/demo.gif",
   "https://github.com/johndebord/protoai",
-  "https://trytongue.com/demo"
+  "https://trytongue.com/demo",
+  "https://github.com/ollama/ollama/releases/tag/v0.32.4-rc0",
+  "https://github.com/openai/codex/releases/tag/rust-v0.146.0-alpha.11"
 ]
