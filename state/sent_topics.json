@@ -1680,5 +1680,6 @@
   "topic:openai:anthropic:gpt-5.6:opus-5:update",
   "title:induction-labs-photon-1-simulates-desktops-plays-checkers-models",
   "title:kwaikat-team-releases-kat-coder-v2.5-agentic-coding-model-trained",
-  "topic:anthropic:gpt-5.6:gpt-5:benchmark"
+  "topic:anthropic:gpt-5.6:gpt-5:benchmark",
+  "title:show-hn-wmux-workspace-multiplexer-ai-agents"
 ]
