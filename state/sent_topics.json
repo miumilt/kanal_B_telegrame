@@ -1786,5 +1786,7 @@
   "topic:openai:deepseek:gpt-5.6:gpt-5:update",
   "title:0.147.0-alpha.4",
   "title:show-hn-brainstorm-local-first-ai-native-os-knowledge-work",
-  "topic:anthropic:gpt-5.5:opus-4.6:benchmark"
+  "topic:anthropic:gpt-5.5:opus-4.6:benchmark",
+  "topic:deepseek:huggingface:deepseek-v4-flash:release",
+  "topic:openai:anthropic:deepseek-v4-flash:deepseek-v4-flash:open-source"
 ]
