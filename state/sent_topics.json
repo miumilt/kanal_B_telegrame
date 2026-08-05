@@ -1875,5 +1875,8 @@
   "title:rust-v0.147.0-alpha.11",
   "topic:google:gemini-3.5:free",
   "topic:mistral:benchmark",
-  "title:0.147.0-alpha.11"
+  "title:0.147.0-alpha.11",
+  "title:0.147.0-alpha.6.5",
+  "title:rust-v0.147.0-alpha.12",
+  "topic:openai:anthropic:gpt-3:benchmark"
 ]
