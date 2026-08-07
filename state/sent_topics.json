@@ -1898,5 +1898,6 @@
   "topic:openai:anthropic:gpt-5.3:release",
   "title:0.148.0-alpha.1",
   "title:liquid-ai-releases-lfm2.5-2.6b-on-device-agentic-model-128k",
-  "title:show-hn-selvedge-append-only-log-what-your-ai"
+  "title:show-hn-selvedge-append-only-log-what-your-ai",
+  "title:show-hn-skill-stop-ai-agents-retry-looping-during"
 ]
