@@ -1917,5 +1917,8 @@
   "topic:google:meta:llama-3.1:update",
   "title:ai-music-generator-suno-tightens-rules-fight-spam",
   "title:show-hn-zaivern-code-rust-cockpit-parallel-ai",
-  "topic:openai:anthropic:gpt-5.6:gpt-3:update"
+  "topic:openai:anthropic:gpt-5.6:gpt-3:update",
+  "title:rust-v0.148.0-alpha.3",
+  "title:show-hn-hermes-missions-crash-safe-durable-execution-ai",
+  "title:show-hn-podiom-persistent-project-context-goals-scheduling"
 ]
