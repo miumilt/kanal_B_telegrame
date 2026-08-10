@@ -1969,5 +1969,6 @@
   "title:show-hn-minus-chrome-extension-local-ai-ad",
   "topic:openai:gpt-5.6:gpt-5:release",
   "title:rust-v0.147.0-alpha.6.6",
-  "topic:openai:anthropic:deepseek-v4:deepseek-v2:release"
+  "topic:openai:anthropic:deepseek-v4:deepseek-v2:release",
+  "title:0.147.0-alpha.6.6"
 ]
