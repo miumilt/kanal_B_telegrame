@@ -1906,5 +1906,7 @@
   "https://the-decoder.com/researchers-can-now-reverse-engineer-llm-prompts-from-output-text-with-near-perfect-accuracy/",
   "https://deepcortex.com/get-started-1",
   "https://github.com/ollama/ollama/releases/tag/v0.32.10-rc0",
-  "https://github.com/vllm-project/vllm/releases/tag/v0.27.2rc0"
+  "https://github.com/vllm-project/vllm/releases/tag/v0.27.2rc0",
+  "https://github.com/ollama/ollama/releases/tag/v0.32.10-rc1",
+  "https://nomark.me/#text-watermark"
 ]

@@ -2019,5 +2019,7 @@
   "title:your-contributors-are-ai-first-now.-is-your-project",
   "title:show-hn-nuflow-visual-ai-powered-low-code",
   "topic:openai:anthropic:opus-5:update",
-  "topic:unknown:qwen3.6:release"
+  "topic:unknown:qwen3.6:release",
+  "title:show-hn-remove-ai-watermark-text",
+  "title:v0.32.10-rc1-mlx-avoid-pulling-mlx-models-when-mlx"
 ]
