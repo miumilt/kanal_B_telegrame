@@ -1897,5 +1897,8 @@
   "https://www.interconnects.ai/p/i-wrote-an-ai-textbook-how-long-until",
   "https://huggingface.co/blog/LiquidAI/lfm2-5-vl-3b",
   "https://talkform.org",
-  "https://tokenmaxxer.xyz"
+  "https://tokenmaxxer.xyz",
+  "https://github.com/openai/codex/releases/tag/rust-v0.148.0-alpha.10",
+  "https://github.com/tanchihq/tanchi",
+  "https://huggingface.co/blog/allenai/olmoearth-embeddings"
 ]
