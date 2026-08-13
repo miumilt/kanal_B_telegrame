@@ -2021,5 +2021,6 @@
   "topic:openai:anthropic:opus-5:update",
   "topic:unknown:qwen3.6:release",
   "title:show-hn-remove-ai-watermark-text",
-  "title:v0.32.10-rc1-mlx-avoid-pulling-mlx-models-when-mlx"
+  "title:v0.32.10-rc1-mlx-avoid-pulling-mlx-models-when-mlx",
+  "topic:meta:deepseek:deepseek-v4-pro:deepseek-v4-pro:release"
 ]
