@@ -2022,5 +2022,8 @@
   "topic:unknown:qwen3.6:release",
   "title:show-hn-remove-ai-watermark-text",
   "title:v0.32.10-rc1-mlx-avoid-pulling-mlx-models-when-mlx",
-  "topic:meta:deepseek:deepseek-v4-pro:deepseek-v4-pro:release"
+  "topic:meta:deepseek:deepseek-v4-pro:deepseek-v4-pro:release",
+  "title:rust-v0.148.0-alpha.11",
+  "title:show-hn-i-m-tired-replying-my-social",
+  "topic:xai:grok-4.6:update"
 ]
