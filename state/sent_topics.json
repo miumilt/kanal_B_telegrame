@@ -2080,5 +2080,8 @@
   "topic:openai:anthropic:gpt-5.6:opus-4.8:update",
   "title:0.148.0-alpha.16",
   "title:show-hn-i-built-tool-that-delegates-bounded",
-  "topic:meta:xai:qwen-3.8:qwen-3.8:release"
+  "topic:meta:xai:qwen-3.8:qwen-3.8:release",
+  "title:0.148.0-alpha.17",
+  "topic:anthropic:sonnet-5:update",
+  "topic:meta:qwen3.8:update"
 ]
