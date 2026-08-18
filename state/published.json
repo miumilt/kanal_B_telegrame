@@ -2058,5 +2058,8 @@
   "https://huggingface.co/blog/ibm-research/altk-evolve-hmm",
   "https://siliconangle.com/2026/08/18/neoclouds-ai-infrastructure-supermicroopenstoragesummit/",
   "https://github.com/cjchanh/aaap-challenge",
-  "https://github.com/openai/codex/releases/tag/rust-v0.148.0-alpha.23"
+  "https://github.com/openai/codex/releases/tag/rust-v0.148.0-alpha.23",
+  "https://github.com/openai/codex/releases/tag/rust-v0.148.0",
+  "https://simonwillison.net/2026/Aug/18/mojo-is-now-open-source/",
+  "https://www.marktechpost.com/2026/08/18/nvidia-releases-tensorrt-model-connect-in-public-preview-hugging-face-checkpoint-to-native-c-inference-in-two-commands/"
 ]
