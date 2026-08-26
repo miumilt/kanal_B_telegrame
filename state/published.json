@@ -2258,5 +2258,6 @@
   "https://www.marktechpost.com/2026/08/25/ibm-releases-granite-4-2-bringing-native-reasoning-and-agentic-rl-to-open-enterprise-models/",
   "https://www.producthunt.com/products/opencomputer",
   "https://simonwillison.net/2026/Aug/26/paul-dix/",
-  "https://github.com/openai/codex/releases/tag/rust-v0.150.0-alpha.12"
+  "https://github.com/openai/codex/releases/tag/rust-v0.150.0-alpha.12",
+  "https://github.com/vllm-project/vllm/releases/tag/v0.28.0"
 ]
