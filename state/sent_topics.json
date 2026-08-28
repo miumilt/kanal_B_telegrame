@@ -2432,5 +2432,8 @@
   "topic:google:gemini-3.5:gemini-1:update",
   "title:0.151.0-alpha.6",
   "title:show-hn-apronagents-give-each-ai-coding-agent",
-  "topic:nvidia:huggingface:update"
+  "topic:nvidia:huggingface:update",
+  "title:0.151.0-alpha.7",
+  "title:0.151.0-alpha.8",
+  "title:show-hn-understudy-scenario-testing-ai-agents"
 ]
