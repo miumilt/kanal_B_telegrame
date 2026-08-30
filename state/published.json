@@ -2309,5 +2309,6 @@
   "https://www.makralabs.org/about",
   "https://github.com/Clawdlinux/agentgate",
   "https://github.com/openai/codex/releases/tag/rust-v0.152.0-alpha.3",
-  "https://github.com/openai/codex/releases/tag/rust-v0.152.0-alpha.4"
+  "https://github.com/openai/codex/releases/tag/rust-v0.152.0-alpha.4",
+  "https://www.marktechpost.com/2026/08/30/lowest-latency-inference-apis-for-voice-and-realtime-agents-a-time-to-first-token-ttft-first-benchmark/"
 ]
