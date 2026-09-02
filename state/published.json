@@ -2337,5 +2337,7 @@
   "https://simonwillison.net/2026/Sep/1/codex-libreoffice/",
   "https://the-decoder.com/anthropics-claude-fable-5-1-promises-better-coding-and-research-at-up-to-45-percent-less/",
   "https://huggingface.co/blog/allenai/benchmirt",
-  "https://masteranza.github.io/weedout/"
+  "https://masteranza.github.io/weedout/",
+  "https://github.com/openai/codex/releases/tag/rust-v0.153.0-alpha.5",
+  "https://www.marktechpost.com/2026/09/01/perplexity-releases-hybrid-compute-on-mac-cloud-agents-orchestrate-down-to-a-local-model-gated-on-device/"
 ]
