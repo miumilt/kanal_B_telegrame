@@ -2491,5 +2491,8 @@
   "title:show-hn-use-ai-api-scheduled-active-recall",
   "title:0.153.0-alpha.6",
   "title:real-time-intelligence-ibm-time-series-models-confluent",
-  "topic:openai:anthropic:gpt-5.6:sonnet:release"
+  "topic:openai:anthropic:gpt-5.6:sonnet:release",
+  "title:us-department-justice-backs-fair-use-ai-training",
+  "topic:anthropic:google:opus-5:gemini-3.8-flash:benchmark",
+  "topic:google:gemini-3.8-flash:gemini-3.8-flash:release"
 ]
