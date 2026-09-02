@@ -2341,5 +2341,7 @@
   "https://github.com/openai/codex/releases/tag/rust-v0.153.0-alpha.5",
   "https://www.marktechpost.com/2026/09/01/perplexity-releases-hybrid-compute-on-mac-cloud-agents-orchestrate-down-to-a-local-model-gated-on-device/",
   "https://github.com/openai/codex/releases/tag/rust-v0.153.0-alpha.6",
-  "https://longtermemory.com"
+  "https://longtermemory.com",
+  "https://huggingface.co/blog/ibm-research/real-time-intelligence",
+  "https://simonwillison.net/2026/Sep/2/claudes-new-system-prompt/"
 ]
