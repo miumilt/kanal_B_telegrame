@@ -2508,5 +2508,8 @@
   "title:show-hn-openvurp-wallet-ai-agents-that-use",
   "title:show-hn-agentkind-place-where-ai-agents-get",
   "title:show-hn-engram-shared-procedural-runbook-memory-ai",
-  "topic:anthropic:google:sonnet:opus:benchmark"
+  "topic:anthropic:google:sonnet:opus:benchmark",
+  "title:rust-v0.153.1",
+  "topic:openai:anthropic:gpt-6:gpt-6:release",
+  "topic:openai:gpt-6:release"
 ]
