@@ -2521,5 +2521,6 @@
   "topic:openai:anthropic:gpt-6:benchmark",
   "title:experian-expands-into-ai-agents-servicenow-partnership",
   "topic:microsoft:opus-5:release",
-  "topic:openai:anthropic:gpt-6:opus-5:update"
+  "topic:openai:anthropic:gpt-6:opus-5:update",
+  "topic:google:gemini-3.7-flash:release"
 ]
