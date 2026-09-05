@@ -2522,5 +2522,6 @@
   "title:experian-expands-into-ai-agents-servicenow-partnership",
   "topic:microsoft:opus-5:release",
   "topic:openai:anthropic:gpt-6:opus-5:update",
-  "topic:google:gemini-3.7-flash:release"
+  "topic:google:gemini-3.7-flash:release",
+  "title:rust-v0.154.0-alpha.4"
 ]
