@@ -2580,5 +2580,8 @@
   "topic:openai:anthropic:gpt-6:update",
   "title:0.155.0-alpha.2",
   "title:rust-v0.155.0-alpha.2.1",
-  "title:show-hn-i-built-founder.best-its-products-now"
+  "title:show-hn-i-built-founder.best-its-products-now",
+  "title:cygwin-build-inputs-matching-source-windows-voice",
+  "title:rust-v0.155.0-alpha.2.2",
+  "topic:anthropic:deepseek:release"
 ]
