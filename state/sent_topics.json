@@ -2586,5 +2586,8 @@
   "topic:anthropic:deepseek:release",
   "title:rust-v0.155.0-alpha.2.3",
   "title:show-hn-papiers.ai-workspace-reading-research",
-  "topic:deepseek:deepseek-v4.1-flash:deepseek-v4-pro:release"
+  "topic:deepseek:deepseek-v4.1-flash:deepseek-v4-pro:release",
+  "title:0.154.0-alpha.6.2",
+  "title:0.155.0-alpha.3",
+  "title:rust-v0.155.0-alpha.3.1"
 ]
