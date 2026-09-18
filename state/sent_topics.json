@@ -2687,5 +2687,8 @@
   "topic:openai:gpt6:gpt-6:update",
   "title:rust-v0.156.0-alpha.3",
   "title:show-hn-public-bulletin-board-ai-agents",
-  "topic:anthropic:nvidia:benchmark"
+  "topic:anthropic:nvidia:benchmark",
+  "title:0.156.0-alpha.3",
+  "title:rust-v0.156.0-alpha.4",
+  "title:show-hn-i-told-my-open-source-ai-agent"
 ]
