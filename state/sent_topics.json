@@ -2749,5 +2749,7 @@
   "topic:openai:anthropic:gpt-6:opus-5.5:release",
   "title:rust-v0.157.0-alpha.10",
   "topic:meta:huggingface:release",
-  "topic:openai:gpt-5.4:gpt-5.5:release"
+  "topic:openai:gpt-5.4:gpt-5.5:release",
+  "title:0.157.0-alpha.10",
+  "title:web-scraping-startup-firecrawl-closes-75m-investment"
 ]
