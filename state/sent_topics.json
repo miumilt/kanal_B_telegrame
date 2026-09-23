@@ -2757,5 +2757,8 @@
   "topic:openai:meta:qwen-3.8:update",
   "title:0.157.0-alpha.11",
   "title:show-hn-gwae-infinite-scroll-terminal-multiplexer-ai-agent",
-  "topic:openai:anthropic:llama-3.3:deepseek-v4:release"
+  "topic:openai:anthropic:llama-3.3:deepseek-v4:release",
+  "title:0.158.0-alpha.2",
+  "title:rust-v0.158.0-alpha.1",
+  "title:zerodrift-launches-three-models-real-time-ai-compliance-checks"
 ]
