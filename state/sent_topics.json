@@ -2760,5 +2760,8 @@
   "topic:openai:anthropic:llama-3.3:deepseek-v4:release",
   "title:0.158.0-alpha.2",
   "title:rust-v0.158.0-alpha.1",
-  "title:zerodrift-launches-three-models-real-time-ai-compliance-checks"
+  "title:zerodrift-launches-three-models-real-time-ai-compliance-checks",
+  "topic:google:gemini-3.8-flash:release",
+  "topic:openai:gpt-5.6:gpt-4.1:update",
+  "topic:openai:gpt-6:gpt-2:update"
 ]
