@@ -2766,5 +2766,8 @@
   "topic:openai:gpt-6:gpt-2:update",
   "title:0.155.0-alpha.16.4",
   "title:0.158.0-alpha.4",
-  "title:rust-v0.158.0-alpha.5"
+  "title:rust-v0.158.0-alpha.5",
+  "title:0.158.0-alpha.5",
+  "title:0.158.0-alpha.6",
+  "title:show-hn-hosted-jaybase-append-only-data-store-safe"
 ]
