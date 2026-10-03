@@ -2696,5 +2696,6 @@
   "https://github.com/agenticenv/agent-sdk-go",
   "https://github.com/ChrystianSchutz/ThreadShelf",
   "https://github.com/openai/codex/releases/tag/rust-v0.162.0-alpha.8",
-  "https://portus-gateway.dev/"
+  "https://portus-gateway.dev/",
+  "https://github.com/openai/codex/releases/tag/rust-v0.162.0-alpha.9"
 ]
