@@ -2920,5 +2920,8 @@
   "title:show-hn-ai-agents-zero-hero-learn-ai",
   "title:v0.40.0-rc3-pull-allow-rcs-pull-matching-min-version",
   "title:0.161.0-alpha.13.1",
-  "topic:openai:anthropic:opus:llama-3.1:release"
+  "topic:openai:anthropic:opus:llama-3.1:release",
+  "title:libreoffice-says-no-ai-is-now-software-feature",
+  "topic:anthropic:opus-5.5:update",
+  "topic:google:xai:deepseekv4:qwen3:release"
 ]
