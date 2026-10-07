@@ -2926,5 +2926,8 @@
   "topic:google:xai:deepseekv4:qwen3:release",
   "title:rust-v0.162.0-alpha.17",
   "topic:mistral:deepseek:deepseek-4.1-flash:release",
-  "topic:unknown:gpt-6:release"
+  "topic:unknown:gpt-6:release",
+  "title:0.162.0-alpha.17",
+  "title:rust-v0.161.0",
+  "title:rust-v0.162.0-alpha.18"
 ]
