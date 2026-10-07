@@ -2934,5 +2934,8 @@
   "title:show-hn-slopguesser-can-you-tell-if-code",
   "title:kore.ai-launches-autoloop-keep-tuning-enterprise-ai-agents",
   "title:show-hn-inbrief-open-source-ai-news-aggregator-llm",
-  "title:workspace-mcp-v2-musings-past-18-months-building"
+  "title:workspace-mcp-v2-musings-past-18-months-building",
+  "topic:anthropic:claude-55:benchmark",
+  "topic:nvidia:microsoft:release",
+  "topic:openai:gpt-6:gpt-2:release"
 ]
