@@ -2937,5 +2937,8 @@
   "title:workspace-mcp-v2-musings-past-18-months-building",
   "topic:anthropic:claude-55:benchmark",
   "topic:nvidia:microsoft:release",
-  "topic:openai:gpt-6:gpt-2:release"
+  "topic:openai:gpt-6:gpt-2:release",
+  "title:rust-v0.162.0-alpha.19",
+  "title:rust-v0.162.0-alpha.20",
+  "topic:openai:gpt-6:gpt-8217:update"
 ]
